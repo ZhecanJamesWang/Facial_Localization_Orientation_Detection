@@ -11,6 +11,8 @@ from PIL import Image
 from keras import optimizers
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from keras.callbacks import ModelCheckpoint
+import utility as ut
+
 
 def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
@@ -60,10 +62,12 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         labels = np.array(strCells[1:]).astype(np.float)
         labelsPTS=labels[:136].reshape([68,2])
         print imgName
-        print labels
-        print labelsPTS
+        # print labels
+        # print labelsPTS
         img = cv2.imread(imgName)
-        cv2.imwrite('test.jpg', img)
+        newImg = ut.rotate(img, ut.unpackLandmarks(labelsPTS)
+        cv2.imwrite('testOriginal.jpg', img)
+        cv2.imwrite('testRotate.jpg', newImg)
     #     im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
     #     im = im[..., np.array([2, 1, 0])]
     #     # Rot, Scale, T, theta= GetRTS(labelsPTS, MeanShape)
