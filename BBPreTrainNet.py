@@ -65,12 +65,16 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         # print labels
         # print labelsPTS
         img = cv2.imread(imgName)
-        print img
-        print type(img)
-        x, y = ut.unpackLandmarks(labelsPTS)
-        newImg = ut.rotate(img, x, y)
-        cv2.imwrite('testOriginal.jpg', img)
-        cv2.imwrite('testRotate.jpg', newImg)
+        if img != None:
+            print img
+            print type(img)
+            x, y = ut.unpackLandmarks(labelsPTS)
+            newImg = ut.rotate(img, x, y)
+            cv2.imwrite('testOriginal.jpg', img)
+            cv2.imwrite('testRotate.jpg', newImg)
+        else:
+            print "cannot find: ", imgName
+
     #     im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
     #     im = im[..., np.array([2, 1, 0])]
     #     # Rot, Scale, T, theta= GetRTS(labelsPTS, MeanShape)
