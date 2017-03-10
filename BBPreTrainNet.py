@@ -4,10 +4,10 @@ import os
 from random import shuffle
 from PIL import Image
 # from BK.MeshNetLayer import *
-from Lib3D.MeshModel import *
-from Lib3D.Rasterization import  *
-from Lib3D.Util2D import *
-from Lib3D.Util3D import *
+#from Lib3D.MeshModel import *
+#from Lib3D.Rasterization import  *
+#from Lib3D.Util2D import *
+#from Lib3D.Util3D import *
 from keras import optimizers
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from keras.callbacks import ModelCheckpoint
@@ -116,10 +116,10 @@ import shutil
 
 
 
-BBNet = BBFullNet(weights_path='./BBNet/BBNet_V1.h5',imgW=128)
-sgdBB = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-BBNet.compile(loss={'BB_RCT':'mean_squared_error','Img_Rot':'categorical_crossentropy'}, loss_weight=[1,10],metrics=['accuracy', final_pred],optimizer=sgdBB)
-BBNet.summary()
+#BBNet = BBFullNet(weights_path='./BBNet/BBNet_V1.h5',imgW=128)
+#sgdBB = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
+#BBNet.compile(loss={'BB_RCT':'mean_squared_error','Img_Rot':'categorical_crossentropy'}, loss_weight=[1,10],metrics=['accuracy', final_pred],optimizer=sgdBB)
+#BBNet.summary()
 
 Tmp=np.loadtxt('./MeanShape.txt')
 MeanShape = Tmp[:136].reshape([68,2])
