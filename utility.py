@@ -15,8 +15,8 @@ def mirrorImage(image, X, Y):
 
 
 def rotate(image, X, Y, counter = 0):
-    if counter > 2:
-        return None, None, None
+   # if counter > 2:
+   #     return None, None, None
     originalImage = image.copy()
     (h, w, _) = image.shape
     degree = np.random.uniform(-45, 45)
@@ -31,11 +31,12 @@ def rotate(image, X, Y, counter = 0):
    
     image = cv2.warpAffine(image,M,(w, h))
 
-    if np.min(newX) < 0 or np.min(newY) < 0 or np.max(newX) > w or np.max(newY) > h:
-        image, newX, newY = rotate(originalImage, X, Y, counter + 1) 
+    #if np.min(newX) < 0 or np.min(newY) < 0 or np.max(newX) > w or np.max(newY) > h:
+    #    image, newX, newY = rotate(originalImage, X, Y, counter + 1) 
 
     newX = np.asarray(newX)
     newY = np.asarray(newY)
+    print "image: ", type(image)
     return image, newX, newY
 
 

@@ -70,6 +70,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             print type(img)
             x, y = ut.unpackLandmarks(labelsPTS)
             newImg, newX, newY = ut.rotate(img, x, y)
+	    print "newImg: ", type(newImg), newImg.shape
             cv2.imwrite('testOriginal.jpg', img)
             cv2.imwrite('testRotate.jpg', newImg)
         else:
