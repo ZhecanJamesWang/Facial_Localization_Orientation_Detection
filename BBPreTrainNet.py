@@ -81,8 +81,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
 
             cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
             cv2.imwrite('testRotate' + str(counter) + '.jpg', newImg)
-            cv2.imwrite('testOriginal' + str(counter) + '.jpg', plotOriginal)
-            cv2.imwrite('testRotate' + str(counter) + '.jpg', plotNew)
+            cv2.imwrite('plotOriginal' + str(counter) + '.jpg', plotOriginal)
+            cv2.imwrite('plotRotate' + str(counter) + '.jpg', plotNew)
             counter += 1
         else:
             print "cannot find: ", imgName
