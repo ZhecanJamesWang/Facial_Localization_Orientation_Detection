@@ -65,7 +65,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         # print labels
         # print labelsPTS
         img = cv2.imread(imgName)
-        newImg = ut.rotate(img, ut.unpackLandmarks(labelsPTS)
+        newImg = ut.rotate(img, ut.unpackLandmarks(labelsPTS))
         cv2.imwrite('testOriginal.jpg', img)
         cv2.imwrite('testRotate.jpg', newImg)
     #     im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
