@@ -165,7 +165,8 @@ def train_on_batch(nb_epoch):
         for iter in range (MaxIters):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
-            X_batch, label_BB, label_rot, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
+            DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
+            # X_batch, label_BB, label_rot, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
             print "finish iteration: ", iter
             # lossBB,tras,lossRot,tras,PredBB,tras,PredRot= BBNet.train_on_batch(X_batch,[label_BB,label_rot])
             # if iter%100==0:
