@@ -41,7 +41,7 @@ def transformBB(img,pts, type='nus68',imgW=128,RotAngle=0):
 
     return (warp_img,pts)
 
-def DataGenBB(DataStrs, BatchSize,MeanShape,train_start,train_end,imSize=128):
+def DataGenBB(DataStrs, BatchSize,MeanShape = None,train_start,train_end,imSize=128):
 
     InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
     InputLabel = np.zeros([BatchSize,4],dtype=np.float32)
@@ -59,38 +59,47 @@ def DataGenBB(DataStrs, BatchSize,MeanShape,train_start,train_end,imSize=128):
         imgName = strCells[0]
         labels = np.array(strCells[1:]).astype(np.float)
         labelsPTS=labels[:136].reshape([68,2])
+        print imgName
+        print labels
+        print labelsPTS
+    #     im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
+    #     im = im[..., np.array([2, 1, 0])]
+    #     # Rot, Scale, T, theta= GetRTS(labelsPTS, MeanShape)
+    #     # ims = Image.fromarray(im.astype(np.uint8))
+    #     # ims.save('./org.jpg')
+    #     RotAngle = (random.randint(0,2)-1)*90
+    #     imgRot, PTSRot=transformBB(im,labelsPTS,RotAngle=RotAngle)
 
-        im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
-        im = im[..., np.array([2, 1, 0])]
-        # Rot, Scale, T, theta= GetRTS(labelsPTS, MeanShape)
-        # ims = Image.fromarray(im.astype(np.uint8))
-        # ims.save('./org.jpg')
-        RotAngle = (random.randint(0,2)-1)*90
-        imgRot, PTSRot=transformBB(im,labelsPTS,RotAngle=RotAngle)
+    #     Rot, Scale, T, theta= GetRTS(PTSRot, MeanShape)
+    #     # print np.rad2deg(theta)
+    #     Dlabel=np.zeros([1,3],dtype=int);
+    #     Dlabel[0,1]=1;
+    #     if theta<np.deg2rad(-55):
+    #         Dlabel[0,2]=1
+    #         Dlabel[0,1]=0
+    #     if theta>np.deg2rad(55):
+    #         Dlabel[0,0]=1
+    #         Dlabel[0,1]=0
+    #     mins = np.min(PTSRot,axis=0)
+    #     maxs = np.max(PTSRot,axis=0)
 
-        Rot, Scale, T, theta= GetRTS(PTSRot, MeanShape)
-        # print np.rad2deg(theta)
-        Dlabel=np.zeros([1,3],dtype=int);
-        Dlabel[0,1]=1;
-        if theta<np.deg2rad(-55):
-            Dlabel[0,2]=1
-            Dlabel[0,1]=0
-        if theta>np.deg2rad(55):
-            Dlabel[0,0]=1
-            Dlabel[0,1]=0
-        mins = np.min(PTSRot,axis=0)
-        maxs = np.max(PTSRot,axis=0)
+    #     InputData[count,...]=imgRot.copy()
+    #     InputLabel[count,...]=np.array([mins[0],mins[1],maxs[0],maxs[1]])
 
-        InputData[count,...]=imgRot.copy()
-        InputLabel[count,...]=np.array([mins[0],mins[1],maxs[0],maxs[1]])
+    #     InputRot[count,...]=Dlabel
+    #     InputNames.append(imgName)
+    #     count+=1
+    #     # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
+    #     # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
+    #     # imgDraw.save('./tmp.jpg')
+    # return InputData,InputLabel,InputRot,InputNames
 
-        InputRot[count,...]=Dlabel
-        InputNames.append(imgName)
-        count+=1
-        # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
-        # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
-        # imgDraw.save('./tmp.jpg')
-    return InputData,InputLabel,InputRot,InputNames
+
+
+
+
+
+
 
 # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
 TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
@@ -121,9 +130,9 @@ import shutil
 #BBNet.compile(loss={'BB_RCT':'mean_squared_error','Img_Rot':'categorical_crossentropy'}, loss_weight=[1,10],metrics=['accuracy', final_pred],optimizer=sgdBB)
 #BBNet.summary()
 
-Tmp=np.loadtxt('./MeanShape.txt')
-MeanShape = Tmp[:136].reshape([68,2])
-
+# Tmp=np.loadtxt('./MeanShape.txt')
+# MeanShape = Tmp[:136].reshape([68,2])
+MeanShape = None
 
 
 
