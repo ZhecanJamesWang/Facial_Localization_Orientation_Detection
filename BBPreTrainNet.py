@@ -132,7 +132,7 @@ import shutil
 
 # Tmp=np.loadtxt('./MeanShape.txt')
 # MeanShape = Tmp[:136].reshape([68,2])
-MeanShape = None
+# MeanShape = None
 
 
 
@@ -163,7 +163,7 @@ def train_on_batch(nb_epoch):
         for iter in range (MaxIters):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
-            X_batch, label_BB, label_rot, Z_Names = DataGenBB(DataTr,batch_size,MeanShape=MeanShape,train_start=train_start, train_end=train_end,imSize=128)
+            X_batch, label_BB, label_rot, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
             # lossBB,tras,lossRot,tras,PredBB,tras,PredRot= BBNet.train_on_batch(X_batch,[label_BB,label_rot])
             # if iter%100==0:
             #     print 'iter ', iter,'Traing loss: ', lossBB, lossRot
