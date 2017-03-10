@@ -60,7 +60,7 @@ def contrastBrightess(image, X, Y):
     Y = np.asarray(Y)
     return image, X, Y
 
-def plotLandmarks(img, X, Y, name, ymax = 50, xmax = 50, ifRescale = False, ifReturn = False):
+def plotLandmarks(img, X, Y, name = None, ymax = 50, xmax = 50, ifRescale = False, ifReturn = False):
     # plot landmarks on original image
     assert len(X) == len(Y)      
     for index in range(len(X)):
