@@ -59,8 +59,7 @@ def contrastBrightess(image, X, Y):
     Y = np.asarray(Y)
     return image, X, Y
 
-
-def plotLandmarks(img, X, Y, name, ymax = 50, xmax = 50, ifRescale = False):
+def plotLandmarks(img, X, Y, name, ymax = 50, xmax = 50, ifRescale = False, ifReturn = False):
     # plot landmarks on original image
     assert len(X) == len(Y)      
     for index in range(len(X)):
@@ -68,7 +67,10 @@ def plotLandmarks(img, X, Y, name, ymax = 50, xmax = 50, ifRescale = False):
             cv2.circle(img,(int(X[index]*xmax), int(Y[index]*ymax)), 1, (0,0,255), -1)
         else:
             cv2.circle(img,(int(X[index]), int(Y[index])), 2, (0,0,255), -1)
-    cv2.imshow(name,img)
+    if ifReturn:
+        return img
+    else:
+        cv2.imshow(name,img)
 
 def resize(image, X, Y, random = False, size = (50, 50)):
     originalImage = image

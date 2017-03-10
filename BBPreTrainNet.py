@@ -54,7 +54,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
     # for Mi in range(MaxIters):
         # train_start = BatchSize*Mi
         # train_end = train_start+BatchSize
-    count = 0
+    counter = 0
     for i in range(train_start,train_end):
         strLine = DataStrs[i]
         strCells = strLine.rstrip(' \n').split(' ')
@@ -69,9 +69,15 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             print img
             print type(img)
             x, y = ut.unpackLandmarks(labelsPTS)
+            plotOriginal = plotLandmarks(img, x, y, ifReturn = True)
             newImg, newX, newY = ut.rotate(img, x, y)
-            cv2.imwrite('testOriginal.jpg', img)
-            cv2.imwrite('testRotate.jpg', newImg)
+            plotNew = plotLandmarks(newImg, newX, newY, ifReturn = True)
+
+            cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
+            cv2.imwrite('testRotate' + str(counter) + '.jpg', newImg)
+            cv2.imwrite('testOriginal' + str(counter) + '.jpg', plotOriginal)
+            cv2.imwrite('testRotate' + str(counter) + '.jpg', plotNew)
+            counter += 1
         else:
             print "cannot find: ", imgName
 
