@@ -62,6 +62,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         print imgName
         print labels
         print labelsPTS
+        img = cv2.imread(imgName）
+        cv2.imsave('test.jpg', img)
     #     im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
     #     im = im[..., np.array([2, 1, 0])]
     #     # Rot, Scale, T, theta= GetRTS(labelsPTS, MeanShape)
@@ -164,6 +166,7 @@ def train_on_batch(nb_epoch):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
             X_batch, label_BB, label_rot, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
+            print "finish iteration: ", iter
             # lossBB,tras,lossRot,tras,PredBB,tras,PredRot= BBNet.train_on_batch(X_batch,[label_BB,label_rot])
             # if iter%100==0:
             #     print 'iter ', iter,'Traing loss: ', lossBB, lossRot
