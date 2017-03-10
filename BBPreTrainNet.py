@@ -69,9 +69,9 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             print img
             print type(img)
             x, y = ut.unpackLandmarks(labelsPTS)
-            plotOriginal = plotLandmarks(img, x, y, ifReturn = True)
+            plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
             newImg, newX, newY = ut.rotate(img, x, y)
-            plotNew = plotLandmarks(newImg, newX, newY, ifReturn = True)
+            plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
             cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
             cv2.imwrite('testRotate' + str(counter) + '.jpg', newImg)
