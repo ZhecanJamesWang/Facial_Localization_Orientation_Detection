@@ -162,9 +162,9 @@ def packLandmarks(X, Y):
 def unpackLandmarks(array):
     x = []
     y = []
-    for i in range(0, len(array), 2):
-        x.append(array[i])
-        y.append(array[i + 1])
+    for i in range(0, len(array)):
+        x.append(array[i][0])
+        y.append(array[i][1])
     return x, y
 
 def test():
