@@ -63,7 +63,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         print labels
         print labelsPTS
         img = cv2.imread(imgName)
-        cv2.imsave('test.jpg', img)
+        cv2.imwrite('test.jpg', img)
     #     im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
     #     im = im[..., np.array([2, 1, 0])]
     #     # Rot, Scale, T, theta= GetRTS(labelsPTS, MeanShape)
