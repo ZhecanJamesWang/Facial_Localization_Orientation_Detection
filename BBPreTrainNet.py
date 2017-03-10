@@ -41,7 +41,7 @@ def transformBB(img,pts, type='nus68',imgW=128,RotAngle=0):
 
     return (warp_img,pts)
 
-def DataGenBB(DataStrs, BatchSize,MeanShape = None,train_start,train_end,imSize=128):
+def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
 
     InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
     InputLabel = np.zeros([BatchSize,4],dtype=np.float32)
