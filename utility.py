@@ -4,7 +4,6 @@ import numpy as np
 from PIL import Image, ImageChops
 from pylab import array, uint8 
 
-def 
 
 def mirrorImage(image, X, Y):
     (h, w, _) = image.shape
