@@ -62,33 +62,21 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         labels = np.array(strCells[1:]).astype(np.float)
         labelsPTS=labels[:136].reshape([68,2])
         print imgName
-        # print labels
-        # print labelsPTS
         img = cv2.imread(imgName)
         if img != None:
-            # print img.shape
-            # print img
-            # print type(img)
-            # print labelsPTS[:10]
             x, y = ut.unpackLandmarks(labelsPTS)
-            # print "x: ", x[:10]
-       	    # print "y: ", y[:10]
 
             rotateImg, rotateX, rotateY = ut.rotate(img, x, y)
             print "rotateX[:10]: ", rotateX[:10]
-
             # resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True)
-
-            # print "newX: ", type(newX)
-            # print newX[:10]
-            # print "newY: ", type(newY)
             # plotOriginal = ut.plotLandmarks(img, x, y, ifRescale = True, ifReturn = True)
-            plotRotate = ut.plotLandmarks(rotateImg, rotateX, rotateY, ifRescale = True, ifReturn = True)
+            plotRotate = ut.plotLandmarks(rotateImg, rotateX, rotateY, ifReturn = True)
+            # plotRotate = ut.plotLandmarks(rotateImg, rotateX, rotateY, ifRescale = True, ifReturn = True)
             # plotResize = ut.plotLandmarks(resizeImg, resizeX, resizeY, ifRescale = True, ifReturn = True)
 
             cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
             cv2.imwrite('testRotate' + str(counter) + '.jpg', rotateImg)
-            # cv2.imwrite('testRotate' + str(counter) + '.jpg', resizeImg)
+            # cv2.imwrite('testResize' + str(counter) + '.jpg', resizeImg)
             
             # cv2.imwrite('plotOriginal' + str(counter) + '.jpg', plotOriginal)
             cv2.imwrite('plotRotate' + str(counter) + '.jpg', plotRotate)
