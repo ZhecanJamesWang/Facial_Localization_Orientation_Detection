@@ -67,9 +67,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             x, y = ut.unpackLandmarks(labelsPTS)
 
             rotateImg, rotateX, rotateY = ut.rotate(img, x, y)
-            print "rotateX[:10]: ", rotateX[:10]
-            # resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True)
-            plotOriginal = ut.plotLandmarks(img, x, y, ifRescale = True, ifReturn = True)
+            resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True)
+            plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
             plotRotate = ut.plotLandmarks(rotateImg, rotateX, rotateY, ifReturn = True)
             plotResize = ut.plotLandmarks(resizeImg, resizeX, resizeY, ifReturn = True)
 
