@@ -75,7 +75,9 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
        	    # print "y: ", y[:10]
 
             rotateImg, rotateX, rotateY = ut.rotate(img, x, y)
-            resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True)
+            print "rotateX[:10]: ", rotateX[:10]
+
+            # resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True)
 
             # print "newX: ", type(newX)
             # print newX[:10]
@@ -93,6 +95,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             # cv2.imwrite('plotResize' + str(counter) + '.jpg', plotResize)
 
             counter += 1
+            raise "debug"
         else:
             print "cannot find: ", imgName
 
