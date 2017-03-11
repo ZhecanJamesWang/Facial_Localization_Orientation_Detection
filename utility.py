@@ -165,8 +165,8 @@ def unpackLandmarks(array):
     x = []
     y = []
     for i in range(0, len(array)):
-        x.append(array[i][0])
-        y.append(array[i][1])
+        x.append((array[i][0] + 0.5) * 256)
+        y.append((array[i][1] + 0.5) * 256)
     return x, y
 
 def test():
