@@ -75,7 +75,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
        	    # print "y: ", y[:10]
 
             rotateImg, rotateX, rotateY = ut.rotate(img, x, y)
-            resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True):
+            resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True)
 
             # print "newX: ", type(newX)
             # print newX[:10]
