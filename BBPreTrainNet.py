@@ -66,14 +66,14 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         # print labelsPTS
         img = cv2.imread(imgName)
         if img != None:
-            print img
-            print type(img)
-            print labelsPTS[:10]
+            # print img
+            # print type(img)
+            # print labelsPTS[:10]
             x, y = ut.unpackLandmarks(labelsPTS)
-            print "x: ", x[:10]
-       	    print "y: ", y[:10]
-            
-            plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
+            # print "x: ", x[:10]
+       	    # print "y: ", y[:10]
+
+            plotOriginal = ut.plotLandmarks(img, x, y, ifRescale = True, ifReturn = True)
             # newImg, newX, newY = ut.rotate(img, x, y)
             # print "newX: ", type(newX)
             # print newX[:10]
