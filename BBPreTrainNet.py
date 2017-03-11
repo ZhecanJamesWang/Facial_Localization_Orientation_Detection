@@ -68,21 +68,22 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         if img != None:
             print img
             print type(img)
+            print labelsPTS[:10]
             x, y = ut.unpackLandmarks(labelsPTS)
-            print "x: ", type(x)
-            print x[:10]
-   	    print "y: ", type(y)
+            print "x: ", x[:10]
+       	    print "y: ", y[:10]
+            
             plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
-            newImg, newX, newY = ut.rotate(img, x, y)
-            print "newX: ", type(newX)
-            print newX[:10]
-            print "newY: ", type(newY)
-            plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
+            # newImg, newX, newY = ut.rotate(img, x, y)
+            # print "newX: ", type(newX)
+            # print newX[:10]
+            # print "newY: ", type(newY)
+            # plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
             cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
-            cv2.imwrite('testRotate' + str(counter) + '.jpg', newImg)
+            # cv2.imwrite('testRotate' + str(counter) + '.jpg', newImg)
             cv2.imwrite('plotOriginal' + str(counter) + '.jpg', plotOriginal)
-            cv2.imwrite('plotRotate' + str(counter) + '.jpg', plotNew)
+            # cv2.imwrite('plotRotate' + str(counter) + '.jpg', plotNew)
             counter += 1
         else:
             print "cannot find: ", imgName
