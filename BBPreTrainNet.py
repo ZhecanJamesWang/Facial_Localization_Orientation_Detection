@@ -83,7 +83,6 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             # cv2.imwrite('plotResize' + str(counter) + '.jpg', plotResize)
 
             counter += 1
-            raise "debug"
         else:
             print "cannot find: ", imgName
 
