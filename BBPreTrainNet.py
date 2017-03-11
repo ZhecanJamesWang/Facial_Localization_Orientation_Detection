@@ -74,17 +74,24 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             # print "x: ", x[:10]
        	    # print "y: ", y[:10]
 
-            plotOriginal = ut.plotLandmarks(img, x, y, ifRescale = True, ifReturn = True)
-            newImg, newX, newY = ut.rotate(img, x, y)
+            rotateImg, rotateX, rotateY = ut.rotate(img, x, y)
+            resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True):
+
             # print "newX: ", type(newX)
             # print newX[:10]
             # print "newY: ", type(newY)
-            plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
+            plotOriginal = ut.plotLandmarks(img, x, y, ifRescale = True, ifReturn = True)
+            plotRotate = ut.plotLandmarks(rotateImg, rotateX, rotateY, ifReturn = True)
+            plotResize = ut.plotLandmarks(resizeImg, resizeX, resizeY, ifReturn = True)
 
-            cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
-            cv2.imwrite('testRotate' + str(counter) + '.jpg', newImg)
+            # cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
+            # cv2.imwrite('testRotate' + str(counter) + '.jpg', rotateImg)
+            # cv2.imwrite('testRotate' + str(counter) + '.jpg', resizeImg)
+            
             cv2.imwrite('plotOriginal' + str(counter) + '.jpg', plotOriginal)
-            cv2.imwrite('plotRotate' + str(counter) + '.jpg', plotNew)
+            cv2.imwrite('plotRotate' + str(counter) + '.jpg', plotRotate)
+            cv2.imwrite('plotResize' + str(counter) + '.jpg', plotResize)
+
             counter += 1
         else:
             print "cannot find: ", imgName

@@ -77,7 +77,7 @@ def plotLandmarks(img, X, Y, name = None, ifRescale = False, ifReturn = False):
     else:
         cv2.imshow(name,img)
 
-def resize(image, X, Y, random = False, size = (50, 50)):
+def resize(image, X, Y, random = False):
     originalImage = image
     # resize imgage to determined size maintaing the original ratio
     (yMaxBound, xMaxBound, _) = image.shape
