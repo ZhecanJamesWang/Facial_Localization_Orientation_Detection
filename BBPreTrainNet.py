@@ -65,8 +65,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         # print labels
         # print labelsPTS
         img = cv2.imread(imgName)
-        print img.shape
         if img != None:
+            print img.shape
             # print img
             # print type(img)
             # print labelsPTS[:10]
