@@ -216,7 +216,7 @@ def train_on_batch(nb_epoch):
                 # RotScore = PredRot[0,:]
                 # RotType=np.where(RotScore==np.max(RotScore))[0]
                 # img2Draw.save('./BBNet/Train_tmp_%d_%d.jpg'%(RotType,np.where(label_rot[0,:]==1)[0]))
-                print label_rot[0,...], label_rot_T[0,...]
+                # print label_rot[0,...], label_rot_T[0,...]
 
             # if iter%2000==0:
             #     BBNet.save('./BBNet/BBNet_V1.h5')
