@@ -184,7 +184,10 @@ def train_on_batch(nb_epoch):
                 print "Z_Names.shape: ", Z_Names.shape
                 print "finish iteration: ", iter
 
-            lossBB, tras, PredBB = model.train_on_batch(X_batch,label_BB)
+            print model.train_on_batch(X_batch,label_BB)
+            print type(model.train_on_batch(X_batch,label_BB))
+            
+            # lossBB, tras, PredBB = model.train_on_batch(X_batch,label_BB)
             # model.train_on_batch(X_batch,label_BB)
             
 
