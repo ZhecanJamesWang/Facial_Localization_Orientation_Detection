@@ -197,7 +197,7 @@ def train_on_batch(nb_epoch):
 
                 print 'iter ', iter,'Testing loss: ', loss
                 iterTest+=batch_size
-                iterTest%=MaxTestIters
+                # iterTest%=MaxTestIters
 
                 # img = X_batch_T[0,...]
                 # img2Draw=Image.fromarray(img.astype(np.uint8))
