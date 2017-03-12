@@ -88,18 +88,21 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
                 cv2.imwrite('plotNew' + str(counter) + '.jpg', plotNew)
 
             counter += 1
+            
+            newPTS = np.asarray(ut.packLandmarks(newX, newY))
+            print "newPTS: ", newPTS.shape
+
+            print min(newX)
+            print min(newY)
+            print max(newX)
+            print max(newY)
+
+            raise "debug"
+
         else:
             print "cannot find: ", imgName
 
-        newPTS = np.asarray(ut.packLandmarks(newX, newY))
-        print "newPTS: ", newPTS.shape
 
-        print min(newX)
-        print min(newY)
-        print max(newX)
-        print max(newY)
-
-        raise "debug"
         # mins = np.min(PTSRot,axis=0)
         # maxs = np.max(PTSRot,axis=0)
 
