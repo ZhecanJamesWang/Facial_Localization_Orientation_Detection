@@ -44,9 +44,9 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         if debug:
             print "imgName: ", imgName
         img = cv2.imread(imgName)
-        (w, h, _) = img.shape
 
         if img != None:
+            (w, h, _) = img.shape
             x, y = ut.unpackLandmarks(labelsPTS)
             tag = random.choice(generateFunc)
 
