@@ -86,28 +86,28 @@ def VGG16(include_top=True, weights='imagenet',
         ValueError: in case of invalid argument for `weights`,
             or invalid input shape.
     """
-    if weights not in {'imagenet', None}:
-        raise ValueError('The `weights` argument should be either '
-                         '`None` (random initialization) or `imagenet` '
-                         '(pre-training on ImageNet).')
+    # if weights not in {'imagenet', None}:
+    #     raise ValueError('The `weights` argument should be either '
+    #                      '`None` (random initialization) or `imagenet` '
+    #                      '(pre-training on ImageNet).')
 
-    if weights == 'imagenet' and include_top and classes != 1000:
-        raise ValueError('If using `weights` as imagenet with `include_top`'
-                         ' as true, `classes` should be 1000')
-    # Determine proper input shape
-    input_shape = _obtain_input_shape(input_shape,
-                                      default_size=224,
-                                      min_size=48,
-                                      data_format=K.image_data_format(),
-                                      include_top=include_top)
+    # if weights == 'imagenet' and include_top and classes != 1000:
+    #     raise ValueError('If using `weights` as imagenet with `include_top`'
+    #                      ' as true, `classes` should be 1000')
+    # # Determine proper input shape
+    # input_shape = _obtain_input_shape(input_shape,
+    #                                   default_size=224,
+    #                                   min_size=48,
+    #                                   data_format=K.image_data_format(),
+    #                                   include_top=include_top)
 
-    if input_tensor is None:
-        img_input = Input(shape=input_shape)
-    else:
-        if not K.is_keras_tensor(input_tensor):
-            img_input = Input(tensor=input_tensor, shape=input_shape)
-        else:
-            img_input = input_tensor
+    # if input_tensor is None:
+    #     img_input = Input(shape=input_shape)
+    # else:
+    #     if not K.is_keras_tensor(input_tensor):
+    #         img_input = Input(tensor=input_tensor, shape=input_shape)
+    #     else:
+    #         img_input = input_tensor
     # Block 1
     x = Conv2D(16, (4, 4), activation='relu', padding='same', name='block1_conv1')(img_input)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
