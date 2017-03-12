@@ -15,8 +15,8 @@ import utility as ut
 import random
 from keras import callbacks
 import shutil
-# import model
-import vgg16Modified as model
+# import model as m
+import vgg16Modified as m
 
 
 debug = False
@@ -146,7 +146,7 @@ TrNum = len(DataTr)
 MaxIters = TrNum/batch_size
 # MaxTestIters = TeNum/batch_size
 
-model = model.model(input_shape=(256, 256, 3))
+model = m.model(input_shape=(256, 256, 3))
 sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd)
 model.summary()
