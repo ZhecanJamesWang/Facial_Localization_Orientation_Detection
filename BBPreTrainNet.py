@@ -54,7 +54,6 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
 
     print "InputData.shape: ", InputData.shape
     print "InputLabel.shape: ", InputLabel.shape
-    print "InputRot.shape: ", InputRot.shape
 
     InputNames = []
     counter = 0
