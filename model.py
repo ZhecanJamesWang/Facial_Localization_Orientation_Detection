@@ -6,6 +6,7 @@ import cv2, numpy as np
 
 def model(weights_path=None):
     model = Sequential()
+    model.add(input_shape=(3, 256, 256))
     model.add(Convolution2D(16, 4, 4, activation='relu'))
     model.add(MaxPooling2D((2,2), strides=(2,2)))
 
