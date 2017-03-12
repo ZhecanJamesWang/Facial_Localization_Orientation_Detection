@@ -76,8 +76,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             yMin = min(newY) if min(newY) >= 0 else 0
             xMax = max(newX) if max(newX) <= w else w
             yMax = max(newY) if max(newY) <= h else h
-            xMean = mean(newX) if mean(newX) > 0 and mean(newX) < w else None
-            yMean = mean(newY) if mean(newY) > 0 and mean(newY) < h else None
+            xMean = np.mean(newX) if np.mean(newX) > 0 and np.mean(newX) < w else None
+            yMean = np.mean(newY) if np.mean(newY) > 0 and np.mean(newY) < h else None
             edge = max(yMax - yMin, xMax - xMin)
             
             InputData[count,...] = newImg
