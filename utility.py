@@ -14,7 +14,7 @@ def mirrorImage(image, X, Y):
     return image, X.astype(int), Y.astype(int)
 
 
-def rotate(image, X, Y, h = None. w = None, counter = 0, random = None):
+def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
    # if counter > 2:
    #     return None, None, None
     originalImage = image.copy()
