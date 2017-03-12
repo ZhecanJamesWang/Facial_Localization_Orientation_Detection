@@ -15,6 +15,7 @@ import utility as ut
 import random
 from keras import callbacks
 import shutil
+from vgg16 import VGG16
 
 debug = False
 
