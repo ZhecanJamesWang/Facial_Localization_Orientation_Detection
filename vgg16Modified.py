@@ -129,7 +129,8 @@ def model(input_shape=None):
     x = Dense(234, activation='relu', name='fc2')(x)
     x = Dense(7, name='predLabel')(x)
 
-
+    model = Model(img_input, x, name='customizedModel')
+    
     return model
 
 

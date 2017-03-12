@@ -147,6 +147,8 @@ MaxIters = TrNum/batch_size
 # MaxTestIters = TeNum/batch_size
 
 model = m.model(input_shape=(256, 256, 3))
+model = Model(inputs, x, name='vgg19')
+
 sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd)
 model.summary()
