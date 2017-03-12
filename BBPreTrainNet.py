@@ -184,7 +184,7 @@ def train_on_batch(nb_epoch):
                 print "Z_Names.shape: ", Z_Names.shape
                 print "finish iteration: ", iter
 
-            lossBB,tras,lossRot,tras,PredBB,tras,PredRot= model.train_on_batch(X_batch,[label_BB,label_rot])
+            lossBB,tras,lossRot,tras,PredBB,tras,PredRot= model.train_on_batch(X_batch,label_BB)
             
 
             if iter%100==0:
