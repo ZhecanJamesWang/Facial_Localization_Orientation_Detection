@@ -184,7 +184,7 @@ def train_on_batch(nb_epoch):
                 print "Z_Names.shape: ", Z_Names.shape
                 print "finish iteration: ", iter
 
-            lossBB,tras,lossRot,tras,PredBB,tras,PredRot, _, _ = model.train_on_batch(X_batch,label_BB)
+            lossBB,tras,lossRot,tras,PredBB = model.train_on_batch(X_batch,label_BB)
             # model.train_on_batch(X_batch,label_BB)
             
 
@@ -195,7 +195,7 @@ def train_on_batch(nb_epoch):
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, MeanShape=MeanShape,
                                                                   train_start=test_start, train_end=test_end,
                                                                   imSize=128)
-                lossBBT, tras, lossRotT,tras, PredBBT, tras, PredRotT, _, _ = model.evaluate(X_batch_T,label_BB_T)
+                lossBBT, tras, lossRotT,tras, PredBBT = model.evaluate(X_batch_T,label_BB_T)
                 # model.evaluate(X_batch_T,label_BB_T)
 
 
