@@ -144,7 +144,7 @@ MaxIters = TrNum/batch_size
 
 
 
-model = model.VGG16(include_top=True)
+model = model.model()
 sgdBB = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
 model.compile(loss={'BB_RCT':'mean_squared_error','Img_Rot':'categorical_crossentropy'}, loss_weight=[1,10],metrics=['accuracy', final_pred],optimizer=sgdBB)
 model.summary()
