@@ -22,7 +22,7 @@ def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
     return y_pred
 
-def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
+def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
 
     generateFunc = ["rotate", "resize"]
 
@@ -155,7 +155,7 @@ def train_on_batch(nb_epoch):
         for iter in range (MaxIters):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
-            X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
+            X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 256)
             print "X_batch.shape: ", X_batch.shape
             print "label_BB.shape: ", label_BB.shape
             print "Z_Names.shape: ", Z_Names.shape
