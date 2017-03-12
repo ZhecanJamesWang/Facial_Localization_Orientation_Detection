@@ -96,7 +96,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
         # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
         # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
         # imgDraw.save('./tmp.jpg')
-    return InputData, InputLabel, InputNames
+    return InputData, InputLabel, np.asarray(InputNames)
 
 
 
@@ -133,8 +133,6 @@ DataTr = FTr.readlines()
 # Tmp=np.loadtxt('./MeanShape.txt')
 # MeanShape = Tmp[:136].reshape([68,2])
 # MeanShape = None
-
-
 # TrData,TrLabel=load_train_data(DataTr,0,5,5)
 
 batch_size=16
@@ -143,8 +141,25 @@ TrNum = len(DataTr)
 MaxIters = TrNum/batch_size
 # MaxTestIters = TeNum/batch_size
 
-SamplePerEpoch=len(DataTr)/100
-NumEpoch = 200;
+
+
+model = VGG16(include_top=True)
+sgdBB = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
+model.compile(loss={'BB_RCT':'mean_squared_error','Img_Rot':'categorical_crossentropy'}, loss_weight=[1,10],metrics=['accuracy', final_pred],optimizer=sgdBB)
+model.summary()
+
+# model.compile(loss='categorical_crossentropy',
+#               optimizer='adadelta',
+#               metrics=['accuracy'])
+# model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
+#           verbose=1, validation_data=(X_test, Y_test))
+# score = model.evaluate(X_test, Y_test, verbose=0)
+# print('Test score:', score[0])
+# print('Test accuracy:', score[1])
+
+
+# preds = model.predict(x)
+# print('Predicted:', decode_predictions(preds))
 
 
 def train_on_batch(nb_epoch):
@@ -156,45 +171,51 @@ def train_on_batch(nb_epoch):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
             X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 256)
-            print "X_batch.shape: ", X_batch.shape
-            print "label_BB.shape: ", label_BB.shape
-            print "Z_Names.shape: ", Z_Names.shape
+
+            if debug:
+                print "X_batch.shape: ", X_batch.shape
+                print "label_BB.shape: ", label_BB.shape
+                print "Z_Names.shape: ", Z_Names.shape
+                print "finish iteration: ", iter
+
+            lossBB,tras,lossRot,tras,PredBB,tras,PredRot= model.train_on_batch(X_batch,[label_BB,label_rot])
+            
+
+            if iter%100==0:
+                print 'iter ', iter,'Traing loss: ', lossBB, lossRot
+                test_start = iterTest * batch_size
+                test_end = (iterTest + 1) * batch_size
+                X_batch_T, label_BB_T, label_rot_T, Z_Names_T= DataGenBB(DataTe, batch_size, MeanShape=MeanShape,
+                                                                  train_start=test_start, train_end=test_end,
+                                                                  imSize=128)
+                lossBBT, tras, lossRotT,tras, PredBBT, tras, PredRotT = model.evaluate(X_batch_T,[label_BB_T,label_rot_T])
 
 
-            print "finish iteration: ", iter
-            # lossBB,tras,lossRot,tras,PredBB,tras,PredRot= BBNet.train_on_batch(X_batch,[label_BB,label_rot])
-            # if iter%100==0:
-            #     print 'iter ', iter,'Traing loss: ', lossBB, lossRot
-            #     test_start = iterTest * batch_size
-            #     test_end = (iterTest + 1) * batch_size
-            #     X_batch_T, label_BB_T, label_rot_T, Z_Names_T= DataGenBB(DataTe, batch_size, MeanShape=MeanShape,
-            #                                                       train_start=test_start, train_end=test_end,
-            #                                                       imSize=128)
-            #     lossBBT, tras, lossRotT,tras, PredBBT, tras, PredRotT = BBNet.evaluate(X_batch_T,[label_BB_T,label_rot_T])
-            #     print 'iter ', iter,'Testing loss: ', lossBBT, lossRotT
-            #     iterTest+=batch_size
-            #     iterTest%=MaxTestIters
+                print 'iter ', iter,'Testing loss: ', lossBBT, lossRotT
+                iterTest+=batch_size
+                iterTest%=MaxTestIters
 
-            #     img = X_batch_T[0,...]
-            #     img2Draw=Image.fromarray(img.astype(np.uint8))
-            #     imDraw=ImageDraw.Draw(img2Draw)
-            #     PD2D = PredBBT[0,:]*128+64
-            #     imDraw.rectangle([(PD2D[0], PD2D[1]), (PD2D[2], PD2D[3])], fill=None, outline='red')
-            #     RotScore = PredRotT[0,:]
-            #     RotType=np.where(RotScore==np.max(RotScore))[0]
-            #     img2Draw.save('./BBNet/Test_tmp_%d_%d.jpg' % (RotType, np.where(label_rot_T[0, :] == 1)[0]))
+                # img = X_batch_T[0,...]
+                # img2Draw=Image.fromarray(img.astype(np.uint8))
+                # imDraw=ImageDraw.Draw(img2Draw)
+                # PD2D = PredBBT[0,:]*128+64
+                # imDraw.rectangle([(PD2D[0], PD2D[1]), (PD2D[2], PD2D[3])], fill=None, outline='red')
+                # RotScore = PredRotT[0,:]
+                # RotType=np.where(RotScore==np.max(RotScore))[0]
+                # img2Draw.save('./BBNet/Test_tmp_%d_%d.jpg' % (RotType, np.where(label_rot_T[0, :] == 1)[0]))
 
-            #     img = X_batch[0,...]
-            #     img2Draw=Image.fromarray(img.astype(np.uint8))
-            #     imDraw=ImageDraw.Draw(img2Draw)
-            #     PD2D = PredBB[0,:]*128+64
-            #     imDraw.rectangle([(PD2D[0], PD2D[1]), (PD2D[2], PD2D[3])], fill=None, outline='red')
-            #     RotScore = PredRot[0,:]
-            #     RotType=np.where(RotScore==np.max(RotScore))[0]
-            #     img2Draw.save('./BBNet/Train_tmp_%d_%d.jpg'%(RotType,np.where(label_rot[0,:]==1)[0]))
-            #     print label_rot[0,...], label_rot_T[0,...]
-            # if iter%2000==0:
-            #     BBNet.save('./BBNet/BBNet_V1.h5')
+                # img = X_batch[0,...]
+                # img2Draw=Image.fromarray(img.astype(np.uint8))
+                # imDraw=ImageDraw.Draw(img2Draw)
+                # PD2D = PredBB[0,:]*128+64
+                # imDraw.rectangle([(PD2D[0], PD2D[1]), (PD2D[2], PD2D[3])], fill=None, outline='red')
+                # RotScore = PredRot[0,:]
+                # RotType=np.where(RotScore==np.max(RotScore))[0]
+                # img2Draw.save('./BBNet/Train_tmp_%d_%d.jpg'%(RotType,np.where(label_rot[0,:]==1)[0]))
+                print label_rot[0,...], label_rot_T[0,...]
+
+            if iter%2000==0:
+                BBNet.save('./BBNet/BBNet_V1.h5')
 
 # sgdBB = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9)
 # train_on_batch(2)
