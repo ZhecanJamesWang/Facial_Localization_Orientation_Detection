@@ -12,7 +12,9 @@ from keras import optimizers
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from keras.callbacks import ModelCheckpoint
 import utility as ut
+import random
 
+debug = False
 
 def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
@@ -45,21 +47,16 @@ def transformBB(img,pts, type='nus68',imgW=128,RotAngle=0):
 
 def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
 
-    InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
-    InputLabel = np.zeros([BatchSize,4],dtype=np.float32)
-    InputRot = np.zeros([BatchSize,3],dtype=np.float32)
+    generateFunc = ["rotate", "resize"]
 
+    InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
+    InputLabel = np.zeros([BatchSize,7],dtype=np.float32)
 
     print "InputData.shape: ", InputData.shape
     print "InputLabel.shape: ", InputLabel.shape
     print "InputRot.shape: ", InputRot.shape
 
-    # shuffle(DataStrs)
     InputNames = []
-    # MaxIters = len(DataStrs) / BatchSize
-    # for Mi in range(MaxIters):
-        # train_start = BatchSize*Mi
-        # train_end = train_start+BatchSize
     counter = 0
     for i in range(train_start,train_end):
         strLine = DataStrs[i]
@@ -67,60 +64,58 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         imgName = strCells[0]
         labels = np.array(strCells[1:]).astype(np.float)
         labelsPTS=labels[:136].reshape([68,2])
-        print imgName
+
+        if debug:
+            print "imgName: ", imgName
         img = cv2.imread(imgName)
         if img != None:
             x, y = ut.unpackLandmarks(labelsPTS)
+            tag = random.choice(generateFunc)
 
-            rotateImg, rotateX, rotateY = ut.rotate(img, x, y)
-            resizeImg, resizeX, resizeY = ut.resize(img, x, y, random = True)
-            plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
-            plotRotate = ut.plotLandmarks(rotateImg, rotateX, rotateY, ifReturn = True)
-            plotResize = ut.plotLandmarks(resizeImg, resizeX, resizeY, ifReturn = True)
+            if tag == "rotate":
+                newImg, newX, newY = ut.rotate(img, x, y)
+            elif tag = "resize":
+                newImg, newX, newY = t.resize(img, x, y, random = True)
+            else:
+                raise "not existing function"
 
-            cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
-            cv2.imwrite('testRotate' + str(counter) + '.jpg', rotateImg)
-            cv2.imwrite('testResize' + str(counter) + '.jpg', resizeImg)
-            
-            cv2.imwrite('plotOriginal' + str(counter) + '.jpg', plotOriginal)
-            cv2.imwrite('plotRotate' + str(counter) + '.jpg', plotRotate)
-            cv2.imwrite('plotResize' + str(counter) + '.jpg', plotResize)
+            if debug:
+                plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
+                plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
+
+                cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
+                cv2.imwrite('testNew' + str(counter) + '.jpg', newImg)        
+                cv2.imwrite('plotOriginal' + str(counter) + '.jpg', plotOriginal)
+                cv2.imwrite('plotNew' + str(counter) + '.jpg', plotNew)
 
             counter += 1
         else:
             print "cannot find: ", imgName
 
-    #     im = cv2.resize(cv2.imread(imgName), (imSize, imSize)).astype(np.float32)
-    #     im = im[..., np.array([2, 1, 0])]
-    #     # Rot, Scale, T, theta= GetRTS(labelsPTS, MeanShape)
-    #     # ims = Image.fromarray(im.astype(np.uint8))
-    #     # ims.save('./org.jpg')
-    #     RotAngle = (random.randint(0,2)-1)*90
-    #     imgRot, PTSRot=transformBB(im,labelsPTS,RotAngle=RotAngle)
+        newPTS = np.asarray(ut.packLandmarks(newX, newY))
+        print "newPTS: ", newPTS.shape
 
-    #     Rot, Scale, T, theta= GetRTS(PTSRot, MeanShape)
-    #     # print np.rad2deg(theta)
-    #     Dlabel=np.zeros([1,3],dtype=int);
-    #     Dlabel[0,1]=1;
-    #     if theta<np.deg2rad(-55):
-    #         Dlabel[0,2]=1
-    #         Dlabel[0,1]=0
-    #     if theta>np.deg2rad(55):
-    #         Dlabel[0,0]=1
-    #         Dlabel[0,1]=0
-    #     mins = np.min(PTSRot,axis=0)
-    #     maxs = np.max(PTSRot,axis=0)
+        print min(newX)
+        print min(newY)
+        print max(newX)
+        print max(newY)
 
-    #     InputData[count,...]=imgRot.copy()
-    #     InputLabel[count,...]=np.array([mins[0],mins[1],maxs[0],maxs[1]])
+        raise "debug"
+        # mins = np.min(PTSRot,axis=0)
+        # maxs = np.max(PTSRot,axis=0)
 
-    #     InputRot[count,...]=Dlabel
-    #     InputNames.append(imgName)
-    #     count+=1
-    #     # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
-    #     # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
-    #     # imgDraw.save('./tmp.jpg')
-    # return InputData,InputLabel,InputRot,InputNames
+        # InputData[count,...]=imgRot.copy()
+        # InputLabel[count,...]=np.array([mins[0],mins[1],maxs[0],maxs[1]])
+
+        # InputRot[count,...]=Dlabel
+        # InputNames.append(imgName)
+        # count+=1
+
+
+        # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
+        # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
+        # imgDraw.save('./tmp.jpg')
+    return InputData,InputLabel,InputRot,InputNames
 
 
 

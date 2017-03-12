@@ -14,12 +14,12 @@ def mirrorImage(image, X, Y):
     return image, X.astype(int), Y.astype(int)
 
 
-def rotate(image, X, Y, counter = 0):
+def rotate(image, X, Y, counter = 0, random = None):
    # if counter > 2:
    #     return None, None, None
     originalImage = image.copy()
     (h, w, _) = image.shape
-    degree = np.random.uniform(-45, 45)
+    degree = np.random.uniform(-15, 15)
 
     M = cv2.getRotationMatrix2D((w/2, h/2),degree,1)
     
@@ -87,7 +87,7 @@ def resize(image, X, Y, random = False):
 
 
     if random:
-        ratio = np.random.uniform(0.5, 1)
+        ratio = np.random.uniform(0.8, 1.2)
         size = (int(xMaxBound*ratio), int(yMaxBound*ratio))
 
     image = Image.fromarray(np.uint8(image))
