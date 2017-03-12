@@ -12,11 +12,9 @@ import numpy as np
 import warnings
 
 from keras.models import Model
-from keras.layers import Flatten
-from keras.layers import Dense
-from keras.layers import Input
-from keras.layers import Conv2D
-from keras.layers import MaxPooling2D
+from keras.layers import Flatten, Dense, Input
+
+from keras.layers import Convolution2D, MaxPooling2D
 from keras.layers import GlobalMaxPooling2D
 from keras.layers import GlobalAveragePooling2D
 from keras.preprocessing import image
@@ -27,6 +25,11 @@ from keras.applications.imagenet_utils import decode_predictions
 from keras.applications.imagenet_utils import preprocess_input
 from keras.applications.imagenet_utils import _obtain_input_shape
 from keras.engine.topology import get_source_inputs
+
+from keras.utils.layer_utils import convert_all_kernels_in_model
+from keras.regularizers.WeightRegularizer import *
+from keras.regularizers import l2, activity_l2
+
 
 def model(input_shape=None):
     """Instantiates the VGG16 architecture.
@@ -102,19 +105,24 @@ def model(input_shape=None):
     #         img_input = input_tensor
     # Block 1
     img_input = Input(shape=input_shape)    
-    x = Conv2D(16, (4, 4), activation='relu', padding='same', name='block1_conv1')(img_input)
+    # x = Conv2D(16, (4, 4), activation='relu', padding='same', name='block1_conv1')(img_input)
+    x = Convolution2D(16, 4, 4, activation='relu', border_mode='same', name='block1_conv1',W_regularizer=l2(DR))(img_input)
+
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
 
     # Block 2
-    x = Conv2D(32, (4, 4), activation='relu', padding='same', name='block2_conv1')(x)
+    x = Convolution2D(32, 4, 4, activation='relu', border_mode='same', name='block2_conv1',W_regularizer=l2(DR))(x)
+    # x = Conv2D(32, (4, 4), activation='relu', padding='same', name='block2_conv1')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
 
     # Block 3
-    x = Conv2D(48, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)
+    x = Convolution2D(48, 3, 3, activation='relu', border_mode='same', name='block3_conv1',W_regularizer=l2(DR))(x)
+    # x = Conv2D(48, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
 
     # Block 4
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
+    x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block4_conv1',W_regularizer=l2(DR))(x)
+    # x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
 
     x = Flatten(name='flatten')(x)
     x = Dense(256, activation='relu', name='fc1')(x)
