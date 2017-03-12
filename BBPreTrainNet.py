@@ -142,9 +142,10 @@ DataTr = FTr.readlines()
 
 batch_size=16
 TrNum = len(DataTr)
+TeNum = TrNum
 # TeNum = len(DataTe)
 MaxIters = TrNum/batch_size
-# MaxTestIters = TeNum/batch_size
+MaxTestIters = TeNum/batch_size
 
 model = m.model(input_shape=(256, 256, 3))
 
