@@ -67,14 +67,16 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
         if debug:
             print "imgName: ", imgName
         img = cv2.imread(imgName)
+        (w, h, _) = img.shape
+
         if img != None:
             x, y = ut.unpackLandmarks(labelsPTS)
             tag = random.choice(generateFunc)
 
             if tag == "rotate":
-                newImg, newX, newY = ut.rotate(img, x, y)
+                newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
             elif tag == "resize":
-                newImg, newX, newY = ut.resize(img, x, y, random = True)
+                newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
             else:
                 raise "not existing function"
 
@@ -92,10 +94,12 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             newPTS = np.asarray(ut.packLandmarks(newX, newY))
             print "newPTS: ", newPTS.shape
 
-            print min(newX)
-            print min(newY)
-            print max(newX)
-            print max(newY)
+
+            xMin = min(newX) if min(newX) >= 0 else: 0
+            yMin = min(newY) if min(newY) >= 0 else: 0
+            xMax = max(newX) if max(newX) <= w else: w
+            yMax = max(newY) if max(newY) <= h else: h
+
 
             raise "debug"
 

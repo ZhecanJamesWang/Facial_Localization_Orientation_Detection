@@ -14,11 +14,14 @@ def mirrorImage(image, X, Y):
     return image, X.astype(int), Y.astype(int)
 
 
-def rotate(image, X, Y, counter = 0, random = None):
+def rotate(image, X, Y, h = None. w = None, counter = 0, random = None):
    # if counter > 2:
    #     return None, None, None
     originalImage = image.copy()
-    (h, w, _) = image.shape
+    
+    if h = None:
+        (h, w, _) = image.shape
+    
     degree = np.random.uniform(-15, 15)
 
     M = cv2.getRotationMatrix2D((w/2, h/2),degree,1)
@@ -77,10 +80,13 @@ def plotLandmarks(img, X, Y, name = None, ifRescale = False, ifReturn = False):
     else:
         cv2.imshow(name,img)
 
-def resize(image, X, Y, random = False):
+def resize(image, X, Y, xMaxBound = None, yMaxBound = None, random = False):
+
     originalImage = image
     # resize imgage to determined size maintaing the original ratio
-    (yMaxBound, xMaxBound, _) = image.shape
+
+    if yMaxBound == None:
+        (yMaxBound, xMaxBound, _) = image.shape
 
     newX = [x/float(xMaxBound) for x in X]
     newY = [y/float(yMaxBound) for y in Y]
@@ -158,7 +164,7 @@ def packLandmarks(X, Y):
     pts = zip(X, Y)
     landmarks = []
     for p in pts:
-        landmarks.extend(list(p))
+        landmarks.append(list(p))
     return landmarks
 
 def unpackLandmarks(array):
