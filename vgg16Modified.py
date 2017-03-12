@@ -130,9 +130,6 @@ def model(input_shape=None):
     x = Dense(7, name='predLabel')(x)
 
 
-
-    model = Model(inputs, x, name='model')
-
     return model
 
 
