@@ -181,6 +181,7 @@ def train_on_batch(nb_epoch):
                 print "finish iteration: ", iter
 
             loss = model.train_on_batch(X_batch,label_BB)
+            print "****************************************************************************"
             print "return on train: ", loss, loss.shape
             print type(loss)
             
