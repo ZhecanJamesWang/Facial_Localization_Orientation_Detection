@@ -19,7 +19,7 @@ def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
    #     return None, None, None
     originalImage = image.copy()
     
-    if h = None:
+    if h == None:
         (h, w, _) = image.shape
     
     degree = np.random.uniform(-15, 15)
