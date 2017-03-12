@@ -13,37 +13,14 @@ os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from keras.callbacks import ModelCheckpoint
 import utility as ut
 import random
+from keras import callbacks
+import shutil
 
 debug = False
 
 def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
     return y_pred
-
-def drawPTS(img, pts,imgW=128):
-    imgShow = img.copy()
-    draw = ImageDraw.Draw(imgShow)
-    PD2DList, PD2D = getPTSlist(pts, imgSize=imgW)
-    draw.point(PD2DList, fill='red')
-    draw.rectangle([(PD2D[68,0],PD2D[68,1]),(PD2D[69,0],PD2D[69,1])], fill=None, outline='red')
-    return imgShow
-
-def transformBB(img,pts, type='nus68',imgW=128,RotAngle=0):
-    crop_size = img.shape[0]
-    assert(img.shape[0]==img.shape[1])
-
-    tform_shift = tf.SimilarityTransform(translation=[crop_size/2, crop_size/2])
-    tform_rand = tf.SimilarityTransform(rotation=np.deg2rad(RotAngle))
-    tform_shift_inv = tf.SimilarityTransform(translation=[-crop_size/2, -crop_size/2])
-    tform = tform_shift_inv+tform_rand+tform_shift
-
-    warp_img = tf.warp(np.asarray(img/255.0), tform)
-    pts = (tform.inverse(pts*imgW+imgW/2)-imgW/2)/imgW
-    warp_img = warp_img*255
-    warp_img = warp_img.astype('uint8')
-    warp_img = Image.fromarray(warp_img)
-
-    return (warp_img,pts)
 
 def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
 
@@ -56,7 +33,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
     print "InputLabel.shape: ", InputLabel.shape
 
     InputNames = []
-    counter = 0
+    count = 0
     for i in range(train_start,train_end):
         strLine = DataStrs[i]
         strCells = strLine.rstrip(' \n').split(' ')
@@ -84,12 +61,12 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
                 plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
                 plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
-                cv2.imwrite('testOriginal' + str(counter) + '.jpg', img)
-                cv2.imwrite('testNew' + str(counter) + '.jpg', newImg)        
-                cv2.imwrite('plotOriginal' + str(counter) + '.jpg', plotOriginal)
-                cv2.imwrite('plotNew' + str(counter) + '.jpg', plotNew)
+                cv2.imwrite('testOriginal' + str(count) + '.jpg', img)
+                cv2.imwrite('testNew' + str(count) + '.jpg', newImg)        
+                cv2.imwrite('plotOriginal' + str(count) + '.jpg', plotOriginal)
+                cv2.imwrite('plotNew' + str(count) + '.jpg', plotNew)
 
-            counter += 1
+            count += 1
             
             newPTS = np.asarray(ut.packLandmarks(newX, newY))
             print "newPTS: ", newPTS.shape
@@ -99,29 +76,27 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             yMin = min(newY) if min(newY) >= 0 else 0
             xMax = max(newX) if max(newX) <= w else w
             yMax = max(newY) if max(newY) <= h else h
+            xMean = mean(newX) if mean(newX) > 0 and mean(newX) < w else None
+            yMean = mean(newY) if mean(newY) > 0 and mean(newY) < h else None
+            edge = max(yMax - yMin, xMax - xMin)
+            
+            InputData[count,...] = newImg
+            InputLabel[count,...]=np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
+                newPTS[8][1], xMean, yMean, edge])
+            InputNames.append(imgName)
 
-
-            raise "debug"
-
+            print "count: ", count
         else:
             print "cannot find: ", imgName
 
 
-        # mins = np.min(PTSRot,axis=0)
-        # maxs = np.max(PTSRot,axis=0)
 
-        # InputData[count,...]=imgRot.copy()
-        # InputLabel[count,...]=np.array([mins[0],mins[1],maxs[0],maxs[1]])
-
-        # InputRot[count,...]=Dlabel
-        # InputNames.append(imgName)
-        # count+=1
 
 
         # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
         # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
         # imgDraw.save('./tmp.jpg')
-    return InputData,InputLabel,InputRot,InputNames
+    return InputData, InputLabel, InputNames
 
 
 
@@ -148,10 +123,6 @@ DataTr = FTr.readlines()
 #     DataLabels[i, :] = np.asarray(X).astype(np.float32)
 # Mean = np.mean(DataLabels,axis=0)
 # np.savetxt('./MeanShape.txt',Mean)
-from keras import callbacks
-
-import shutil
-
 
 
 #BBNet = BBFullNet(weights_path='./BBNet/BBNet_V1.h5',imgW=128)
@@ -164,14 +135,6 @@ import shutil
 # MeanShape = None
 
 
-
-
-TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
-# TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
-FTr = open(TrainPath,'r')
-DataTr = FTr.readlines()
-# FTe = open(TestPath,'r')
-# DataTe = FTe.readlines()
 # TrData,TrLabel=load_train_data(DataTr,0,5,5)
 
 batch_size=16
@@ -192,8 +155,12 @@ def train_on_batch(nb_epoch):
         for iter in range (MaxIters):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
-            DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
-            # X_batch, label_BB, label_rot, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
+            X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end,imSize=128)
+            print "X_batch.shape: ", X_batch.shape
+            print "label_BB.shape: ", label_BB.shape
+            print "Z_Names.shape: ", Z_Names.shape
+
+
             print "finish iteration: ", iter
             # lossBB,tras,lossRot,tras,PredBB,tras,PredRot= BBNet.train_on_batch(X_batch,[label_BB,label_rot])
             # if iter%100==0:
