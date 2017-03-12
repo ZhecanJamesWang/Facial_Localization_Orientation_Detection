@@ -25,7 +25,7 @@ def final_pred(y_true, y_pred):
 
 def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
 
-    generateFunc = ["rotate", "resize"]
+    # generateFunc = ["rotate", "resize"]
 
     InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
     InputLabel = np.zeros([BatchSize,7],dtype=np.float32)
@@ -50,14 +50,15 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
             print "img.shape: ", img.shape
             (w, h, _) = img.shape
             x, y = ut.unpackLandmarks(labelsPTS)
-            tag = random.choice(generateFunc)
+            
+            # tag = random.choice(generateFunc)
 
-            if tag == "rotate":
-                newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
-            elif tag == "resize":
-                newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
-            else:
-                raise "not existing function"
+            # if tag == "rotate":
+            newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+            # elif tag == "resize":
+            #     newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+            # else:
+            #     raise "not existing function"
 
             if debug:
                 plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
