@@ -181,21 +181,19 @@ def train_on_batch(nb_epoch):
 
             loss = model.train_on_batch(X_batch,label_BB)
             print "return on train: ", loss, loss.shape
-            print type(model.train_on_batch(X_batch,label_BB))
-
-            # lossBB, tras, PredBB = model.train_on_batch(X_batch,label_BB)
-            # model.train_on_batch(X_batch,label_BB)
+            print type(loss)
             
 
             if iter%100==0:
-                print 'iter ', iter,'Traing loss: ', lossBB, lossRot
+                print 'iter ', iter,'Traing loss: ', loss
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, MeanShape=MeanShape,
                                                                   train_start=test_start, train_end=test_end,
                                                                   imSize=128)
-                lossBBT, tras, PredBBT = model.evaluate(X_batch_T,label_BB_T)
-                # model.evaluate(X_batch_T,label_BB_T)
+                loss = model.evaluate(X_batch_T,label_BB_T)
+                print "return on test: ", loss, loss.shape
+                print type(loss)
 
 
                 print 'iter ', iter,'Testing loss: ', loss
