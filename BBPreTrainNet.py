@@ -184,17 +184,19 @@ def train_on_batch(nb_epoch):
                 print "Z_Names.shape: ", Z_Names.shape
                 print "finish iteration: ", iter
 
-            lossBB,tras,lossRot,tras,PredBB,tras,PredRot= model.train_on_batch(X_batch,label_BB)
+            # lossBB,tras,lossRot,tras,PredBB,tras,PredRot= model.train_on_batch(X_batch,label_BB)
+            model.train_on_batch(X_batch,label_BB)
             
 
             if iter%100==0:
                 print 'iter ', iter,'Traing loss: ', lossBB, lossRot
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
-                X_batch_T, label_BB_T, label_rot_T, Z_Names_T= DataGenBB(DataTe, batch_size, MeanShape=MeanShape,
+                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, MeanShape=MeanShape,
                                                                   train_start=test_start, train_end=test_end,
                                                                   imSize=128)
-                lossBBT, tras, lossRotT,tras, PredBBT, tras, PredRotT = model.evaluate(X_batch_T,[label_BB_T,label_rot_T])
+                # lossBBT, tras, lossRotT,tras, PredBBT, tras, PredRotT = model.evaluate(X_batch_T,label_BB_T)
+                model.evaluate(X_batch_T,label_BB_T)
 
 
                 print 'iter ', iter,'Testing loss: ', lossBBT, lossRotT
@@ -220,8 +222,8 @@ def train_on_batch(nb_epoch):
                 # img2Draw.save('./BBNet/Train_tmp_%d_%d.jpg'%(RotType,np.where(label_rot[0,:]==1)[0]))
                 print label_rot[0,...], label_rot_T[0,...]
 
-            if iter%2000==0:
-                BBNet.save('./BBNet/BBNet_V1.h5')
+            # if iter%2000==0:
+            #     BBNet.save('./BBNet/BBNet_V1.h5')
 
 # sgdBB = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9)
 # train_on_batch(2)
