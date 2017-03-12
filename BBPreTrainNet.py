@@ -95,10 +95,10 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize=128):
             print "newPTS: ", newPTS.shape
 
 
-            xMin = min(newX) if min(newX) >= 0 else: 0
-            yMin = min(newY) if min(newY) >= 0 else: 0
-            xMax = max(newX) if max(newX) <= w else: w
-            yMax = max(newY) if max(newY) <= h else: h
+            xMin = min(newX) if min(newX) >= 0 else 0
+            yMin = min(newY) if min(newY) >= 0 else 0
+            xMax = max(newX) if max(newX) <= w else w
+            yMax = max(newY) if max(newY) <= h else h
 
 
             raise "debug"
