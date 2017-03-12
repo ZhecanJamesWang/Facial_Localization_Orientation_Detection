@@ -15,7 +15,9 @@ import utility as ut
 import random
 from keras import callbacks
 import shutil
-import model
+# import model
+import vgg16Modified as model
+
 
 debug = False
 
@@ -144,19 +146,11 @@ TrNum = len(DataTr)
 MaxIters = TrNum/batch_size
 # MaxTestIters = TeNum/batch_size
 
-
-
-model = model.model()
-# sgdBB = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-# model.compile(loss={'BB_RCT':'mean_squared_error','Img_Rot':'categorical_crossentropy'}, loss_weight=[1,10],metrics=['accuracy', final_pred],optimizer=sgdBB)
-model.compile(loss='categorical_crossentropy',
-              optimizer='adadelta',
-              metrics=['accuracy'])
+model = model.model(input_shape=(256, 256, 3))
+sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd)
 model.summary()
 
-# model.compile(loss='categorical_crossentropy',
-#               optimizer='adadelta',
-#               metrics=['accuracy'])
 # model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
 #           verbose=1, validation_data=(X_test, Y_test))
 # score = model.evaluate(X_test, Y_test, verbose=0)
@@ -186,7 +180,7 @@ def train_on_batch(nb_epoch):
 
             print model.train_on_batch(X_batch,label_BB)
             print type(model.train_on_batch(X_batch,label_BB))
-            
+
             # lossBB, tras, PredBB = model.train_on_batch(X_batch,label_BB)
             # model.train_on_batch(X_batch,label_BB)
             

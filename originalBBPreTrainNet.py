@@ -163,6 +163,8 @@ def train_on_batch(nb_epoch):
                 X_batch_T, label_BB_T, label_rot_T, Z_Names_T= DataGenBB(DataTe, batch_size, MeanShape=MeanShape,
                                                                   train_start=test_start, train_end=test_end,
                                                                   imSize=128)
+
+                
                 lossBBT, tras, lossRotT,tras, PredBBT, tras, PredRotT = BBNet.evaluate(X_batch_T,[label_BB_T,label_rot_T])
                 print 'iter ', iter,'Testing loss: ', lossBBT, lossRotT
                 iterTest+=batch_size
