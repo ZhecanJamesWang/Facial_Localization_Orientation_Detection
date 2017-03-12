@@ -188,9 +188,7 @@ def train_on_batch(nb_epoch):
                 print 'iter ', iter,'Traing loss: ', loss
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
-                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, MeanShape=MeanShape,
-                                                                  train_start=test_start, train_end=test_end,
-                                                                  imSize=128)
+                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize=256)
                 loss = model.evaluate(X_batch_T,label_BB_T)
                 print "return on test: ", loss, loss.shape
                 print type(loss)
