@@ -63,6 +63,20 @@ def contrastBrightess(image, X, Y):
     Y = np.asarray(Y)
     return image, X, Y
 
+def plotTarget(img, labels):
+    assert len(labels) == 7   
+
+
+    (w, h, _) = (128, 128, 0)  
+    for i in range(0, 6, 2):      
+        cv2.circle(img,(int((labels[i] + 0.5) * 128), int((labels[i + 1] + 0.5) * 128)), 2, (0,0,255), -1)
+
+    edge = labels[6]
+    
+    cv2.line(img,(0,0),(511,511),(255,0,0),5)
+    
+    return img
+
 def plotLandmarks(img, X, Y, name = None, ifRescale = False, ifReturn = False):
     # plot landmarks on original image
     assert len(X) == len(Y)   
