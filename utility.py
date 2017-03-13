@@ -71,8 +71,8 @@ def plotLandmarks(img, X, Y, name = None, ifRescale = False, ifReturn = False):
     for index in range(len(X)):
         if ifRescale:
             (w, h, _) = img.shape
-            (w, h, _) = (256, 256, 0)            
-            cv2.circle(img,(int((X[index] + 0.5) * 256), int((Y[index] + 0.5) * 256)), 2, (0,0,255), -1)
+            (w, h, _) = (128, 128, 0)            
+            cv2.circle(img,(int((X[index] + 0.5) * 128), int((Y[index] + 0.5) * 128)), 2, (0,0,255), -1)
         else:
             cv2.circle(img,(int(X[index]), int(Y[index])), 1, (0,0,255), -1)
     if ifReturn:
@@ -171,8 +171,8 @@ def unpackLandmarks(array):
     x = []
     y = []
     for i in range(0, len(array)):
-        x.append((array[i][0] + 0.5) * 256)
-        y.append((array[i][1] + 0.5) * 256)
+        x.append((array[i][0] + 0.5) * 128)
+        y.append((array[i][1] + 0.5) * 128)
     return x, y
 
 def test():
