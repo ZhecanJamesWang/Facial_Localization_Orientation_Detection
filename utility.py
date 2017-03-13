@@ -66,19 +66,21 @@ def contrastBrightess(image, X, Y):
 def plotTarget(img, labels):
     assert len(labels) == 7   
 
+    try:
+        (w, h, _) = (128, 128, 0)  
+        for i in range(0, 6, 2):      
+            # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
+            #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
+            cv2.circle(img,(int(labels[i]), int(labels[i + 1])), 2, (0,0,255), -1)
 
-    (w, h, _) = (128, 128, 0)  
-    for i in range(0, 6, 2):      
-        # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
-        #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
-        cv2.circle(img,(int(labels[i]), int(labels[i + 1])), 2, (0,0,255), -1)
-
-    edge = labels[6]
-    xMean = labels[4]
-    yMean = labels[5]
-    cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
-        int(yMean + edge/2.0)),(0,255,0),3)
-    
+        edge = labels[6]
+        xMean = labels[4]
+        yMean = labels[5]
+        cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
+            int(yMean + edge/2.0)),(0,255,0),3)
+    except Exception as e:
+        print e
+        print "labels: ", labels
     return img
 
 def plotLandmarks(img, X, Y, name = None, ifRescale = False, ifReturn = False):
