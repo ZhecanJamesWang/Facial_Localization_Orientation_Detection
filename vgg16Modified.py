@@ -13,7 +13,7 @@ import warnings
 
 from keras.models import Model
 from keras.layers import Flatten, Dense, Input
-
+from keras.layers.core import Dropout
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.layers import GlobalMaxPooling2D
 from keras.layers import GlobalAveragePooling2D
