@@ -209,7 +209,7 @@ def train_on_batch(nb_epoch):
             print "tras.shape: ", tras.shape 
 
 
-            if iter%100==0:
+            if iter%10==0:
                 print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
                 print 'iteration: ', iter
                 test_start = iterTest * batch_size
