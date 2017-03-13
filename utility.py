@@ -64,7 +64,7 @@ def contrastBrightess(image, X, Y):
     return image, X, Y
 
 def plotTarget(image, labels):
-    img = numpy.copy(image)
+    img = np.copy(image)
     assert len(labels) == 7   
 
     try:
@@ -86,7 +86,7 @@ def plotTarget(image, labels):
 
 def plotLandmarks(image, X, Y, name = None, ifRescale = False, ifReturn = False):
     # plot landmarks on original image
-    img = numpy.copy(image)
+    img = np.copy(image)
     assert len(X) == len(Y)   
     # print "X: :::::::::::::::",
     # print X[:10]   
