@@ -175,6 +175,8 @@ model.summary()
 
 def train_on_batch(nb_epoch):
     testCount = 0
+    trainCount = 0
+    
     for e in range(nb_epoch):
         # if e>0:
         shuffle(DataTr)
@@ -193,6 +195,11 @@ def train_on_batch(nb_epoch):
             #     print "finish iteration: ", iter
 
             loss, acc, pred = model.train_on_batch(X_batch,label_BB)
+
+            labelImg = ut.plotTarget(X_batch[0], pred[0])
+            cv2.imwrite('trainLabelImg' + str(trainCount) + '.jpg', labelImg)
+            trainCount += 1
+
             print "****************************************************************************"
             print "loss, return on train: ", type(loss), loss
             print "loss.shape: ", loss.shape
