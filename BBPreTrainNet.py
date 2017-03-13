@@ -19,7 +19,7 @@ import shutil
 import vgg16Modified as m
 
 
-debug = False
+debug = True
 
 def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
@@ -32,8 +32,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
     InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
     InputLabel = np.zeros([BatchSize,7],dtype=np.float32)
 
-    print "InputData.shape: ", InputData.shape
-    print "InputLabel.shape: ", InputLabel.shape
+    # print "InputData.shape: ", InputData.shape
+    # print "InputLabel.shape: ", InputLabel.shape
 
     InputNames = []
     count = 0
@@ -49,7 +49,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
         img = cv2.imread(imgName)
 
         if img != None:
-            print "img.shape: ", img.shape
+            img = cv2.resize(img,(128, 128))
+            # print "img.shape: ", img.shape
             (w, h, _) = img.shape
             x, y = ut.unpackLandmarks(labelsPTS)
             
@@ -73,7 +74,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
 
             
             newPTS = np.asarray(ut.packLandmarks(newX, newY))
-            print "newPTS: ", newPTS.shape
+            # print "newPTS: ", newPTS.shape
 
 
             xMin = min(newX) if min(newX) >= 0 else 0
@@ -84,7 +85,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
             yMean = np.mean(newY) if np.mean(newY) > 0 and np.mean(newY) < h else None
             edge = max(yMax - yMin, xMax - xMin)
             
-            print "len(InputData): ", len(InputData)
+            # print "len(InputData): ", len(InputData)
             InputData[count,...] = newImg
             InputLabel[count,...]=np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
                 newPTS[8][1], xMean, yMean, edge])
@@ -92,7 +93,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
 
             print "count: ", count
             count += 1
-            
+
         else:
             print "cannot find: ", imgName
 
