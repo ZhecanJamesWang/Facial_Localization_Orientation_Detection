@@ -92,11 +92,11 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             InputData[count,...] = newImg
             labels = np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
                 newPTS[8][1], xMean, yMean, edge])
-            print "labels: ", labels
+            print "input labels: ", labels
             InputLabel[count,...] = labels
             InputNames.append(imgName)
 
-            print "ut.deNormalize(labels): ", ut.deNormalize(labels)
+            print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
             labelImg = ut.plotTarget(newImg, ut.deNormalize(labels))
             cv2.imwrite('labelImg' + str(count) + '.jpg', labelImg)
 

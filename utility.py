@@ -81,7 +81,7 @@ def plotTarget(image, labels):
             int(yMean + edge/2.0)),(0, 0, 255), 3)
     except Exception as e:
         print e
-        print "labels: ", labels
+        print "plotTarget labels: ", labels
     return img
 
 def plotLandmarks(image, X, Y, name = None, ifRescale = False, ifReturn = False):
