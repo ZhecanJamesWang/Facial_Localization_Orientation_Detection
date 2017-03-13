@@ -79,10 +79,10 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             # print "newPTS: ", newPTS.shape
 
 
-            xMin = min(newX) if min(newX)
-            yMin = min(newY) if min(newY)
-            xMax = max(newX) if max(newX)
-            yMax = max(newY) if max(newY)
+            xMin = min(newX)
+            yMin = min(newY)
+            xMax = max(newX)
+            yMax = max(newY)
             xMean = np.mean(newX)
             yMean = np.mean(newY) 
 
