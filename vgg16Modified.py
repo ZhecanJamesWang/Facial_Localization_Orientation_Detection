@@ -31,7 +31,7 @@ from keras.utils.layer_utils import convert_all_kernels_in_model
 from keras.regularizers import l2, activity_l2
 
 
-def model(input_shape=None):
+def model(input_shape = None, weights_path = None):
     """Instantiates the VGG16 architecture.
 
     Optionally loads weights pre-trained
@@ -128,11 +128,14 @@ def model(input_shape=None):
 
     x = Flatten(name='flatten')(x)
     x = Dense(256, activation='relu', name='fc1')(x)
-    x = Dense(234, activation='relu', name='fc2')(x)
-    x = Dense(7, name='predLabel')(x)
+    x = Dropout(0.2,name='fc1_drop')(x)
+    x = Dense(7, activation = 'linear', name='predLabel')(x)
 
     model = Model(img_input, x, name='customizedModel')
     
+    if weights_path:
+       model.load_weights(weights_path, by_name = True)
+
     return model
 
 

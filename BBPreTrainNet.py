@@ -87,10 +87,14 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             
             # print "len(InputData): ", len(InputData)
             InputData[count,...] = newImg
-            InputLabel[count,...]=np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
+            labels = np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
                 newPTS[8][1], xMean, yMean, edge])
+            InputLabel[count,...] = labels
             InputNames.append(imgName)
 
+            labelImg = ut.plotTarget(newImg, labels)
+            cv2.imwrite('labelImg' + str(count) + '.jpg', labelImg)
+             
             print "count: ", count
             count += 1
 
@@ -155,7 +159,7 @@ MaxIters = TrNum/batch_size
 model = m.model(input_shape=(128, 128, 3))
 
 sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
 model.summary()
 
 # model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
@@ -187,11 +191,13 @@ def train_on_batch(nb_epoch):
                 print "Z_Names.shape: ", Z_Names.shape
                 print "finish iteration: ", iter
 
-            loss = model.train_on_batch(X_batch,label_BB)
+            loss, pred = model.train_on_batch(X_batch,label_BB)
             print "****************************************************************************"
             print "loss, return on train: ", loss
             print "loss.shape: ", loss.shape
             print type(loss)
+            print "pred, return on train: ", type(pred)
+            print "pred.shape: ", pred.shape
             
 
             if iter%10==0:
@@ -200,11 +206,12 @@ def train_on_batch(nb_epoch):
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
-                loss = model.evaluate(X_batch_T,label_BB_T)
+                pred, loss = model.evaluate(X_batch_T,label_BB_T)
                 print "========================================================================="
                 print "loss, return on test: ", loss
                 print "loss.shape: ", loss.shape
-
+                print "pred, return on test: ", type(pred)
+                print "pred.shape: ", pred.shape
 
                 print 'iter ', iter,'Testing loss: ', loss
                 iterTest+=batch_size

@@ -72,8 +72,11 @@ def plotTarget(img, labels):
         cv2.circle(img,(int((labels[i] + 0.5) * 128), int((labels[i + 1] + 0.5) * 128)), 2, (0,0,255), -1)
 
     edge = labels[6]
-    
-    cv2.line(img,(0,0),(511,511),(255,0,0),5)
+    xMean = labels[4]
+    yMean = labels[5]
+
+    cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
+        int(yMean + edge/2.0)),(0,255,0),3)
     
     return img
 
