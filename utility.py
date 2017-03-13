@@ -69,12 +69,13 @@ def plotTarget(img, labels):
 
     (w, h, _) = (128, 128, 0)  
     for i in range(0, 6, 2):      
-        cv2.circle(img,(int((labels[i] + 0.5) * 128), int((labels[i + 1] + 0.5) * 128)), 2, (0,0,255), -1)
+        # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
+        #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
+        cv2.circle(img,(int(labels[i]), int(labels[i + 1])), 2, (0,0,255), -1)
 
     edge = labels[6]
     xMean = labels[4]
     yMean = labels[5]
-
     cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
         int(yMean + edge/2.0)),(0,255,0),3)
     
