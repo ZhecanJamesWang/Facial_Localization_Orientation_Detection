@@ -123,6 +123,8 @@ def model(input_shape=None):
     # Block 4
     x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block4_conv1')(x)
     # x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
+
 
     x = Flatten(name='flatten')(x)
     x = Dense(256, activation='relu', name='fc1')(x)

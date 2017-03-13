@@ -25,7 +25,7 @@ def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
     return y_pred
 
-def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
+def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
     # generateFunc = ["rotate", "resize"]
 
@@ -152,7 +152,7 @@ TrNum = len(DataTr)
 MaxIters = TrNum/batch_size
 # MaxTestIters = TeNum/batch_size
 
-model = m.model(input_shape=(256, 256, 3))
+model = m.model(input_shape=(128, 128, 3))
 
 sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd)
@@ -199,7 +199,7 @@ def train_on_batch(nb_epoch):
                 print 'iteration: ', iter
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
-                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize=256)
+                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
                 loss = model.evaluate(X_batch_T,label_BB_T)
                 print "========================================================================="
                 print "loss, return on test: ", loss
