@@ -94,7 +94,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
             labelImg = ut.plotTarget(newImg, labels)
             cv2.imwrite('labelImg' + str(count) + '.jpg', labelImg)
-             
+
             print "count: ", count
             count += 1
 
@@ -190,7 +190,7 @@ def train_on_batch(nb_epoch):
                 print "label_BB.shape: ", label_BB.shape
                 print "Z_Names.shape: ", Z_Names.shape
                 print "finish iteration: ", iter
-
+            print len(model.train_on_batch(X_batch,label_BB))
             loss, pred = model.train_on_batch(X_batch,label_BB)
             print "****************************************************************************"
             print "loss, return on train: ", loss
