@@ -179,7 +179,7 @@ def train_on_batch(nb_epoch):
             train_end = (iter+1)*batch_size
             print "train_start: ", train_start
             print "train_end: ", train_end
-            X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 256)
+            X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 128)
 
             if debug:
                 print "X_batch.shape: ", X_batch.shape
