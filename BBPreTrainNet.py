@@ -116,6 +116,9 @@ TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
 
 FTr = open(TrainPath,'r')
 DataTr = FTr.readlines()
+
+print "DataTr: ", type(DataTr)
+print len(DataTr)
 # FTe = open(TestPath,'r')
 # DataTe = FTe.readlines()
 
@@ -142,10 +145,10 @@ DataTr = FTr.readlines()
 
 batch_size=16
 TrNum = len(DataTr)
-TeNum = TrNum
+# TeNum = TrNum
 # TeNum = len(DataTe)
 MaxIters = TrNum/batch_size
-MaxTestIters = TeNum/batch_size
+# MaxTestIters = TeNum/batch_size
 
 model = m.model(input_shape=(256, 256, 3))
 
