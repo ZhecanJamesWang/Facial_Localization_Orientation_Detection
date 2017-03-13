@@ -27,7 +27,7 @@ def final_pred(y_true, y_pred):
 
 def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
-    # generateFunc = ["rotate", "resize"]
+    generateFunc = ["rotate", "resize"]
 
     InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
     InputLabel = np.zeros([BatchSize,7],dtype=np.float32)
