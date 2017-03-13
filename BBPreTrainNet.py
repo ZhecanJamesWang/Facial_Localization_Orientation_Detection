@@ -205,8 +205,8 @@ def train_on_batch(nb_epoch):
             print "loss.shape: ", loss.shape
             print "pred, return on train: ", type(pred)
             print "pred.shape: ", pred.shape
-            print "acc, return on train: ", type(acc), acc
-            print "acc.shape: ", acc.shape 
+            print "acc, return on train: ", type(tras), tras
+            print "acc.shape: ", tras.shape 
 
 
             if iter%100==0:
@@ -215,7 +215,7 @@ def train_on_batch(nb_epoch):
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
-                loss, acc, pred = model.evaluate(X_batch_T,label_BB_T)
+                loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
 
                 labelImg = ut.plotTarget(X_batch_T[0], pred[0])
                 cv2.imwrite('testLabelImg' + str(testCount) + '.jpg', labelImg)
@@ -226,8 +226,8 @@ def train_on_batch(nb_epoch):
                 print "loss.shape: ", loss.shape
                 print "pred, return on test: ", type(pred)
                 print "pred.shape: ", pred.shape
-                print "acc, return on test: ", type(acc), acc
-                print "acc.shape: ", acc.shape 
+                print "acc, return on test: ", type(tras), tras
+                print "acc.shape: ", tras.shape 
 
                 print 'iter ', iter,'Testing loss: ', loss
                 iterTest+=batch_size
