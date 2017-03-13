@@ -39,7 +39,7 @@ def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
 
     newX = np.asarray(newX)
     newY = np.asarray(newY)
-    print "image: ", type(image)
+    # print "image: ", type(image)
     return image, newX, newY
 
 

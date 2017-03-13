@@ -44,8 +44,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
         labels = np.array(strCells[1:]).astype(np.float)
         labelsPTS=labels[:136].reshape([68,2])
 
-        if debug:
-            print "imgName: ", imgName
+        # if debug:
+        #     print "imgName: ", imgName
         img = cv2.imread(imgName)
 
         if img != None:
@@ -95,7 +95,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             labelImg = ut.plotTarget(newImg, labels)
             cv2.imwrite('labelImg' + str(count) + '.jpg', labelImg)
 
-            print "count: ", count
+            # print "count: ", count
             count += 1
 
         else:
@@ -123,8 +123,8 @@ TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
 FTr = open(TrainPath,'r')
 DataTr = FTr.readlines()
 
-print "DataTr: ", type(DataTr)
-print len(DataTr)
+# print "DataTr: ", type(DataTr)
+# print len(DataTr)
 # FTe = open(TestPath,'r')
 # DataTe = FTe.readlines()
 
@@ -185,13 +185,11 @@ def train_on_batch(nb_epoch):
             print "train_end: ", train_end
             X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 128)
 
-            if debug:
-                print "X_batch.shape: ", X_batch.shape
-                print "label_BB.shape: ", label_BB.shape
-                print "Z_Names.shape: ", Z_Names.shape
-                print "finish iteration: ", iter
-            print len(model.train_on_batch(X_batch,label_BB))
-            print model.metrics_names
+            # if debug:
+            #     print "X_batch.shape: ", X_batch.shape
+            #     print "label_BB.shape: ", label_BB.shape
+            #     print "Z_Names.shape: ", Z_Names.shape
+            #     print "finish iteration: ", iter
 
             loss, acc, pred = model.train_on_batch(X_batch,label_BB)
             print "****************************************************************************"
