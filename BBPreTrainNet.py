@@ -191,13 +191,14 @@ def train_on_batch(nb_epoch):
             
 
             if iter%10==0:
-                print 'iter ', iter,'Traing loss: ', loss
+                print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+                print 'iteration: ', iter
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize=256)
                 loss = model.evaluate(X_batch_T,label_BB_T)
                 print "========================================================================="
-                print "loss, return on train: ", loss
+                print "loss, return on test: ", loss
                 print "loss.shape: ", loss.shape
 
 
