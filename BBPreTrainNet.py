@@ -85,6 +85,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
             yMean = np.mean(newY) if np.mean(newY) > 0 and np.mean(newY) < h else None
             edge = max(yMax - yMin, xMax - xMin)
             
+            print "len(InputData): ", len(InputData)
             InputData[count,...] = newImg
             InputLabel[count,...]=np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
                 newPTS[8][1], xMean, yMean, edge])
@@ -143,7 +144,7 @@ print len(DataTr)
 # MeanShape = None
 # TrData,TrLabel=load_train_data(DataTr,0,5,5)
 
-batch_size=15
+batch_size=16
 TrNum = len(DataTr)
 # TeNum = TrNum
 # TeNum = len(DataTe)
