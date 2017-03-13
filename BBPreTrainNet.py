@@ -174,6 +174,7 @@ model.summary()
 
 
 def train_on_batch(nb_epoch):
+    testCount = 0
     for e in range(nb_epoch):
         # if e>0:
         shuffle(DataTr)
@@ -201,13 +202,18 @@ def train_on_batch(nb_epoch):
             print "acc.shape: ", acc.shape 
 
 
-            if iter%10==0:
+            if iter%100==0:
                 print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
                 print 'iteration: ', iter
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
                 loss, acc, pred = model.evaluate(X_batch_T,label_BB_T)
+
+                labelImg = ut.plotTarget(X_batch_T[0], pred[0])
+                cv2.imwrite('testLabelImg' + str(testCount) + '.jpg', labelImg)
+                testCount += 1
+
                 print "========================================================================="
                 print "loss, return on test: ", type(loss), loss
                 print "loss.shape: ", loss.shape
