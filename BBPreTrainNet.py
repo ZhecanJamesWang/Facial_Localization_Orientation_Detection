@@ -91,9 +91,10 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
             InputNames.append(imgName)
 
             print "count: ", count
+            count += 1
+            
         else:
             print "cannot find: ", imgName
-            count += 1
 
 
 
