@@ -143,7 +143,7 @@ print len(DataTr)
 # MeanShape = None
 # TrData,TrLabel=load_train_data(DataTr,0,5,5)
 
-batch_size=16
+batch_size=15
 TrNum = len(DataTr)
 # TeNum = TrNum
 # TeNum = len(DataTe)
