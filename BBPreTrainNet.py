@@ -192,18 +192,15 @@ def train_on_batch(nb_epoch):
                 print "finish iteration: ", iter
             print len(model.train_on_batch(X_batch,label_BB))
             print model.metrics_names
-            loss, pred, s = model.train_on_batch(X_batch,label_BB)
+
+            loss, acc, pred = model.train_on_batch(X_batch,label_BB)
             print "****************************************************************************"
-            print "loss, return on train: ", loss
+            print "loss, return on train: ", type(loss), loss
             print "loss.shape: ", loss.shape
-            print type(loss)
             print "pred, return on train: ", type(pred)
             print "pred.shape: ", pred.shape
-            print "s, return on train: ", type(s)
-            print "s.shape: ", s.shape 
-            print "loss: ", loss
-            print "pred: ", pred
-            print "s: ", s 
+            print "acc, return on train: ", type(acc), acc
+            print "acc.shape: ", acc.shape 
 
 
             if iter%10==0:
@@ -212,12 +209,14 @@ def train_on_batch(nb_epoch):
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
-                pred, loss = model.evaluate(X_batch_T,label_BB_T)
+                loss, acc, pred = model.evaluate(X_batch_T,label_BB_T)
                 print "========================================================================="
-                print "loss, return on test: ", loss
+                print "loss, return on test: ", type(loss), loss
                 print "loss.shape: ", loss.shape
                 print "pred, return on test: ", type(pred)
                 print "pred.shape: ", pred.shape
+                print "acc, return on test: ", type(acc), acc
+                print "acc.shape: ", acc.shape 
 
                 print 'iter ', iter,'Testing loss: ', loss
                 iterTest+=batch_size
