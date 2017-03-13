@@ -175,6 +175,8 @@ def train_on_batch(nb_epoch):
         for iter in range (MaxIters):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
+            print "train_start: ", train_start
+            print "train_end: ", train_end
             X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 256)
 
             if debug:
