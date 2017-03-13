@@ -71,7 +71,6 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
                 cv2.imwrite('plotOriginal' + str(count) + '.jpg', plotOriginal)
                 cv2.imwrite('plotNew' + str(count) + '.jpg', plotNew)
 
-            count += 1
             
             newPTS = np.asarray(ut.packLandmarks(newX, newY))
             print "newPTS: ", newPTS.shape
@@ -94,7 +93,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 256):
             print "count: ", count
         else:
             print "cannot find: ", imgName
-
+            count += 1
 
 
 
