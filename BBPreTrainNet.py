@@ -72,7 +72,9 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
                 cv2.imwrite('plotOriginal' + str(count) + '.jpg', plotOriginal)
                 cv2.imwrite('plotNew' + str(count) + '.jpg', plotNew)
 
-            
+            newX = ut.normalize(newX)
+            newY = ut.normalize(newY)
+
             newPTS = np.asarray(ut.packLandmarks(newX, newY))
             # print "newPTS: ", newPTS.shape
 
@@ -92,7 +94,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             InputLabel[count,...] = labels
             InputNames.append(imgName)
 
-            labelImg = ut.plotTarget(newImg, labels)
+            labelImg = ut.plotTarget(newImg, ut.denormalize(labels))
             cv2.imwrite('labelImg' + str(count) + '.jpg', labelImg)
 
             # print "count: ", count
@@ -196,7 +198,7 @@ def train_on_batch(nb_epoch):
 
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
 
-            labelImg = ut.plotTarget(X_batch[0], pred[0])
+            labelImg = ut.plotTarget(X_batch[0], ut.denormalize(pred[0]))
             cv2.imwrite('trainLabelImg' + str(trainCount) + '.jpg', labelImg)
             trainCount += 1
 
@@ -217,7 +219,7 @@ def train_on_batch(nb_epoch):
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
                 loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
 
-                labelImg = ut.plotTarget(X_batch_T[0], pred[0])
+                labelImg = ut.plotTarget(X_batch_T[0], ut.denormalize(pred[0]))
                 cv2.imwrite('testLabelImg' + str(testCount) + '.jpg', labelImg)
                 testCount += 1
 

@@ -78,7 +78,7 @@ def plotTarget(image, labels):
         xMean = labels[4]
         yMean = labels[5]
         cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
-            int(yMean + edge/2.0)),(0,255,0),3)
+            int(yMean + edge/2.0)),(0, 0, 255), 3)
     except Exception as e:
         print e
         print "labels: ", labels
@@ -196,6 +196,18 @@ def unpackLandmarks(array):
         x.append((array[i][0] + 0.5) * 128)
         y.append((array[i][1] + 0.5) * 128)
     return x, y
+
+def deNormalize(array):
+    newArray = []
+    for i in range(len(array)):
+        newArray.append((array[i] + 0.5) * 128)
+    return newArray
+
+def normalize(array):
+    newArray = []
+    for i in range(len(array)):
+        newArray.append((array[i]/128.0) - 0.5)
+    return newArray
 
 def test():
     dataDir = "./data/ibug/"
