@@ -45,7 +45,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
         labelsPTS=labels[:136].reshape([68,2])
 
         # if debug:
-        #     print "imgName: ", imgName
+        print "imgName: ", imgName
         img = cv2.imread(imgName)
 
         if img != None:
@@ -79,12 +79,13 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             # print "newPTS: ", newPTS.shape
 
 
-            xMin = min(newX) if min(newX) >= 0 else 0
-            yMin = min(newY) if min(newY) >= 0 else 0
-            xMax = max(newX) if max(newX) <= w else w
-            yMax = max(newY) if max(newY) <= h else h
-            xMean = np.mean(newX) if np.mean(newX) > 0 and np.mean(newX) < w else None
-            yMean = np.mean(newY) if np.mean(newY) > 0 and np.mean(newY) < h else None
+            xMin = min(newX) if min(newX)
+            yMin = min(newY) if min(newY)
+            xMax = max(newX) if max(newX)
+            yMax = max(newY) if max(newY)
+            xMean = np.mean(newX)
+            yMean = np.mean(newY) 
+
             edge = max(yMax - yMin, xMax - xMin)
             
             # print "len(InputData): ", len(InputData)
