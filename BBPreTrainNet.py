@@ -20,7 +20,7 @@ import vgg16Modified as m
 
 
 debug = True
-outputDir = "./testImg1/"
+outputDir = "./testImg2/"
 
 
 def final_pred(y_true, y_pred):
