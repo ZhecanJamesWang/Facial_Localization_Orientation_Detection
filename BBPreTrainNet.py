@@ -60,9 +60,9 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             # tag = random.choice(generateFunc)
 
             # if tag == "rotate":
-            # newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+            newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
             # elif tag == "resize":
-            newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+            # newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
             # else:
             #     raise "not existing function"
 
