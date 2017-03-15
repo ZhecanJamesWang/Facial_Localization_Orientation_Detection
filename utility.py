@@ -198,12 +198,14 @@ def unpackLandmarks(array):
     return x, y
 
 def deNormalize(array):
+    array = list(array)
     newArray = []
     for i in range(len(array)):
         newArray.append((array[i] + 0.5) * 128.0)
     return newArray
 
 def normalize(array):
+    array = list(array)
     newArray = []
     for i in range(len(array)):
         newArray.append((array[i]/128.0) - 0.5)
