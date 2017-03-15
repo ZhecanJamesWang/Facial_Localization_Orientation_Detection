@@ -20,6 +20,8 @@ import vgg16Modified as m
 
 
 debug = True
+outputDir = "./testImg/"
+
 
 def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
@@ -53,11 +55,12 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             # print "img.shape: ", img.shape
             (w, h, _) = img.shape
             x, y = ut.unpackLandmarks(labelsPTS)
-            
+
+            newImg, newX, newY = img, x, y            
             # tag = random.choice(generateFunc)
 
             # if tag == "rotate":
-            newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+            # newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
             # elif tag == "resize":
             #     newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
             # else:
@@ -67,14 +70,16 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
             plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
-            cv2.imwrite('./image/testOriginal' + str(count) + '.jpg', img)
-            cv2.imwrite('./image/testNew' + str(count) + '.jpg', newImg)        
-            cv2.imwrite('./image/plotOriginal' + str(count) + '.jpg', plotOriginal)
-            cv2.imwrite('./image/plotNew' + str(count) + '.jpg', plotNew)
+            cv2.imwrite(outputDir + 'testOriginal' + str(count) + '.jpg', img)
+            cv2.imwrite(outputDir + 'testNew' + str(count) + '.jpg', newImg)        
+            cv2.imwrite(outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
+            cv2.imwrite(outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
 
             # print "before normalize: ", newX
-            newX = ut.normalize(newX)
-            newY = ut.normalize(newY)
+            
+            # newX = ut.normalize(newX)
+            # newY = ut.normalize(newY)
+            
             # print "after normalize: ", newX
             # print "after denormalize again: ", ut.deNormalize(newX)
 
@@ -206,8 +211,9 @@ def train_on_batch(nb_epoch):
                 labels = label_BB[i]
                 img = X_batch[i]
                 # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
-                labelImg = ut.plotTarget(img, ut.deNormalize(labels))
-                cv2.imwrite('./image/inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
+                labelImg = ut.plotTarget(img, labels)
+                # labelImg = ut.plotTarget(img, ut.deNormalize(labels))
+                cv2.imwrite(outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
@@ -225,9 +231,9 @@ def train_on_batch(nb_epoch):
             if iter%30 == 0:
                 print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
                 print 'iteration: ', iter
-
-                labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
-                cv2.imwrite('./image/predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
+                labelImg = ut.plotTarget(X_batch[0], pred[0])
+                # labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
+                cv2.imwrite(outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
                 
 
 
@@ -236,8 +242,9 @@ def train_on_batch(nb_epoch):
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
                 loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
                 testCount += 1
-                labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
-                cv2.imwrite('./image/predTestLabelImg' + str(testCount) + '.jpg', labelImg)
+                labelImg = ut.plotTarget(X_batch_T[0], pred[0])
+                # labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
+                cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                 print "========================================================================="
                 print "loss, return on test: ", type(loss), loss

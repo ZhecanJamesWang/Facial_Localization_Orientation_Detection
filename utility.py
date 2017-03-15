@@ -93,7 +93,7 @@ def plotLandmarks(image, X, Y, name = None, ifRescale = False, ifReturn = False)
     for index in range(len(X)):
         if ifRescale:
             (w, h, _) = img.shape
-            (w, h, _) = (128, 128, 0)            
+            # (w, h, _) = (128, 128, 0)            
             cv2.circle(img,(int((X[index] + 0.5) * 128), int((Y[index] + 0.5) * 128)), 2, (0,0,255), -1)
         else:
             cv2.circle(img,(int(X[index]), int(Y[index])), 1, (0,0,255), -1)
