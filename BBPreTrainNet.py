@@ -77,32 +77,49 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
             # print "before normalize: ", newX
             
-            newX = ut.normalize(newX)
-            newY = ut.normalize(newY)
+            normX = ut.normalize(newX)
+            normY = ut.normalize(newY)
             
             # print "after normalize: ", newX
             # print "after denormalize again: ", ut.deNormalize(newX)
 
-            newPTS = np.asarray(ut.packLandmarks(newX, newY))
+            newPTS = np.asarray(ut.packLandmarks(normX, normY))
             # print "newPTS: ", newPTS.shape
 
 
-            xMin = min(newX)
-            yMin = min(newY)
-            xMax = max(newX)
-            yMax = max(newY)
-            xMean = (xMax + xMin)/2.0
-            yMean = (yMax + yMin)/2.0
+            normXMin = min(normX)
+            normYMin = min(normY)
+            normXMax = max(normX)
+            normYMax = max(normY)
+            normXMean = (normXMax + normXMin)/2.0
+            normYMean = (yMax + yMin)/2.0
+            normEdge = max(normYMax - normYMin, normXMax - normXMin)
 
-            edge = max(yMax - yMin, xMax - xMin)
-            
-            # print "xMin: ", xMin
-            # print "yMin: ", yMin
-            # print "xMax: ", xMax
-            # print "yMax: ", yMax
-            # print "xMean: ", xMean
-            # print "yMean: ", yMean
-            # print "edge: ", edge
+            newXMin = min(newX)
+            newYMin = min(newY)
+            newXMax = max(newX)
+            newYMax = max(newY)
+            newXMean = (newXMax + newXMin)/2.0
+            newYMean = (newYMax + newYMin)/2.0
+            newEdge = max(newYMax - newYMin, newXMax - newXMin)
+                        
+            print "newXMin: ", newXMin
+            print "newYMin: ", newYMin
+            print "newXMax: ", newXMax
+            print "newYMax: ", newYMax
+            print "newXMean: ", newXMean
+            print "newYMean: ", newYMean
+            print "newEdge: ", newEdge
+
+
+            print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
+            print "ut.deNormalize(normYMin): ", ut.deNormalize(normYMin)
+            print "ut.deNormalize(normXMax): ", ut.deNormalize(normXMax)
+            print "ut.deNormalize(normYMax): ", ut.deNormalize(normYMax)
+            print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
+            print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
+            print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
+
 
             # print "len(InputData): ", len(InputData)
             InputData[count,...] = newImg
