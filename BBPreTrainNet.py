@@ -86,8 +86,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             yMin = min(newY)
             xMax = max(newX)
             yMax = max(newY)
-            xMean = np.mean(newX)
-            yMean = np.mean(newY) 
+            xMean = (xMax - xMin)/2.0
+            yMean = (yMax - yMin)/2.0
 
             edge = max(yMax - yMin, xMax - xMin)
             
@@ -214,15 +214,15 @@ def train_on_batch(nb_epoch):
 
             print "****************************************************************************"
             print "loss, return on train: ", type(loss), loss
-            print "loss.shape: ", loss.shape
-            print "pred, return on train: ", type(pred)
-            print "pred.shape: ", pred.shape
-            print "pred #######: ", pred
-            print "tras, return on train: ", type(tras), tras
-            print "tras.shape: ", tras.shape 
+            # print "loss.shape: ", loss.shape
+            # print "pred, return on train: ", type(pred)
+            # print "pred.shape: ", pred.shape
+            # # print "pred #######: ", pred
+            # print "tras, return on train: ", type(tras), tras
+            # print "tras.shape: ", tras.shape 
 
 
-            if iter%10==0:
+            if iter%30 == 0:
                 print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
                 print 'iteration: ', iter
 
@@ -242,12 +242,12 @@ def train_on_batch(nb_epoch):
 
                 print "========================================================================="
                 print "loss, return on test: ", type(loss), loss
-                print "loss.shape: ", loss.shape
-                print "pred, return on test: ", type(pred)
-                print "pred.shape: ", pred.shape
-                print "pred #######: ", pred
-                print "tras, return on test: ", type(tras), tras
-                print "tras.shape: ", tras.shape 
+                # print "loss.shape: ", loss.shape
+                # print "pred, return on test: ", type(pred)
+                # print "pred.shape: ", pred.shape
+                # print "pred #######: ", pred
+                # print "tras, return on test: ", type(tras), tras
+                # print "tras.shape: ", tras.shape 
 
                 print 'iter ', iter,'Testing loss: ', loss
                 iterTest+=batch_size
