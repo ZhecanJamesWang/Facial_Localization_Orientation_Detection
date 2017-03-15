@@ -20,7 +20,7 @@ import vgg16Modified as m
 
 
 debug = True
-outputDir = "./testImg/"
+outputDir = "./testImg1/"
 
 
 def final_pred(y_true, y_pred):
@@ -77,8 +77,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
             # print "before normalize: ", newX
             
-            # newX = ut.normalize(newX)
-            # newY = ut.normalize(newY)
+            newX = ut.normalize(newX)
+            newY = ut.normalize(newY)
             
             # print "after normalize: ", newX
             # print "after denormalize again: ", ut.deNormalize(newX)
@@ -211,8 +211,8 @@ def train_on_batch(nb_epoch):
                 labels = label_BB[i]
                 img = X_batch[i]
                 # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
-                labelImg = ut.plotTarget(img, labels)
-                # labelImg = ut.plotTarget(img, ut.deNormalize(labels))
+                # labelImg = ut.plotTarget(img, labels)
+                labelImg = ut.plotTarget(img, ut.deNormalize(labels))
                 cv2.imwrite(outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
@@ -231,8 +231,8 @@ def train_on_batch(nb_epoch):
             if iter%30 == 0:
                 print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
                 print 'iteration: ', iter
-                labelImg = ut.plotTarget(X_batch[0], pred[0])
-                # labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
+                # labelImg = ut.plotTarget(X_batch[0], pred[0])
+                labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
                 cv2.imwrite(outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
                 
 
@@ -242,8 +242,8 @@ def train_on_batch(nb_epoch):
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
                 loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
                 testCount += 1
-                labelImg = ut.plotTarget(X_batch_T[0], pred[0])
-                # labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
+                # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
+                labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
                 cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                 print "========================================================================="
