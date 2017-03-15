@@ -32,8 +32,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
     InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
     InputLabel = np.zeros([BatchSize,7],dtype=np.float32)
 
-    print "InputData.shape: ", InputData.shape
-    print "InputLabel.shape: ", InputLabel.shape
+    # print "InputData.shape: ", InputData.shape
+    # print "InputLabel.shape: ", InputLabel.shape
 
     InputNames = []
     count = 0
@@ -45,7 +45,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
         labelsPTS=labels[:136].reshape([68,2])
 
         # if debug:
-        print "imgName: ", imgName
+        # print "imgName: ", imgName
         img = cv2.imread(imgName)
 
         if img != None:
@@ -91,19 +91,19 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
             edge = max(yMax - yMin, xMax - xMin)
             
-            print "xMin: ", xMin
-            print "yMin: ", yMin
-            print "xMax: ", xMax
-            print "yMax: ", yMax
-            print "xMean: ", xMean
-            print "yMean: ", yMean
-            print "edge: ", edge
+            # print "xMin: ", xMin
+            # print "yMin: ", yMin
+            # print "xMax: ", xMax
+            # print "yMax: ", yMax
+            # print "xMean: ", xMean
+            # print "yMean: ", yMean
+            # print "edge: ", edge
 
             # print "len(InputData): ", len(InputData)
             InputData[count,...] = newImg
             labels = np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
                 newPTS[8][1], xMean, yMean, edge])
-            print "input labels: ", labels
+            # print "input labels: ", labels
             InputLabel[count,...] = labels
             InputNames.append(imgName)
 
@@ -197,22 +197,17 @@ def train_on_batch(nb_epoch):
         for iter in range (MaxIters):
             train_start=iter*batch_size
             train_end = (iter+1)*batch_size
-            print "train_start: ", train_start
-            print "train_end: ", train_end
+            # print "train_start: ", train_start
+            # print "train_end: ", train_end
             X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 128)
 
-            print "X_batch.shape: ", X_batch.shape
+            # print "X_batch.shape: ", X_batch.shape
             for i in range(batch_size):
                 labels = label_BB[i]
                 img = X_batch[i]
-                print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
+                # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
                 labelImg = ut.plotTarget(img, ut.deNormalize(labels))
                 cv2.imwrite('./image/inputTrainlabelImg' + str(i) + '.jpg', labelImg)
-            # if debug:
-            #     print "X_batch.shape: ", X_batch.shape
-            #     print "label_BB.shape: ", label_BB.shape
-            #     print "Z_Names.shape: ", Z_Names.shape
-            #     print "finish iteration: ", iter
 
 
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
