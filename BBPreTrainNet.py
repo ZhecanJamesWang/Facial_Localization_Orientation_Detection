@@ -72,11 +72,11 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             cv2.imwrite('./image/plotOriginal' + str(count) + '.jpg', plotOriginal)
             cv2.imwrite('./image/plotNew' + str(count) + '.jpg', plotNew)
 
-            print "before normalize: ", newX
+            # print "before normalize: ", newX
             newX = ut.normalize(newX)
             newY = ut.normalize(newY)
-            print "after normalize: ", newX
-            print "after denormalize again: ", ut.deNormalize(newX)
+            # print "after normalize: ", newX
+            # print "after denormalize again: ", ut.deNormalize(newX)
 
             newPTS = np.asarray(ut.packLandmarks(newX, newY))
             # print "newPTS: ", newPTS.shape
@@ -91,6 +91,14 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
             edge = max(yMax - yMin, xMax - xMin)
             
+            print "xMin: ", xMin
+            print "yMin: ", yMin
+            print "xMax: ", xMax
+            print "yMax: ", yMax
+            print "xMean: ", xMean
+            print "yMean: ", yMean
+            print "edge: ", edge
+
             # print "len(InputData): ", len(InputData)
             InputData[count,...] = newImg
             labels = np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
