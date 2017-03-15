@@ -66,14 +66,14 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             # else:
             #     raise "not existing function"
 
-            # if debug:
-            plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
-            plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
+            if debug:
+                plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
+                plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
-            cv2.imwrite(outputDir + 'testOriginal' + str(count) + '.jpg', img)
-            cv2.imwrite(outputDir + 'testNew' + str(count) + '.jpg', newImg)        
-            cv2.imwrite(outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
-            cv2.imwrite(outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
+                cv2.imwrite(outputDir + 'testOriginal' + str(count) + '.jpg', img)
+                cv2.imwrite(outputDir + 'testNew' + str(count) + '.jpg', newImg)        
+                cv2.imwrite(outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
+                cv2.imwrite(outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
 
             # print "before normalize: ", newX
             
@@ -214,7 +214,6 @@ model.summary()
 def train_on_batch(nb_epoch):
     testCount = 0
     trainCount = 0
-
     for e in range(nb_epoch):
         # if e>0:
         shuffle(DataTr)
@@ -235,9 +234,12 @@ def train_on_batch(nb_epoch):
                 labelImg = ut.plotTarget(img, ut.deNormalize(labels))
                 cv2.imwrite(outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
-
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
             trainCount += 1
+
+            if trainCount >= 20:
+                trainCount = 0
+                
             print "****************************************************************************"
             print "loss, return on train: ", type(loss), loss
             # print "loss.shape: ", loss.shape
@@ -246,7 +248,6 @@ def train_on_batch(nb_epoch):
             # # print "pred #######: ", pred
             # print "tras, return on train: ", type(tras), tras
             # print "tras.shape: ", tras.shape 
-
 
             if iter%30 == 0:
                 print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
@@ -262,6 +263,10 @@ def train_on_batch(nb_epoch):
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
                 loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
                 testCount += 1
+
+                if testCount >= 20:
+                    testCount = 0
+
                 # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
                 labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
                 cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
