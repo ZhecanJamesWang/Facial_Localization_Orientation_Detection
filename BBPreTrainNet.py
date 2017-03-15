@@ -162,7 +162,7 @@ DataTr = FTr.readlines()
 # MeanShape = None
 # TrData,TrLabel=load_train_data(DataTr,0,5,5)
 
-batch_size = 48
+batch_size = 32
 TrNum = len(DataTr)
 # TeNum = TrNum
 # TeNum = len(DataTe)
@@ -227,7 +227,7 @@ def train_on_batch(nb_epoch):
                 print 'iteration: ', iter
 
                 labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
-                cv2.imwrite('./image/preTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
+                cv2.imwrite('./image/predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
                 
 
 
