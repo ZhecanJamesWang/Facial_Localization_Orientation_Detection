@@ -72,8 +72,11 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             cv2.imwrite('./image/plotOriginal' + str(count) + '.jpg', plotOriginal)
             cv2.imwrite('./image/plotNew' + str(count) + '.jpg', plotNew)
 
+            print "before normalize: ", newX
             newX = ut.normalize(newX)
             newY = ut.normalize(newY)
+            print "after normalize: ", newX
+            print "after denormalize again: ", ut.deNormalize(newX)
 
             newPTS = np.asarray(ut.packLandmarks(newX, newY))
             # print "newPTS: ", newPTS.shape
