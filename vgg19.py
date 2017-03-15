@@ -285,7 +285,7 @@ model.summary()
 
 
 
-sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
+sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.1)
 model.compile(loss='mean_squared_error', optimizer=sgd)
 
 nb_epoch=2
