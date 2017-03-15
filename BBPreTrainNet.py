@@ -92,7 +92,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             normXMax = max(normX)
             normYMax = max(normY)
             normXMean = (normXMax + normXMin)/2.0
-            normYMean = (yMax + yMin)/2.0
+            normYMean = (normYMax + normYMin)/2.0
             normEdge = max(normYMax - normYMin, normXMax - normXMin)
 
             newXMin = min(newX)
