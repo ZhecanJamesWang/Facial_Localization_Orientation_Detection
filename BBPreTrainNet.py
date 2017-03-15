@@ -207,6 +207,7 @@ def train_on_batch(nb_epoch):
             print "loss.shape: ", loss.shape
             print "pred, return on train: ", type(pred)
             print "pred.shape: ", pred.shape
+            print "pred #######: ", pred
             print "tras, return on train: ", type(tras), tras
             print "tras.shape: ", tras.shape 
 
@@ -234,6 +235,7 @@ def train_on_batch(nb_epoch):
                 print "loss.shape: ", loss.shape
                 print "pred, return on test: ", type(pred)
                 print "pred.shape: ", pred.shape
+                print "pred #######: ", pred
                 print "tras, return on test: ", type(tras), tras
                 print "tras.shape: ", tras.shape 
 
