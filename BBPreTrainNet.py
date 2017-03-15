@@ -77,23 +77,20 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
             # print "before normalize: ", newX
             
-            normX = ut.normalize(newX)
-            normY = ut.normalize(newY)
+            # normX = ut.normalize(newX)
+            # normY = ut.normalize(newY)
             
             # print "after normalize: ", newX
             # print "after denormalize again: ", ut.deNormalize(newX)
 
-            newPTS = np.asarray(ut.packLandmarks(normX, normY))
-            # print "newPTS: ", newPTS.shape
 
-
-            normXMin = min(normX)
-            normYMin = min(normY)
-            normXMax = max(normX)
-            normYMax = max(normY)
-            normXMean = (normXMax + normXMin)/2.0
-            normYMean = (normYMax + normYMin)/2.0
-            normEdge = max(normYMax - normYMin, normXMax - normXMin)
+            # normXMin = min(normX)
+            # normYMin = min(normY)
+            # normXMax = max(normX)
+            # normYMax = max(normY)
+            # normXMean = (normXMax + normXMin)/2.0
+            # normYMean = (normYMax + normYMin)/2.0
+            # normEdge = max(normYMax - normYMin, normXMax - normXMin)
 
             newXMin = min(newX)
             newYMin = min(newY)
@@ -103,28 +100,35 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             newYMean = (newYMax + newYMin)/2.0
             newEdge = max(newYMax - newYMin, newXMax - newXMin)
                         
-            print "newXMin: ", newXMin
-            print "newYMin: ", newYMin
-            print "newXMax: ", newXMax
-            print "newYMax: ", newYMax
-            print "newXMean: ", newXMean
-            print "newYMean: ", newYMean
-            print "newEdge: ", newEdge
+            # print "newXMin: ", newXMin
+            # print "newYMin: ", newYMin
+            # print "newXMax: ", newXMax
+            # print "newYMax: ", newYMax
+            # print "newXMean: ", newXMean
+            # print "newYMean: ", newYMean
+            # print "newEdge: ", newEdge
 
 
-            print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
-            print "ut.deNormalize(normYMin): ", ut.deNormalize(normYMin)
-            print "ut.deNormalize(normXMax): ", ut.deNormalize(normXMax)
-            print "ut.deNormalize(normYMax): ", ut.deNormalize(normYMax)
-            print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
-            print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
-            print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
+            normX = ut.normalize(newX)
+            normY = ut.normalize(newY)
+            normPTS = np.asarray(ut.packLandmarks(normX, normY))
+            normXMean, normYMean, normEdge = ut.normalize(newXMean), 
+            ut.normalize(newYMean), ut.normalize(newEdge)
+            # print "newPTS: ", newPTS.shape
+
+            # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
+            # print "ut.deNormalize(normYMin): ", ut.deNormalize(normYMin)
+            # print "ut.deNormalize(normXMax): ", ut.deNormalize(normXMax)
+            # print "ut.deNormalize(normYMax): ", ut.deNormalize(normYMax)
+            # print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
+            # print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
+            # print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
 
 
             # print "len(InputData): ", len(InputData)
             InputData[count,...] = newImg
-            labels = np.array([newPTS[27][0], newPTS[27][1], newPTS[8][0], 
-                newPTS[8][1], xMean, yMean, edge])
+            labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
+                normPTS[8][1], normXMean, normYMean, normEdge])
             # print "input labels: ", labels
             InputLabel[count,...] = labels
             InputNames.append(imgName)
