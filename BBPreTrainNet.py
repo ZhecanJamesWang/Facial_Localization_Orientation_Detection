@@ -190,6 +190,7 @@ def train_on_batch(nb_epoch):
             print "train_end: ", train_end
             X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 128)
 
+            print "X_batch.shape: ", X_batch.shape
             for i in range(X_batch):
                 labels = label_BB[i]
                 img = X_batch[i]
