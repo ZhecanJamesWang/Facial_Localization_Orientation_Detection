@@ -112,8 +112,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             normX = ut.normalize(newX)
             normY = ut.normalize(newY)
             normPTS = np.asarray(ut.packLandmarks(normX, normY))
-            normXMean, normYMean, normEdge = ut.normalize(newXMean), 
-            ut.normalize(newYMean), ut.normalize(newEdge)
+            normXMean, normYMean, normEdge = ut.normalize(newXMean), ut.normalize(newYMean), ut.normalize(newEdge)
             # print "newPTS: ", newPTS.shape
 
             # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
