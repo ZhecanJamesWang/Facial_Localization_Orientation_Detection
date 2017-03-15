@@ -77,8 +77,8 @@ def plotTarget(image, labels):
     edge = labels[6]
     xMean = labels[4]
     yMean = labels[5]
-    cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
-        int(yMean + edge/2.0)),(0, 255, 0), 3)
+    cv2.rectangle(img,(int(xMean - edge/3.0), int(yMean - edge/3.0)),(int(xMean + edge/3.0), 
+        int(yMean + edge/3.0)),(0, 255, 0), 3)
     # except Exception as e:
     #     print e
     #     print "plotTarget labels: ", labels
