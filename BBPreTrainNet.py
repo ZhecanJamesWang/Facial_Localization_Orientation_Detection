@@ -67,10 +67,10 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
                 plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
                 plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
-                cv2.imwrite('testOriginal' + str(count) + '.jpg', img)
-                cv2.imwrite('testNew' + str(count) + '.jpg', newImg)        
-                cv2.imwrite('plotOriginal' + str(count) + '.jpg', plotOriginal)
-                cv2.imwrite('plotNew' + str(count) + '.jpg', plotNew)
+                cv2.imwrite('./image/testOriginal' + str(count) + '.jpg', img)
+                cv2.imwrite('./image/testNew' + str(count) + '.jpg', newImg)        
+                cv2.imwrite('./image/plotOriginal' + str(count) + '.jpg', plotOriginal)
+                cv2.imwrite('./image/plotNew' + str(count) + '.jpg', plotNew)
 
             newX = ut.normalize(newX)
             newY = ut.normalize(newY)
@@ -198,7 +198,7 @@ def train_on_batch(nb_epoch):
             img = X_batch[0]
             print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
             labelImg = ut.plotTarget(img, ut.deNormalize(labels))
-            cv2.imwrite('labelImg' + str(trainCount) + '.jpg', labelImg)
+            cv2.imwrite('./image/labelImg' + str(trainCount) + '.jpg', labelImg)
 
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
 
@@ -217,7 +217,7 @@ def train_on_batch(nb_epoch):
                 print 'iteration: ', iter
 
                 labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
-                cv2.imwrite('trainLabelImg' + str(trainCount) + '.jpg', labelImg)
+                cv2.imwrite('./image/trainLabelImg' + str(trainCount) + '.jpg', labelImg)
                 trainCount += 1
 
 
@@ -227,7 +227,7 @@ def train_on_batch(nb_epoch):
                 loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
 
                 labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
-                cv2.imwrite('testLabelImg' + str(testCount) + '.jpg', labelImg)
+                cv2.imwrite('./image/testLabelImg' + str(testCount) + '.jpg', labelImg)
                 testCount += 1
 
                 print "========================================================================="
