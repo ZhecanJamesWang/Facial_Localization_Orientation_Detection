@@ -86,8 +86,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             yMin = min(newY)
             xMax = max(newX)
             yMax = max(newY)
-            xMean = (xMax - xMin)/2.0
-            yMean = (yMax - yMin)/2.0
+            xMean = (xMax + xMin)/2.0
+            yMean = (yMax + yMin)/2.0
 
             edge = max(yMax - yMin, xMax - xMin)
             
@@ -162,7 +162,7 @@ DataTr = FTr.readlines()
 # MeanShape = None
 # TrData,TrLabel=load_train_data(DataTr,0,5,5)
 
-batch_size=16
+batch_size = 48
 TrNum = len(DataTr)
 # TeNum = TrNum
 # TeNum = len(DataTe)
@@ -207,11 +207,11 @@ def train_on_batch(nb_epoch):
                 img = X_batch[i]
                 # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
                 labelImg = ut.plotTarget(img, ut.deNormalize(labels))
-                cv2.imwrite('./image/inputTrainlabelImg' + str(i) + '.jpg', labelImg)
+                cv2.imwrite('./image/inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
-
+            trainCount += 1
             print "****************************************************************************"
             print "loss, return on train: ", type(loss), loss
             # print "loss.shape: ", loss.shape
@@ -228,17 +228,16 @@ def train_on_batch(nb_epoch):
 
                 labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
                 cv2.imwrite('./image/preTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
-                trainCount += 1
+                
 
 
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
                 loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
-
+                testCount += 1
                 labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
                 cv2.imwrite('./image/predTestLabelImg' + str(testCount) + '.jpg', labelImg)
-                testCount += 1
 
                 print "========================================================================="
                 print "loss, return on test: ", type(loss), loss
