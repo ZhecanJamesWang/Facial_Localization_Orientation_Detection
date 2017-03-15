@@ -197,7 +197,7 @@ def train_on_batch(nb_epoch):
             labels = label_BB[0]
             img = X_batch[0]
             print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
-            labelImg = ut.plotTarget(img, ut.deNormalize(labels)
+            labelImg = ut.plotTarget(img, ut.deNormalize(labels))
             cv2.imwrite('labelImg' + str(trainCount) + '.jpg', labelImg)
 
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
@@ -219,7 +219,7 @@ def train_on_batch(nb_epoch):
                 cv2.imwrite('trainLabelImg' + str(trainCount) + '.jpg', labelImg)
                 trainCount += 1
 
-                
+
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
