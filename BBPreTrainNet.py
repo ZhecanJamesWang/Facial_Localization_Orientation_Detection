@@ -32,8 +32,8 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
     InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
     InputLabel = np.zeros([BatchSize,7],dtype=np.float32)
 
-    # print "InputData.shape: ", InputData.shape
-    # print "InputLabel.shape: ", InputLabel.shape
+    print "InputData.shape: ", InputData.shape
+    print "InputLabel.shape: ", InputLabel.shape
 
     InputNames = []
     count = 0
@@ -54,7 +54,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             (w, h, _) = img.shape
             x, y = ut.unpackLandmarks(labelsPTS)
             
-            tag = random.choice(generateFunc)
+            # tag = random.choice(generateFunc)
 
             # if tag == "rotate":
             newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
@@ -95,10 +95,6 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             print "input labels: ", labels
             InputLabel[count,...] = labels
             InputNames.append(imgName)
-
-            print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
-            labelImg = ut.plotTarget(newImg, ut.deNormalize(labels))
-            cv2.imwrite('labelImg' + str(count) + '.jpg', labelImg)
 
             # print "count: ", count
             count += 1
@@ -198,12 +194,13 @@ def train_on_batch(nb_epoch):
             #     print "label_BB.shape: ", label_BB.shape
             #     print "Z_Names.shape: ", Z_Names.shape
             #     print "finish iteration: ", iter
+            labels = label_BB[0]
+            img = X_batch[0]
+            print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
+            labelImg = ut.plotTarget(img, ut.deNormalize(labels)
+            cv2.imwrite('labelImg' + str(trainCount) + '.jpg', labelImg)
 
             loss, tras, pred = model.train_on_batch(X_batch,label_BB)
-
-            labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
-            cv2.imwrite('trainLabelImg' + str(trainCount) + '.jpg', labelImg)
-            trainCount += 1
 
             print "****************************************************************************"
             print "loss, return on train: ", type(loss), loss
@@ -217,6 +214,12 @@ def train_on_batch(nb_epoch):
             if iter%10==0:
                 print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
                 print 'iteration: ', iter
+
+                labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
+                cv2.imwrite('trainLabelImg' + str(trainCount) + '.jpg', labelImg)
+                trainCount += 1
+
+                
                 test_start = iterTest * batch_size
                 test_end = (iterTest + 1) * batch_size
                 X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
