@@ -189,13 +189,21 @@ def train_on_batch(nb_epoch, MaxIters):
             # print "tras, return on train: ", type(tras), tras
             # print "tras.shape: ", tras.shape 
 
-            if iter%30 == 0:
-                print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-                print 'iteration: ', iter
+            if iter%100 == 0:
+                logInfo = ""
+                if os.path.exists(outputDir + 'log.txt') and init == False:
+                    f = open(outputDir + 'log.txt', 'a')
+                else:
+                    f = open(outputDir + 'log.txt','w')
+                    init = False
+
+                iterationInfo = ("^^^^^^^^^^^^^^^" + "\n" + 'iteration: ' + str(iter))
+                logInfo += iterationInfo
+                print iterationInfo
+
                 # labelImg = ut.plotTarget(X_batch[0], pred[0])
                 labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
                 cv2.imwrite(outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
-                
 
 
                 test_start = iterTest * batch_size
@@ -211,8 +219,10 @@ def train_on_batch(nb_epoch, MaxIters):
                 labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
                 cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
-                print "========================================================================="
-                print "loss, TEST: ", loss
+                testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
+                logInfo += testInfo
+                print testInfo
+
                 # print "loss.shape: ", loss.shape
                 # print "pred, return on test: ", type(pred)
                 # print "pred.shape: ", pred.shape
@@ -220,9 +230,11 @@ def train_on_batch(nb_epoch, MaxIters):
                 # print "tras, return on test: ", type(tras), tras
                 # print "tras.shape: ", tras.shape 
 
-                print 'iter ', iter,'Testing loss: ', loss
                 iterTest+=batch_size
                 iterTest%=MaxTestIters
+                
+                f.write(logInfo)
+                f.close()
 
             if iter%3000==0:
                 model.save(modelDir + '/model%d.h5'%iter)
@@ -230,7 +242,7 @@ def train_on_batch(nb_epoch, MaxIters):
 
 
 
-
+init = True
 debug = True
 outputDir = "./output03162017_01_0.001_only/"
 modelDir = "./model03162017_01_0.001_only/"
