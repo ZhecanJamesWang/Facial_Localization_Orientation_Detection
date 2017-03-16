@@ -114,10 +114,10 @@ class faceOrientPred(object):
                     plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
                     plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
-                    cv2.imwrite(outputDir + 'testOriginal' + str(count) + '.jpg', img)
-                    cv2.imwrite(outputDir + 'testNew' + str(count) + '.jpg', newImg)        
-                    cv2.imwrite(outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
-                    cv2.imwrite(outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
+                    cv2.imwrite(self.outputDir + 'testOriginal' + str(count) + '.jpg', img)
+                    cv2.imwrite(self.outputDir + 'testNew' + str(count) + '.jpg', newImg)        
+                    cv2.imwrite(self.outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
+                    cv2.imwrite(self.outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
 
                 # print "before normalize: ", newX
                 
