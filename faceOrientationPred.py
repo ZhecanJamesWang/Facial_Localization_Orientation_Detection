@@ -258,7 +258,7 @@ MaxIters = TrNum/batch_size
 
 model = m.model(input_shape=(128, 128, 3))
 
-sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
+sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
 model.summary()
 train_on_batch(1, MaxIters)
