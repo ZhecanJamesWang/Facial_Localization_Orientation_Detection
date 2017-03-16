@@ -73,7 +73,7 @@ class faceOrientPred(object):
 
     def DataGenBB(self, DataStrs, train_start,train_end):
 
-        generateFunc = ["rotate", "resize"]
+        generateFunc = ["resize"]
 
         InputData = np.zeros([self.batch_size, self.imSize, self.imSize, 3], dtype = np.float32)
         InputLabel = np.zeros([self.batch_size, 7], dtype = np.float32)
@@ -106,7 +106,8 @@ class faceOrientPred(object):
                 if tag == "rotate":
                     newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
                 elif tag == "resize":
-                    newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+                    newImg, newX, newY = ut.scale(image, x, y, self.imSize, random = True)
+                    # newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
                 else:
                     raise "not existing function"
 

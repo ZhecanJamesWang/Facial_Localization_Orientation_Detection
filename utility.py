@@ -13,6 +13,26 @@ def mirrorImage(image, X, Y):
     Y = np.asarray(Y)
     return image, X.astype(int), Y.astype(int)
 
+def contrastBrightess(image, X, Y):
+    contrast = np.random.uniform(0.5, 3)
+    brightness = np.random.uniform(-50, 50)
+    # contrast = 2
+    # brightness = 50
+
+    maxIntensity = 255.0 # depends on dtype of image data
+    phi = 1
+    theta = 1
+    image = ((maxIntensity/phi)*(image/(maxIntensity/theta))**contrast) + brightness
+    image = np.asarray(image)
+    top_index = np.where(image > 255)
+    bottom_index = np.where(image < 0)
+    image[top_index] = 255
+    image[bottom_index] = 0
+    image = array(image,dtype=uint8)
+    X = np.asarray(X)
+    Y = np.asarray(Y)
+    return image, X, Y
+
 
 def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
    # if counter > 2:
@@ -42,65 +62,6 @@ def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
     # print "image: ", type(image)
     return image, newX, newY
 
-
-def contrastBrightess(image, X, Y):
-    contrast = np.random.uniform(0.5, 3)
-    brightness = np.random.uniform(-50, 50)
-    # contrast = 2
-    # brightness = 50
-
-    maxIntensity = 255.0 # depends on dtype of image data
-    phi = 1
-    theta = 1
-    image = ((maxIntensity/phi)*(image/(maxIntensity/theta))**contrast) + brightness
-    image = np.asarray(image)
-    top_index = np.where(image > 255)
-    bottom_index = np.where(image < 0)
-    image[top_index] = 255
-    image[bottom_index] = 0
-    image = array(image,dtype=uint8)
-    X = np.asarray(X)
-    Y = np.asarray(Y)
-    return image, X, Y
-
-def plotTarget(image, labels, imSize):
-    img = np.copy(image)
-    assert len(labels) == 7   
-
-    # try:
-    (w, h, _) = (imSize, imSize, 0)  
-    for i in range(0, 6, 2):      
-        # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
-        #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
-        cv2.circle(img,(int(labels[i]), int(labels[i + 1])), 2, (0,0,255), -1)
-
-    edge = labels[6]
-    xMean = labels[4]
-    yMean = labels[5]
-    cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
-        int(yMean + edge/2.0)),(0, 255, 0), 3)
-    # except Exception as e:
-    #     print e
-    #     print "plotTarget labels: ", labels
-    return img
-
-def plotLandmarks(image, X, Y, imSize, name = None, ifRescale = False, ifReturn = False):
-    # plot landmarks on original image
-    img = np.copy(image)
-    assert len(X) == len(Y)   
-    # print "X: :::::::::::::::",
-    # print X[:10]   
-    for index in range(len(X)):
-        if ifRescale:
-            (w, h, _) = img.shape
-            # (w, h, _) = (128, 128, 0)            
-            cv2.circle(img,(int((X[index] + 0.5) * imSize), int((Y[index] + 0.5) * imSize)), 2, (0,0,255), -1)
-        else:
-            cv2.circle(img,(int(X[index]), int(Y[index])), 1, (0,0,255), -1)
-    if ifReturn:
-        return img
-    else:
-        cv2.imshow(name,img)
 
 def resize(image, X, Y, xMaxBound = None, yMaxBound = None, random = False):
 
@@ -160,6 +121,64 @@ def resize(image, X, Y, xMaxBound = None, yMaxBound = None, random = False):
 
     return image, newX.astype(int), newY.astype(int)
 
+def scale(image, X, Y, imSize, random = False):
+    size = (imSize, imSize)
+    originalImage = image
+    # resize imgage to determined size maintaing the original ratio
+    (yMaxBound, xMaxBound, _) = image.shape
+
+    newX = [x/float(xMaxBound) for x in X]
+    newY = [y/float(yMaxBound) for y in Y]
+
+
+    if random:
+        ratio = np.random.uniform(0.5, 1)
+        size = (int(xMaxBound*ratio), int(yMaxBound*ratio))
+
+    image = Image.fromarray(np.uint8(image))
+    image.thumbnail(size, Image.ANTIALIAS)
+    image_size = image.size
+
+    (newXMaxBound, newYMaxBound) = image.size
+
+    newX = [x*float(newXMaxBound) for x in newX]
+    newY = [y*float(newYMaxBound) for y in newY]
+
+    thumb = image.crop( (0, 0, size[0], size[1]) )
+    image = np.asarray(thumb)
+
+    offset_y = (size[0] - image_size[1]) / 2 
+    offset_x = (size[1] - image_size[0]) / 2
+
+    newX = [x + offset_x for x in newX]
+    newY = [y + offset_y for y in newY]
+    
+    thumb = ImageChops.offset(thumb, offset_x, offset_y)
+
+
+
+    image = np.asarray(thumb)
+
+
+    if random:
+        newImg = np.zeros_like(originalImage)
+        
+        offset_y = int((yMaxBound - image_size[1]) / 2)
+        offset_x = int((xMaxBound - image_size[0]) / 2)
+        other_offset_y = -offset_y if image_size[1] % 2 == 0 else -(offset_y + 1)
+        other_offset_x = -offset_x if image_size[0] % 2 == 0 else -(offset_x + 1)
+
+        newX = [x + offset_x for x in newX]
+        newY = [y + offset_y for y in newY]
+        newImg[offset_y:other_offset_y, offset_x:other_offset_x] = image
+        image = newImg
+
+    newX = np.asarray(newX)
+    newY = np.asarray(newY)
+
+    return image, newX.astype(int), newY.astype(int)
+
+
 def translateImage(image, X, Y, counter = 0):
     if counter > 2:
         return None, None, None
@@ -217,6 +236,47 @@ def normalize(array, imSize):
         return newArray
     else:
         return (array/float(imSize)) - 0.5
+
+
+def plotTarget(image, labels, imSize):
+    img = np.copy(image)
+    assert len(labels) == 7   
+
+    # try:
+    (w, h, _) = (imSize, imSize, 0)  
+    for i in range(0, 6, 2):      
+        # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
+        #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
+        cv2.circle(img,(int(labels[i]), int(labels[i + 1])), 2, (0,0,255), -1)
+
+    edge = labels[6]
+    xMean = labels[4]
+    yMean = labels[5]
+    cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
+        int(yMean + edge/2.0)),(0, 255, 0), 3)
+    # except Exception as e:
+    #     print e
+    #     print "plotTarget labels: ", labels
+    return img
+
+def plotLandmarks(image, X, Y, imSize, name = None, ifRescale = False, ifReturn = False):
+    # plot landmarks on original image
+    img = np.copy(image)
+    assert len(X) == len(Y)   
+    # print "X: :::::::::::::::",
+    # print X[:10]   
+    for index in range(len(X)):
+        if ifRescale:
+            (w, h, _) = img.shape
+            # (w, h, _) = (128, 128, 0)            
+            cv2.circle(img,(int((X[index] + 0.5) * imSize), int((Y[index] + 0.5) * imSize)), 2, (0,0,255), -1)
+        else:
+            cv2.circle(img,(int(X[index]), int(Y[index])), 1, (0,0,255), -1)
+    if ifReturn:
+        return img
+    else:
+        cv2.imshow(name,img)
+
 
 def test():
     dataDir = "./data/ibug/"
