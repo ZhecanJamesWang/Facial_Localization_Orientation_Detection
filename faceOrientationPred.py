@@ -19,14 +19,6 @@ import shutil
 import vgg16Modified as m
 import os
 
-
-
-def final_pred(y_true, y_pred):
-    # y_cont=np.concatenate(y_pred,axis=1)
-    return y_pred
-
-
-
 init = True
 debug = True
 outputDir = "./output03162017_01_0.001_only/"
@@ -62,27 +54,15 @@ MaxTestIters = TeNum/batch_size
 print "train data length:", TrNum
 print "test data length:", TeNum
 
-model = m.model(input_shape=(128, 128, 3))
 
-sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
 
-sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
 
-sgd = optimizers.SGD(lr=0.000001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
 
-# sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
-# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-# model.summary()
-# train_on_batch(1, MaxIters = 15000)
+
+def final_pred(y_true, y_pred):
+    # y_cont=np.concatenate(y_pred,axis=1)
+    return y_pred
+
 
 
 
@@ -302,6 +282,29 @@ def train_on_batch(nb_epoch, MaxIters):
                 model.save(modelDir + '/model%d.h5'%iter)
 
 
+
+
+model = m.model(input_shape=(128, 128, 3))
+
+sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 20000)
+
+sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 20000)
+
+sgd = optimizers.SGD(lr=0.000001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 20000)
+
+# sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
+# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+# model.summary()
+# train_on_batch(1, MaxIters = 15000)
 
 
 
