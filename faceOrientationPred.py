@@ -255,18 +255,19 @@ TrNum = len(DataTr)
 # TeNum = len(DataTe)
 MaxIters = TrNum/batch_size
 # MaxTestIters = TeNum/batch_size
+print "train data length:", TrNum
 
 model = m.model(input_shape=(128, 128, 3))
 
 sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
 model.summary()
-train_on_batch(1, MaxIters)
+train_on_batch(1, MaxIters = 3000)
 
-# sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-# model.summary()
-# train_on_batch(1, MaxIters = 10000)
+sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 100000000000)
 
 # sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
 # model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
