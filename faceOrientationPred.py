@@ -255,7 +255,7 @@ class faceOrientPred(object):
 
                     test_start = iterTest * self.batch_size
                     test_end = (iterTest + 1) * self.batch_size
-                    X_batch_T, label_BB_T, Z_Names_T= DataGenBB(self.DataTr, train_start=test_start, train_end=test_end)
+                    X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTr, train_start=test_start, train_end=test_end)
                     loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
                     testCount += 1
 
