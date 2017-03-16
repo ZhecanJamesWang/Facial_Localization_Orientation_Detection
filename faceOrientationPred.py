@@ -278,7 +278,7 @@ class faceOrientPred(object):
                     # print "tras.shape: ", tras.shape 
 
                     iterTest += self.batch_size
-                    iterTest %= MaxTestIters
+                    iterTest %= self.MaxTestIters
                     
                     f.write(logInfo)
                     f.close()
