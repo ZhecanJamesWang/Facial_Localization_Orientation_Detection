@@ -221,7 +221,7 @@ class faceOrientPred(object):
                     labelImg = ut.plotTarget(img, ut.deNormalize(labels))
                     cv2.imwrite(self.outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
-                loss, tras, pred = model.train_on_batch(X_batch,label_BB)
+                loss, tras, pred = self.model.train_on_batch(X_batch,label_BB)
                 trainCount += 1
 
                 if trainCount >= 20:
@@ -256,7 +256,7 @@ class faceOrientPred(object):
                     test_start = iterTest * self.batch_size
                     test_end = (iterTest + 1) * batch_size
                     X_batch_T, label_BB_T, Z_Names_T= DataGenBB(self.DataTr, train_start=test_start, train_end=test_end)
-                    loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
+                    loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
                     testCount += 1
 
                     if testCount >= 20:
