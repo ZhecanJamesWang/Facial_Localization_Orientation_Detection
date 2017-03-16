@@ -222,7 +222,7 @@ def train_on_batch(nb_epoch, MaxIters):
 
                 print 'iter ', iter,'Testing loss: ', loss
                 iterTest+=batch_size
-                # iterTest%=MaxTestIters
+                iterTest%=MaxTestIters
 
             if iter%3000==0:
                 model.save(modelDir + '/model%d.h5'%iter)
@@ -242,32 +242,45 @@ TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
 
 FTr = open(TrainPath,'r')
 DataTr = FTr.readlines()
+print "type(DataTr): ", type(DataTr)
+print "len(DataTr): ", len(DataTr)
 
-# print "DataTr: ", type(DataTr)
-# print len(DataTr)
+shuffle(DataTr)
+DataTe = DataTr[:int(len(DataTr)*0.1)]
+DataTr = DataTr[int(len(DataTr)*0.1):]
+print "len(DataTr): ", len(DataTr)
+print "len(DataTe): ", len(DataTe)
+
+TrNum = len(DataTr)
+
 # FTe = open(TestPath,'r')
 # DataTe = FTe.readlines()
+TeNum = len(DataTe)
 
 
 batch_size = 32
-TrNum = len(DataTr)
-# TeNum = TrNum
-# TeNum = len(DataTe)
 MaxIters = TrNum/batch_size
-# MaxTestIters = TeNum/batch_size
+MaxTestIters = TeNum/batch_size
+
 print "train data length:", TrNum
+print "test data length:", TeNum
 
 model = m.model(input_shape=(128, 128, 3))
 
 sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
 model.summary()
-train_on_batch(1, MaxIters = 3000)
+train_on_batch(1, MaxIters = 20000)
 
 sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
 model.summary()
-train_on_batch(1, MaxIters = 6000)
+train_on_batch(1, MaxIters = 20000)
+
+sgd = optimizers.SGD(lr=0.000001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 20000)
 
 # sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
 # model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
