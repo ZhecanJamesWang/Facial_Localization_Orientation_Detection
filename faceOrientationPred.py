@@ -19,6 +19,14 @@ import shutil
 import vgg16Modified as m
 import os
 
+
+
+def final_pred(y_true, y_pred):
+    # y_cont=np.concatenate(y_pred,axis=1)
+    return y_pred
+
+
+
 init = True
 debug = True
 outputDir = "./output03162017_01_0.001_only/"
@@ -77,13 +85,6 @@ train_on_batch(1, MaxIters = 20000)
 # train_on_batch(1, MaxIters = 15000)
 
 
-
-
-
-
-def final_pred(y_true, y_pred):
-    # y_cont=np.concatenate(y_pred,axis=1)
-    return y_pred
 
 def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
