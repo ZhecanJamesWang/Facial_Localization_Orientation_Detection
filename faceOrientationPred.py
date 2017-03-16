@@ -250,7 +250,7 @@ class faceOrientPred(object):
                     print iterationInfo
 
                     # labelImg = ut.plotTarget(X_batch[0], pred[0])
-                    labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]), self.imSize)
+                    labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0], self.imSize), self.imSize)
                     cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
