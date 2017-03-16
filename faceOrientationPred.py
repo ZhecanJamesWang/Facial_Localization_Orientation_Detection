@@ -22,7 +22,7 @@ import os
 
 class faceOrientPred(object):
     """face orientation detection"""
-    def __init__(self, arg):
+    def __init__(self):
 
         self.init = True
         self.debug = True
