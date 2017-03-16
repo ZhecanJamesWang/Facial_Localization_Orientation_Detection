@@ -132,7 +132,7 @@ def scale(image, X, Y, imSize, random = False):
 
 
     if random:
-        ratio = np.random.uniform(0.5, 1)
+        ratio = np.random.uniform(0.8, 1.2)
         size = (int(xMaxBound*ratio), int(yMaxBound*ratio))
 
     image = Image.fromarray(np.uint8(image))
