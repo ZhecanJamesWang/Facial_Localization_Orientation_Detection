@@ -219,7 +219,7 @@ class faceOrientPred(object):
                     img = X_batch[i]
                     # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
                     # labelImg = ut.plotTarget(img, labels)
-                    labelImg = ut.plotTarget(img, ut.deNormalize(labels), self.imSize)
+                    labelImg = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize)
                     cv2.imwrite(self.outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
                 loss, tras, pred = self.model.train_on_batch(X_batch,label_BB)
