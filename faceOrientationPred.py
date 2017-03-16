@@ -106,7 +106,7 @@ class faceOrientPred(object):
                 if tag == "rotate":
                     newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
                 elif tag == "resize":
-                    newImg, newX, newY = ut.scale(image, x, y, self.imSize, random = True)
+                    newImg, newX, newY = ut.scale(img, x, y, self.imSize, random = True)
                     # newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
                 else:
                     raise "not existing function"
