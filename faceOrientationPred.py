@@ -219,7 +219,7 @@ class faceOrientPred(object):
                     # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
                     # labelImg = ut.plotTarget(img, labels)
                     labelImg = ut.plotTarget(img, ut.deNormalize(labels))
-                    cv2.imwrite(outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
+                    cv2.imwrite(self.outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
                 loss, tras, pred = model.train_on_batch(X_batch,label_BB)
                 trainCount += 1
@@ -250,7 +250,7 @@ class faceOrientPred(object):
 
                     # labelImg = ut.plotTarget(X_batch[0], pred[0])
                     labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
-                    cv2.imwrite(outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
+                    cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
                     test_start = iterTest * self.batch_size
@@ -264,7 +264,7 @@ class faceOrientPred(object):
 
                     # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
                     labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
-                    cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
+                    cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                     testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
                     logInfo += testInfo
