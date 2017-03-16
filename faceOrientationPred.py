@@ -19,59 +19,64 @@ import shutil
 import vgg16Modified as m
 import os
 
-init = True
-debug = True
-outputDir = "./output03162017_01_0.001_only/"
-modelDir = "./model03162017_01_0.001_only/"
+
+class faceOrientPred(object):
+    """face orientation detection"""
+    def __init__(self, arg):
+
+        self.init = True
+        self.debug = True
+        self.outputDir = "./output03162017_01_0.001_only/"
+        self.modelDir = "./model03162017_01_0.001_only/"
+        self.imSize = 128
+
+        # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
+        TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
+        # TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
+
+        FTr = open(TrainPath,'r')
+        self.DataTr = FTr.readlines()
+        print "type(DataTr): ", type(self.DataTr)
+        print "len(DataTr): ", len(self.DataTr)
+
+        shuffle(self.DataTr)
+        self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
+        self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
+        print "len(self.DataTr): ", len(self.DataTr)
+        print "len(self.DataTe): ", len(self.DataTe)
+
+        TrNum = len(self.DataTr)
+
+        # FTe = open(TestPath,'r')
+        # DataTe = FTe.readlines()
+        TeNum = len(self.DataTe)
 
 
-# TN = TextNet('./MatBS/shape_0.obj', imgW=256)
-TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
-# TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
+        self.batch_size = 32
+        self.MaxIters = TrNum/self.batch_size
+        self.MaxTestIters = TeNum/self.batch_size
 
-FTr = open(TrainPath,'r')
-DataTr = FTr.readlines()
-print "type(DataTr): ", type(DataTr)
-print "len(DataTr): ", len(DataTr)
-
-shuffle(DataTr)
-DataTe = DataTr[:int(len(DataTr)*0.1)]
-DataTr = DataTr[int(len(DataTr)*0.1):]
-print "len(DataTr): ", len(DataTr)
-print "len(DataTe): ", len(DataTe)
-
-TrNum = len(DataTr)
-
-# FTe = open(TestPath,'r')
-# DataTe = FTe.readlines()
-TeNum = len(DataTe)
-
-
-batch_size = 32
-MaxIters = TrNum/batch_size
-MaxTestIters = TeNum/batch_size
-
-print "train data length:", TrNum
-print "test data length:", TeNum
+        print "train data length:", TrNum
+        print "test data length:", TeNum
 
 
 
 
 
 
-def final_pred(y_true, y_pred):
+def final_pred(self, y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
     return y_pred
 
 
 
 
-def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
+def DataGenBB(self, DataStrs, train_start,train_end):
 
     generateFunc = ["rotate", "resize"]
 
-    InputData = np.zeros([BatchSize,imSize,imSize,3],dtype=np.float32)
-    InputLabel = np.zeros([BatchSize,7],dtype=np.float32)
+    InputData = np.zeros([self.BatchSize, self.imSize, self.imSize, 3], dtype = np.float32)
+    InputLabel = np.zeros([self.BatchSize, 7], dtype = np.float32)
 
     # print "InputData.shape: ", InputData.shape
     # print "InputLabel.shape: ", InputLabel.shape
@@ -105,7 +110,7 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
             # else:
             #     raise "not existing function"
 
-            if debug:
+            if self.debug:
                 plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
                 plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
@@ -191,24 +196,24 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
 
 
-def train_on_batch(nb_epoch, MaxIters):
-    if os.path.exists(modelDir)==False:
-        os.mkdir(modelDir)
+def train_on_batch(self, nb_epoch, MaxIters, init):
+    if os.path.exists(self.modelDir)==False:
+        os.mkdir(self.modelDir)
     testCount = 0
     trainCount = 0
     for e in range(nb_epoch):
         # if e>0:
-        shuffle(DataTr)
+        shuffle(self.DataTr)
         iterTest=0
-        for iter in range (MaxIters):
-            train_start=iter*batch_size
-            train_end = (iter+1)*batch_size
+        for iter in range (self.MaxIters):
+            train_start=iter*self.batch_size
+            train_end = (iter+1)*self.batch_size
             # print "train_start: ", train_start
             # print "train_end: ", train_end
-            X_batch, label_BB, Z_Names = DataGenBB(DataTr,batch_size,train_start=train_start, train_end=train_end, imSize = 128)
+            X_batch, label_BB, Z_Names = self.DataGenBB(self.DataTr, train_start=train_start, train_end=train_end)
 
             # print "X_batch.shape: ", X_batch.shape
-            for i in range(batch_size):
+            for i in range(self.batch_size):
                 labels = label_BB[i]
                 img = X_batch[i]
                 # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
@@ -233,11 +238,11 @@ def train_on_batch(nb_epoch, MaxIters):
 
             if iter%100 == 0:
                 logInfo = ""
-                if os.path.exists(outputDir + 'log.txt') and init == False:
-                    f = open(outputDir + 'log.txt', 'a')
+                if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
+                    f = open(self.outputDir + 'log.txt', 'a')
                 else:
-                    f = open(outputDir + 'log.txt','w')
-                    init = False
+                    f = open(self.outputDir + 'log.txt','w')
+                    self.init = False
 
                 iterationInfo = ("^^^^^^^^^^^^^^^" + "\n" + 'iteration: ' + str(iter))
                 logInfo += iterationInfo
@@ -248,9 +253,9 @@ def train_on_batch(nb_epoch, MaxIters):
                 cv2.imwrite(outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
-                test_start = iterTest * batch_size
+                test_start = iterTest * self.batch_size
                 test_end = (iterTest + 1) * batch_size
-                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(DataTr, batch_size, train_start=test_start, train_end=test_end, imSize = 128)
+                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(self.DataTr, train_start=test_start, train_end=test_end)
                 loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
                 testCount += 1
 
@@ -279,32 +284,32 @@ def train_on_batch(nb_epoch, MaxIters):
                 f.close()
 
             if iter%3000==0:
-                model.save(modelDir + '/model%d.h5'%iter)
+                self.model.save(self.modelDir + '/model%d.h5'%iter)
 
+    def run(self):
 
+        self.model = m.model(input_shape=(128, 128, 3))
 
+        sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
+        self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+        self.model.summary()
+        self.train_on_batch(1, MaxIters = 20000)
 
-model = m.model(input_shape=(128, 128, 3))
+        sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
+        self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+        self.model.summary()
+        self.train_on_batch(1, MaxIters = 20000)
 
-sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
+        sgd = optimizers.SGD(lr=0.000001, decay=1e-6, momentum=0.9)
+        self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+        self.model.summary()
+        self.train_on_batch(1, MaxIters = 20000)
 
-sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
+    
+    def main(self):
+        self.run()
 
-sgd = optimizers.SGD(lr=0.000001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
-
-# sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
-# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-# model.summary()
-# train_on_batch(1, MaxIters = 15000)
-
+if __name__ == '__main__':
+    faceOrientPred().main()
 
 
