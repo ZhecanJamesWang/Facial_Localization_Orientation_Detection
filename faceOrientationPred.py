@@ -19,6 +19,67 @@ import shutil
 import vgg16Modified as m
 import os
 
+init = True
+debug = True
+outputDir = "./output03162017_01_0.001_only/"
+modelDir = "./model03162017_01_0.001_only/"
+
+
+# TN = TextNet('./MatBS/shape_0.obj', imgW=256)
+TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
+# TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
+
+FTr = open(TrainPath,'r')
+DataTr = FTr.readlines()
+print "type(DataTr): ", type(DataTr)
+print "len(DataTr): ", len(DataTr)
+
+shuffle(DataTr)
+DataTe = DataTr[:int(len(DataTr)*0.1)]
+DataTr = DataTr[int(len(DataTr)*0.1):]
+print "len(DataTr): ", len(DataTr)
+print "len(DataTe): ", len(DataTe)
+
+TrNum = len(DataTr)
+
+# FTe = open(TestPath,'r')
+# DataTe = FTe.readlines()
+TeNum = len(DataTe)
+
+
+batch_size = 32
+MaxIters = TrNum/batch_size
+MaxTestIters = TeNum/batch_size
+
+print "train data length:", TrNum
+print "test data length:", TeNum
+
+model = m.model(input_shape=(128, 128, 3))
+
+sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 20000)
+
+sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 20000)
+
+sgd = optimizers.SGD(lr=0.000001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters = 20000)
+
+# sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
+# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+# model.summary()
+# train_on_batch(1, MaxIters = 15000)
+
+
+
+
+
 
 def final_pred(y_true, y_pred):
     # y_cont=np.concatenate(y_pred,axis=1)
@@ -240,64 +301,6 @@ def train_on_batch(nb_epoch, MaxIters):
                 model.save(modelDir + '/model%d.h5'%iter)
 
 
-
-
-init = True
-debug = True
-outputDir = "./output03162017_01_0.001_only/"
-modelDir = "./model03162017_01_0.001_only/"
-
-
-# TN = TextNet('./MatBS/shape_0.obj', imgW=256)
-TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
-# TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
-
-FTr = open(TrainPath,'r')
-DataTr = FTr.readlines()
-print "type(DataTr): ", type(DataTr)
-print "len(DataTr): ", len(DataTr)
-
-shuffle(DataTr)
-DataTe = DataTr[:int(len(DataTr)*0.1)]
-DataTr = DataTr[int(len(DataTr)*0.1):]
-print "len(DataTr): ", len(DataTr)
-print "len(DataTe): ", len(DataTe)
-
-TrNum = len(DataTr)
-
-# FTe = open(TestPath,'r')
-# DataTe = FTe.readlines()
-TeNum = len(DataTe)
-
-
-batch_size = 32
-MaxIters = TrNum/batch_size
-MaxTestIters = TeNum/batch_size
-
-print "train data length:", TrNum
-print "test data length:", TeNum
-
-model = m.model(input_shape=(128, 128, 3))
-
-sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
-
-sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
-
-sgd = optimizers.SGD(lr=0.000001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-train_on_batch(1, MaxIters = 20000)
-
-# sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
-# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-# model.summary()
-# train_on_batch(1, MaxIters = 15000)
 
 
 
