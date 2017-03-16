@@ -180,8 +180,8 @@ def train_on_batch(nb_epoch, MaxIters):
             if trainCount >= 20:
                 trainCount = 0
 
-            print "****************************************************************************"
-            print "loss, return on train: ", type(loss), loss
+            # print "****************************************************************************"
+            print "loss, train: ", loss
             # print "loss.shape: ", loss.shape
             # print "pred, return on train: ", type(pred)
             # print "pred.shape: ", pred.shape
@@ -212,7 +212,7 @@ def train_on_batch(nb_epoch, MaxIters):
                 cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                 print "========================================================================="
-                print "loss, return on test: ", type(loss), loss
+                print "loss, TEST: ", loss
                 # print "loss.shape: ", loss.shape
                 # print "pred, return on test: ", type(pred)
                 # print "pred.shape: ", pred.shape
@@ -258,7 +258,7 @@ MaxIters = TrNum/batch_size
 
 model = m.model(input_shape=(128, 128, 3))
 
-sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
+sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
 model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
 model.summary()
 train_on_batch(1, MaxIters)
