@@ -26,8 +26,8 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = True
-        self.outputDir = "./output03162017_01_0.001_only/"
-        self.modelDir = "./model03162017_01_0.001_only/"
+        self.outputDir = "./output03172017_01/"
+        self.modelDir = "./model03172017_01/"
         self.imSize = 128
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
@@ -90,29 +90,29 @@ class faceOrientPred(object):
             labels = np.array(strCells[1:]).astype(np.float)
             labelsPTS=labels[:136].reshape([68,2])
 
-            # if debug:
-            # print "imgName: ", imgName
+            # if self.debug:
+                # print "imgName: ", imgName
             img = cv2.imread(imgName)
 
             if img != None:
-                img = cv2.resize(img,(128, 128))
+                img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
                 (w, h, _) = img.shape
-                x, y = ut.unpackLandmarks(labelsPTS)
+                x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
                 # newImg, newX, newY = img, x, y            
-                # tag = random.choice(generateFunc)
+                tag = random.choice(generateFunc)
 
-                # if tag == "rotate":
-                newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
-                # elif tag == "resize":
-                # newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
-                # else:
-                #     raise "not existing function"
+                if tag == "rotate":
+                    newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+                elif tag == "resize":
+                    newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+                else:
+                    raise "not existing function"
 
                 if self.debug:
-                    plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
-                    plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
+                    plotOriginal = ut.plotLandmarks(img, x, y, self.imSize, ifReturn = True)
+                    plotNew = ut.plotLandmarks(newImg, newX, newY, self.imSize, ifReturn = True)
 
                     cv2.imwrite(self.outputDir + 'testOriginal' + str(count) + '.jpg', img)
                     cv2.imwrite(self.outputDir + 'testNew' + str(count) + '.jpg', newImg)        
@@ -153,10 +153,10 @@ class faceOrientPred(object):
                 # print "newEdge: ", newEdge
 
 
-                normX = ut.normalize(newX)
-                normY = ut.normalize(newY)
+                normX = ut.normalize(newX, self.imSize)
+                normY = ut.normalize(newY, self.imSize)
                 normPTS = np.asarray(ut.packLandmarks(normX, normY))
-                normXMean, normYMean, normEdge = ut.normalize(newXMean), ut.normalize(newYMean), ut.normalize(newEdge)
+                normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
                 # print "newPTS: ", newPTS.shape
 
                 # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
@@ -218,7 +218,7 @@ class faceOrientPred(object):
                     img = X_batch[i]
                     # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
                     # labelImg = ut.plotTarget(img, labels)
-                    labelImg = ut.plotTarget(img, ut.deNormalize(labels))
+                    labelImg = ut.plotTarget(img, ut.deNormalize(labels), self.imSize)
                     cv2.imwrite(self.outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
                 loss, tras, pred = self.model.train_on_batch(X_batch,label_BB)
@@ -249,7 +249,7 @@ class faceOrientPred(object):
                     print iterationInfo
 
                     # labelImg = ut.plotTarget(X_batch[0], pred[0])
-                    labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
+                    labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]), self.imSize)
                     cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
@@ -263,7 +263,7 @@ class faceOrientPred(object):
                         testCount = 0
 
                     # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
-                    labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
+                    labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]), self.imSize)
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                     testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
@@ -288,7 +288,7 @@ class faceOrientPred(object):
 
     def run(self):
 
-        self.model = m.model(input_shape=(128, 128, 3))
+        self.model = m.model(input_shape=(self.imSize, self.imSize, 3))
 
         sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])

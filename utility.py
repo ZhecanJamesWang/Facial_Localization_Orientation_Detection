@@ -63,12 +63,12 @@ def contrastBrightess(image, X, Y):
     Y = np.asarray(Y)
     return image, X, Y
 
-def plotTarget(image, labels):
+def plotTarget(image, labels, imSize):
     img = np.copy(image)
     assert len(labels) == 7   
 
     # try:
-    (w, h, _) = (128, 128, 0)  
+    (w, h, _) = (imSize, imSize, 0)  
     for i in range(0, 6, 2):      
         # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
         #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
@@ -84,7 +84,7 @@ def plotTarget(image, labels):
     #     print "plotTarget labels: ", labels
     return img
 
-def plotLandmarks(image, X, Y, name = None, ifRescale = False, ifReturn = False):
+def plotLandmarks(image, X, Y, imSize, name = None, ifRescale = False, ifReturn = False):
     # plot landmarks on original image
     img = np.copy(image)
     assert len(X) == len(Y)   
@@ -94,7 +94,7 @@ def plotLandmarks(image, X, Y, name = None, ifRescale = False, ifReturn = False)
         if ifRescale:
             (w, h, _) = img.shape
             # (w, h, _) = (128, 128, 0)            
-            cv2.circle(img,(int((X[index] + 0.5) * 128), int((Y[index] + 0.5) * 128)), 2, (0,0,255), -1)
+            cv2.circle(img,(int((X[index] + 0.5) * imSize), int((Y[index] + 0.5) * imSize)), 2, (0,0,255), -1)
         else:
             cv2.circle(img,(int(X[index]), int(Y[index])), 1, (0,0,255), -1)
     if ifReturn:
@@ -189,34 +189,34 @@ def packLandmarks(X, Y):
         landmarks.append(list(p))
     return landmarks
 
-def unpackLandmarks(array):
+def unpackLandmarks(array, imSize):
     x = []
     y = []
     for i in range(0, len(array)):
-        x.append((array[i][0] + 0.5) * 128)
-        y.append((array[i][1] + 0.5) * 128)
+        x.append((array[i][0] + 0.5) * imSize)
+        y.append((array[i][1] + 0.5) * imSize)
     return x, y
 
-def deNormalize(array):
+def deNormalize(array, imSize):
     if isinstance(array, list):
         array = list(array)
         newArray = []
         for i in range(len(array)):
-            newArray.append((array[i] + 0.5) * 128.0)
+            newArray.append((array[i] + 0.5) * float(imSize))
         return newArray
     else:
-        return (array+ 0.5) * 128.0
+        return (array+ 0.5) * float(imSize)
 
 
-def normalize(array):
+def normalize(array, imSize):
     if isinstance(array, list):
         array = list(array)
         newArray = []
         for i in range(len(array)):
-            newArray.append((array[i]/128.0) - 0.5)
+            newArray.append((array[i]/float(imSize)) - 0.5)
         return newArray
     else:
-        return (array/128.0) - 0.5
+        return (array/float(imSize)) - 0.5
 
 def test():
     dataDir = "./data/ibug/"
