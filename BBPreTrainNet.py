@@ -17,10 +17,7 @@ from keras import callbacks
 import shutil
 # import model as m
 import vgg16Modified as m
-
-
-debug = True
-outputDir = "./testImg2/"
+import os
 
 
 def final_pred(y_true, y_pred):
@@ -152,66 +149,9 @@ def DataGenBB(DataStrs, BatchSize,train_start,train_end,imSize = 128):
 
 
 
-
-
-# TN = TextNet('./MatBS/shape_0.obj', imgW=256)
-TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
-# TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
-
-FTr = open(TrainPath,'r')
-DataTr = FTr.readlines()
-
-# print "DataTr: ", type(DataTr)
-# print len(DataTr)
-# FTe = open(TestPath,'r')
-# DataTe = FTe.readlines()
-
-
-# DataLabels = np.zeros([len(DataTr) / 10, 136])
-# for i in range(len(DataTr) / 10):
-#     # i=0
-#     crtLabel = DataTr[i]
-#     X = crtLabel.rstrip(' \n').split(' ')[1:137]
-#     DataLabels[i, :] = np.asarray(X).astype(np.float32)
-# Mean = np.mean(DataLabels,axis=0)
-# np.savetxt('./MeanShape.txt',Mean)
-
-
-#BBNet = BBFullNet(weights_path='./BBNet/BBNet_V1.h5',imgW=128)
-#sgdBB = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-#BBNet.compile(loss={'BB_RCT':'mean_squared_error','Img_Rot':'categorical_crossentropy'}, loss_weight=[1,10],metrics=['accuracy', final_pred],optimizer=sgdBB)
-#BBNet.summary()
-
-# Tmp=np.loadtxt('./MeanShape.txt')
-# MeanShape = Tmp[:136].reshape([68,2])
-# MeanShape = None
-# TrData,TrLabel=load_train_data(DataTr,0,5,5)
-
-batch_size = 32
-TrNum = len(DataTr)
-# TeNum = TrNum
-# TeNum = len(DataTe)
-MaxIters = TrNum/batch_size
-# MaxTestIters = TeNum/batch_size
-
-model = m.model(input_shape=(128, 128, 3))
-
-sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
-model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
-model.summary()
-
-# model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
-#           verbose=1, validation_data=(X_test, Y_test))
-# score = model.evaluate(X_test, Y_test, verbose=0)
-# print('Test score:', score[0])
-# print('Test accuracy:', score[1])
-
-
-# preds = model.predict(x)
-# print('Predicted:', decode_predictions(preds))
-
-
-def train_on_batch(nb_epoch):
+def train_on_batch(nb_epoch, MaxIters):
+    if os.path.exists(modelDir)==False:
+        os.mkdir(modelDir)
     testCount = 0
     trainCount = 0
     for e in range(nb_epoch):
@@ -239,7 +179,7 @@ def train_on_batch(nb_epoch):
 
             if trainCount >= 20:
                 trainCount = 0
-                
+
             print "****************************************************************************"
             print "loss, return on train: ", type(loss), loss
             # print "loss.shape: ", loss.shape
@@ -284,33 +224,54 @@ def train_on_batch(nb_epoch):
                 iterTest+=batch_size
                 # iterTest%=MaxTestIters
 
-                # img = X_batch_T[0,...]
-                # img2Draw=Image.fromarray(img.astype(np.uint8))
-                # imDraw=ImageDraw.Draw(img2Draw)
-                # PD2D = PredBBT[0,:]*128+64
-                # imDraw.rectangle([(PD2D[0], PD2D[1]), (PD2D[2], PD2D[3])], fill=None, outline='red')
-                # RotScore = PredRotT[0,:]
-                # RotType=np.where(RotScore==np.max(RotScore))[0]
-                # img2Draw.save('./BBNet/Test_tmp_%d_%d.jpg' % (RotType, np.where(label_rot_T[0, :] == 1)[0]))
+            if iter%3000==0:
+                model.save(modelDir + '/model%d.h5'%iter)
 
-                # img = X_batch[0,...]
-                # img2Draw=Image.fromarray(img.astype(np.uint8))
-                # imDraw=ImageDraw.Draw(img2Draw)
-                # PD2D = PredBB[0,:]*128+64
-                # imDraw.rectangle([(PD2D[0], PD2D[1]), (PD2D[2], PD2D[3])], fill=None, outline='red')
-                # RotScore = PredRot[0,:]
-                # RotType=np.where(RotScore==np.max(RotScore))[0]
-                # img2Draw.save('./BBNet/Train_tmp_%d_%d.jpg'%(RotType,np.where(label_rot[0,:]==1)[0]))
-                # print label_rot[0,...], label_rot_T[0,...]
 
-            # if iter%2000==0:
-            #     BBNet.save('./BBNet/BBNet_V1.h5')
 
-# sgdBB = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9)
-# train_on_batch(2)
 
-# sgdBB = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
-# train_on_batch(1)
 
-# sgdBB = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
-train_on_batch(1)
+debug = True
+outputDir = "./output03162017_01_0.001_only/"
+modelDir = "./model03162017_01_0.001_only/"
+
+
+# TN = TextNet('./MatBS/shape_0.obj', imgW=256)
+TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
+# TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
+
+FTr = open(TrainPath,'r')
+DataTr = FTr.readlines()
+
+# print "DataTr: ", type(DataTr)
+# print len(DataTr)
+# FTe = open(TestPath,'r')
+# DataTe = FTe.readlines()
+
+
+batch_size = 32
+TrNum = len(DataTr)
+# TeNum = TrNum
+# TeNum = len(DataTe)
+MaxIters = TrNum/batch_size
+# MaxTestIters = TeNum/batch_size
+
+model = m.model(input_shape=(128, 128, 3))
+
+sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
+model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+model.summary()
+train_on_batch(1, MaxIters)
+
+# sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
+# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+# model.summary()
+# train_on_batch(1, MaxIters = 10000)
+
+# sgd = optimizers.SGD(lr=0.00001, decay=1e-6, momentum=0.9)
+# model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', final_pred])
+# model.summary()
+# train_on_batch(1, MaxIters = 15000)
+
+
+
