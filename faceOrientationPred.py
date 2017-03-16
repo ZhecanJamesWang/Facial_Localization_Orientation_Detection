@@ -264,7 +264,7 @@ class faceOrientPred(object):
                         testCount = 0
 
                     # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
-                    labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]), self.imSize)
+                    labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0], self.imSize), self.imSize)
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                     testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
