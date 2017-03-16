@@ -64,227 +64,227 @@ class faceOrientPred(object):
 
 
 
-def final_pred(self, y_true, y_pred):
-    # y_cont=np.concatenate(y_pred,axis=1)
-    return y_pred
+    def final_pred(self, y_true, y_pred):
+        # y_cont=np.concatenate(y_pred,axis=1)
+        return y_pred
 
 
 
 
-def DataGenBB(self, DataStrs, train_start,train_end):
+    def DataGenBB(self, DataStrs, train_start,train_end):
 
-    generateFunc = ["rotate", "resize"]
+        generateFunc = ["rotate", "resize"]
 
-    InputData = np.zeros([self.BatchSize, self.imSize, self.imSize, 3], dtype = np.float32)
-    InputLabel = np.zeros([self.BatchSize, 7], dtype = np.float32)
+        InputData = np.zeros([self.BatchSize, self.imSize, self.imSize, 3], dtype = np.float32)
+        InputLabel = np.zeros([self.BatchSize, 7], dtype = np.float32)
 
-    # print "InputData.shape: ", InputData.shape
-    # print "InputLabel.shape: ", InputLabel.shape
+        # print "InputData.shape: ", InputData.shape
+        # print "InputLabel.shape: ", InputLabel.shape
 
-    InputNames = []
-    count = 0
-    for i in range(train_start,train_end):
-        strLine = DataStrs[i]
-        strCells = strLine.rstrip(' \n').split(' ')
-        imgName = strCells[0]
-        labels = np.array(strCells[1:]).astype(np.float)
-        labelsPTS=labels[:136].reshape([68,2])
+        InputNames = []
+        count = 0
+        for i in range(train_start,train_end):
+            strLine = DataStrs[i]
+            strCells = strLine.rstrip(' \n').split(' ')
+            imgName = strCells[0]
+            labels = np.array(strCells[1:]).astype(np.float)
+            labelsPTS=labels[:136].reshape([68,2])
 
-        # if debug:
-        # print "imgName: ", imgName
-        img = cv2.imread(imgName)
+            # if debug:
+            # print "imgName: ", imgName
+            img = cv2.imread(imgName)
 
-        if img != None:
-            img = cv2.resize(img,(128, 128))
-            # print "img.shape: ", img.shape
-            (w, h, _) = img.shape
-            x, y = ut.unpackLandmarks(labelsPTS)
+            if img != None:
+                img = cv2.resize(img,(128, 128))
+                # print "img.shape: ", img.shape
+                (w, h, _) = img.shape
+                x, y = ut.unpackLandmarks(labelsPTS)
 
-            # newImg, newX, newY = img, x, y            
-            # tag = random.choice(generateFunc)
+                # newImg, newX, newY = img, x, y            
+                # tag = random.choice(generateFunc)
 
-            # if tag == "rotate":
-            newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
-            # elif tag == "resize":
-            # newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
-            # else:
-            #     raise "not existing function"
+                # if tag == "rotate":
+                newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+                # elif tag == "resize":
+                # newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+                # else:
+                #     raise "not existing function"
 
-            if self.debug:
-                plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
-                plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
+                if self.debug:
+                    plotOriginal = ut.plotLandmarks(img, x, y, ifReturn = True)
+                    plotNew = ut.plotLandmarks(newImg, newX, newY, ifReturn = True)
 
-                cv2.imwrite(outputDir + 'testOriginal' + str(count) + '.jpg', img)
-                cv2.imwrite(outputDir + 'testNew' + str(count) + '.jpg', newImg)        
-                cv2.imwrite(outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
-                cv2.imwrite(outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
+                    cv2.imwrite(outputDir + 'testOriginal' + str(count) + '.jpg', img)
+                    cv2.imwrite(outputDir + 'testNew' + str(count) + '.jpg', newImg)        
+                    cv2.imwrite(outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
+                    cv2.imwrite(outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
 
-            # print "before normalize: ", newX
-            
-            # normX = ut.normalize(newX)
-            # normY = ut.normalize(newY)
-            
-            # print "after normalize: ", newX
-            # print "after denormalize again: ", ut.deNormalize(newX)
-
-
-            # normXMin = min(normX)
-            # normYMin = min(normY)
-            # normXMax = max(normX)
-            # normYMax = max(normY)
-            # normXMean = (normXMax + normXMin)/2.0
-            # normYMean = (normYMax + normYMin)/2.0
-            # normEdge = max(normYMax - normYMin, normXMax - normXMin)
-
-            newXMin = min(newX)
-            newYMin = min(newY)
-            newXMax = max(newX)
-            newYMax = max(newY)
-            newXMean = (newXMax + newXMin)/2.0
-            newYMean = (newYMax + newYMin)/2.0
-            newEdge = max(newYMax - newYMin, newXMax - newXMin)
-                        
-            # print "newXMin: ", newXMin
-            # print "newYMin: ", newYMin
-            # print "newXMax: ", newXMax
-            # print "newYMax: ", newYMax
-            # print "newXMean: ", newXMean
-            # print "newYMean: ", newYMean
-            # print "newEdge: ", newEdge
+                # print "before normalize: ", newX
+                
+                # normX = ut.normalize(newX)
+                # normY = ut.normalize(newY)
+                
+                # print "after normalize: ", newX
+                # print "after denormalize again: ", ut.deNormalize(newX)
 
 
-            normX = ut.normalize(newX)
-            normY = ut.normalize(newY)
-            normPTS = np.asarray(ut.packLandmarks(normX, normY))
-            normXMean, normYMean, normEdge = ut.normalize(newXMean), ut.normalize(newYMean), ut.normalize(newEdge)
-            # print "newPTS: ", newPTS.shape
+                # normXMin = min(normX)
+                # normYMin = min(normY)
+                # normXMax = max(normX)
+                # normYMax = max(normY)
+                # normXMean = (normXMax + normXMin)/2.0
+                # normYMean = (normYMax + normYMin)/2.0
+                # normEdge = max(normYMax - normYMin, normXMax - normXMin)
 
-            # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
-            # print "ut.deNormalize(normYMin): ", ut.deNormalize(normYMin)
-            # print "ut.deNormalize(normXMax): ", ut.deNormalize(normXMax)
-            # print "ut.deNormalize(normYMax): ", ut.deNormalize(normYMax)
-            # print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
-            # print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
-            # print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
-
-
-            # print "len(InputData): ", len(InputData)
-            InputData[count,...] = newImg
-            labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
-                normPTS[8][1], normXMean, normYMean, normEdge])
-            # print "input labels: ", labels
-            InputLabel[count,...] = labels
-            InputNames.append(imgName)
-
-            # print "count: ", count
-            count += 1
-
-        else:
-            print "cannot find: ", imgName
+                newXMin = min(newX)
+                newYMin = min(newY)
+                newXMax = max(newX)
+                newYMax = max(newY)
+                newXMean = (newXMax + newXMin)/2.0
+                newYMean = (newYMax + newYMin)/2.0
+                newEdge = max(newYMax - newYMin, newXMax - newXMin)
+                            
+                # print "newXMin: ", newXMin
+                # print "newYMin: ", newYMin
+                # print "newXMax: ", newXMax
+                # print "newYMax: ", newYMax
+                # print "newXMean: ", newXMean
+                # print "newYMean: ", newYMean
+                # print "newEdge: ", newEdge
 
 
+                normX = ut.normalize(newX)
+                normY = ut.normalize(newY)
+                normPTS = np.asarray(ut.packLandmarks(normX, normY))
+                normXMean, normYMean, normEdge = ut.normalize(newXMean), ut.normalize(newYMean), ut.normalize(newEdge)
+                # print "newPTS: ", newPTS.shape
+
+                # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
+                # print "ut.deNormalize(normYMin): ", ut.deNormalize(normYMin)
+                # print "ut.deNormalize(normXMax): ", ut.deNormalize(normXMax)
+                # print "ut.deNormalize(normYMax): ", ut.deNormalize(normYMax)
+                # print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
+                # print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
+                # print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
 
 
-        # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
-        # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
-        # imgDraw.save('./tmp.jpg')
+                # print "len(InputData): ", len(InputData)
+                InputData[count,...] = newImg
+                labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
+                    normPTS[8][1], normXMean, normYMean, normEdge])
+                # print "input labels: ", labels
+                InputLabel[count,...] = labels
+                InputNames.append(imgName)
 
-    return InputData, InputLabel, np.asarray(InputNames)
+                # print "count: ", count
+                count += 1
+
+            else:
+                print "cannot find: ", imgName
 
 
 
 
+            # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
+            # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
+            # imgDraw.save('./tmp.jpg')
+
+        return InputData, InputLabel, np.asarray(InputNames)
 
 
-def train_on_batch(self, nb_epoch, MaxIters, init):
-    if os.path.exists(self.modelDir)==False:
-        os.mkdir(self.modelDir)
-    testCount = 0
-    trainCount = 0
-    for e in range(nb_epoch):
-        # if e>0:
-        shuffle(self.DataTr)
-        iterTest=0
-        for iter in range (self.MaxIters):
-            train_start=iter*self.batch_size
-            train_end = (iter+1)*self.batch_size
-            # print "train_start: ", train_start
-            # print "train_end: ", train_end
-            X_batch, label_BB, Z_Names = self.DataGenBB(self.DataTr, train_start=train_start, train_end=train_end)
-
-            # print "X_batch.shape: ", X_batch.shape
-            for i in range(self.batch_size):
-                labels = label_BB[i]
-                img = X_batch[i]
-                # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
-                # labelImg = ut.plotTarget(img, labels)
-                labelImg = ut.plotTarget(img, ut.deNormalize(labels))
-                cv2.imwrite(outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
-
-            loss, tras, pred = model.train_on_batch(X_batch,label_BB)
-            trainCount += 1
-
-            if trainCount >= 20:
-                trainCount = 0
-
-            # print "****************************************************************************"
-            print "loss, train: ", loss
-            # print "loss.shape: ", loss.shape
-            # print "pred, return on train: ", type(pred)
-            # print "pred.shape: ", pred.shape
-            # # print "pred #######: ", pred
-            # print "tras, return on train: ", type(tras), tras
-            # print "tras.shape: ", tras.shape 
-
-            if iter%100 == 0:
-                logInfo = ""
-                if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
-                    f = open(self.outputDir + 'log.txt', 'a')
-                else:
-                    f = open(self.outputDir + 'log.txt','w')
-                    self.init = False
-
-                iterationInfo = ("^^^^^^^^^^^^^^^" + "\n" + 'iteration: ' + str(iter))
-                logInfo += iterationInfo
-                print iterationInfo
-
-                # labelImg = ut.plotTarget(X_batch[0], pred[0])
-                labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
-                cv2.imwrite(outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
 
 
-                test_start = iterTest * self.batch_size
-                test_end = (iterTest + 1) * batch_size
-                X_batch_T, label_BB_T, Z_Names_T= DataGenBB(self.DataTr, train_start=test_start, train_end=test_end)
-                loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
-                testCount += 1
 
-                if testCount >= 20:
-                    testCount = 0
 
-                # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
-                labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
-                cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
+    def train_on_batch(self, nb_epoch, MaxIters, init):
+        if os.path.exists(self.modelDir)==False:
+            os.mkdir(self.modelDir)
+        testCount = 0
+        trainCount = 0
+        for e in range(nb_epoch):
+            # if e>0:
+            shuffle(self.DataTr)
+            iterTest=0
+            for iter in range (self.MaxIters):
+                train_start=iter*self.batch_size
+                train_end = (iter+1)*self.batch_size
+                # print "train_start: ", train_start
+                # print "train_end: ", train_end
+                X_batch, label_BB, Z_Names = self.DataGenBB(self.DataTr, train_start=train_start, train_end=train_end)
 
-                testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
-                logInfo += testInfo
-                print testInfo
+                # print "X_batch.shape: ", X_batch.shape
+                for i in range(self.batch_size):
+                    labels = label_BB[i]
+                    img = X_batch[i]
+                    # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
+                    # labelImg = ut.plotTarget(img, labels)
+                    labelImg = ut.plotTarget(img, ut.deNormalize(labels))
+                    cv2.imwrite(outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
+                loss, tras, pred = model.train_on_batch(X_batch,label_BB)
+                trainCount += 1
+
+                if trainCount >= 20:
+                    trainCount = 0
+
+                # print "****************************************************************************"
+                print "loss, train: ", loss
                 # print "loss.shape: ", loss.shape
-                # print "pred, return on test: ", type(pred)
+                # print "pred, return on train: ", type(pred)
                 # print "pred.shape: ", pred.shape
-                # print "pred #######: ", pred
-                # print "tras, return on test: ", type(tras), tras
+                # # print "pred #######: ", pred
+                # print "tras, return on train: ", type(tras), tras
                 # print "tras.shape: ", tras.shape 
 
-                iterTest+=batch_size
-                iterTest%=MaxTestIters
-                
-                f.write(logInfo)
-                f.close()
+                if iter%100 == 0:
+                    logInfo = ""
+                    if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
+                        f = open(self.outputDir + 'log.txt', 'a')
+                    else:
+                        f = open(self.outputDir + 'log.txt','w')
+                        self.init = False
 
-            if iter%3000==0:
-                self.model.save(self.modelDir + '/model%d.h5'%iter)
+                    iterationInfo = ("^^^^^^^^^^^^^^^" + "\n" + 'iteration: ' + str(iter))
+                    logInfo += iterationInfo
+                    print iterationInfo
+
+                    # labelImg = ut.plotTarget(X_batch[0], pred[0])
+                    labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0]))
+                    cv2.imwrite(outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
+
+
+                    test_start = iterTest * self.batch_size
+                    test_end = (iterTest + 1) * batch_size
+                    X_batch_T, label_BB_T, Z_Names_T= DataGenBB(self.DataTr, train_start=test_start, train_end=test_end)
+                    loss, tras, pred = model.evaluate(X_batch_T,label_BB_T)
+                    testCount += 1
+
+                    if testCount >= 20:
+                        testCount = 0
+
+                    # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
+                    labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0]))
+                    cv2.imwrite(outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
+
+                    testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
+                    logInfo += testInfo
+                    print testInfo
+
+                    # print "loss.shape: ", loss.shape
+                    # print "pred, return on test: ", type(pred)
+                    # print "pred.shape: ", pred.shape
+                    # print "pred #######: ", pred
+                    # print "tras, return on test: ", type(tras), tras
+                    # print "tras.shape: ", tras.shape 
+
+                    iterTest+=batch_size
+                    iterTest%=MaxTestIters
+                    
+                    f.write(logInfo)
+                    f.close()
+
+                if iter%3000==0:
+                    self.model.save(self.modelDir + '/model%d.h5'%iter)
 
     def run(self):
 
