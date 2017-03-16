@@ -196,7 +196,7 @@ class faceOrientPred(object):
 
 
 
-    def train_on_batch(self, nb_epoch, MaxIters, init):
+    def train_on_batch(self, nb_epoch, MaxIters):
         if os.path.exists(self.modelDir)==False:
             os.mkdir(self.modelDir)
         testCount = 0
