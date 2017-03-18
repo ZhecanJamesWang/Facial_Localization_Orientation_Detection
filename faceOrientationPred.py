@@ -18,7 +18,7 @@ import shutil
 # import model as m
 import vgg16Modified as m
 import os
-import math
+from decimal import Decimal
 
 class faceOrientPred(object):
     """face orientation detection"""
@@ -253,7 +253,7 @@ class faceOrientPred(object):
                 if trainCount >= 20:
                     trainCount = 0
 
-                if loss in [None, float("inf"), math.inf] or "nan" in str(loss):
+                if loss in [None, float("inf"), float("-inf"), Decimal('Infinity')] or "nan" in str(loss):
                     print "--------------------model reset weights------------------------"
                     self.reset_weights(self.model)
                     self.reset_model(self.model)
