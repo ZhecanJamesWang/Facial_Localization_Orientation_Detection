@@ -276,7 +276,7 @@ class faceOrientPred(object):
                     if testCount >= 20:
                         testCount = 0
 
-                    if str(loss) == 'nan':
+                    if loss in [None, float("inf")]:
                         print "--------------------model reset weights------------------------"
                         self.model.reset_states()
 
