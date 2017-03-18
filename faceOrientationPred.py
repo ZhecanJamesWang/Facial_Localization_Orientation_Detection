@@ -114,7 +114,7 @@ class faceOrientPred(object):
                         newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
                     elif tag == "brightnessAndContrast":
                         newImg, newX, newY = ut.contrastBrightess(img, x, y, w = w, h = h)
-                    elif tag = "original":
+                    elif tag == "original":
                         newImg, newX, newY = img, x, y
                     else:
                         raise "not existing function"
