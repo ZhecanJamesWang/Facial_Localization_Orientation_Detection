@@ -108,13 +108,13 @@ class faceOrientPred(object):
                         newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
                     elif method == "rotate":
                         newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
-                    elif tag == "mirror":
+                    elif method == "mirror":
                         newImg, newX, newY = ut.mirror(img, x, y, w = w, h = h)
-                    elif tag == "translate":
+                    elif method == "translate":
                         newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
-                    elif tag == "brightnessAndContrast":
+                    elif method == "brightnessAndContrast":
                         newImg, newX, newY = ut.contrastBrightess(img, x, y, w = w, h = h)
-                    elif tag == "original":
+                    elif method == "original":
                         newImg, newX, newY = img, x, y
                     else:
                         raise "not existing function"
