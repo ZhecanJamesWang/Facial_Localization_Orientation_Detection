@@ -26,8 +26,8 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = True
-        self.outputDir = "./output03172017_01/"
-        self.modelDir = "./model03172017_01/"
+        self.outputDir = "./03182017_01_output/"
+        self.modelDir = "./03182017_01_model/"
         self.imSize = 128
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
