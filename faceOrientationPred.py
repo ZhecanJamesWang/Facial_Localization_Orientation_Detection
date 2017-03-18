@@ -12,6 +12,7 @@ from keras import optimizers
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
+from keras.layers import Dense
 import utility as ut
 import random
 from keras import callbacks
