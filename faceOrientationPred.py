@@ -306,7 +306,7 @@ class faceOrientPred(object):
         # self.model.summary()
         # self.train_on_batch(1, MaxIters = 20000)
 
-        sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
+        sgd = optimizers.SGD(lr=0.0002, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
         self.model.summary()
         self.train_on_batch(1, MaxIters = 20000)
