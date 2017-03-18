@@ -277,8 +277,9 @@ class faceOrientPred(object):
                         testCount = 0
 
                     if str(loss) == 'nan':
+                        print "--------------------model reset weights------------------------"
                         self.model.reset_states()
-                        
+
                     # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
                     labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0], self.imSize), self.imSize)
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
