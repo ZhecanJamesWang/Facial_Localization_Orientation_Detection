@@ -107,22 +107,24 @@ def model(input_shape = None, weights_path = None):
     img_input = Input(shape=input_shape)    
     # x = Conv2D(16, (4, 4), activation='relu', padding='same', name='block1_conv1')(img_input)
     x = Convolution2D(16, 4, 4, activation='relu', border_mode='same', name='block1_conv1')(img_input)
-
+    x = Convolution2D(16, 4, 4, activation='relu', border_mode='same', name='block1_conv2')(img_input)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
 
     # Block 2
     x = Convolution2D(32, 4, 4, activation='relu', border_mode='same', name='block2_conv1')(x)
-    # x = Conv2D(32, (4, 4), activation='relu', padding='same', name='block2_conv1')(x)
+    x = Convolution2D(32, 4, 4, activation='relu', border_mode='same', name='block2_conv2')(x)    
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
 
     # Block 3
     x = Convolution2D(48, 3, 3, activation='relu', border_mode='same', name='block3_conv1')(x)
-    # x = Conv2D(48, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)
+    x = Convolution2D(48, 3, 3, activation='relu', border_mode='same', name='block3_conv2')(x)    
+    x = Convolution2D(48, 3, 3, activation='relu', border_mode='same', name='block3_conv3')(x)    
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
 
     # Block 4
     x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block4_conv1')(x)
-    # x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
+    x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block4_conv2')(x)
+    x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block4_conv3')(x)  
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
 
 
