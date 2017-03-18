@@ -34,3 +34,59 @@ def resize(image, X, Y, random = False, size = (50, 50)):
 
 
     image = np.asarray(thumb)
+
+
+    if random:
+        newImg = np.zeros_like(originalImage)
+        
+        offset_y = int((yMaxBound - image_size[1]) / 2)
+        offset_x = int((xMaxBound - image_size[0]) / 2)
+        other_offset_y = -offset_y if image_size[1] % 2 == 0 else -(offset_y + 1)
+        other_offset_x = -offset_x if image_size[0] % 2 == 0 else -(offset_x + 1)
+
+        newX = [x + offset_x for x in newX]
+        newY = [y + offset_y for y in newY]
+        newImg[offset_y:other_offset_y, offset_x:other_offset_x] = image
+        image = newImg
+
+    newX = np.asarray(newX)
+    newY = np.asarray(newY)
+
+    return image, newX.astype(int), newY.astype(int)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

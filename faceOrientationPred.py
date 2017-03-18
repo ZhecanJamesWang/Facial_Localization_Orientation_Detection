@@ -73,7 +73,8 @@ class faceOrientPred(object):
 
     def DataGenBB(self, DataStrs, train_start,train_end):
 
-        generateFunc = ["resize"]
+        # generateFunc = ["orginal", "resize"， "rotate", "mirror", "translate", "brightnessAndContrast" ]
+        generateFunc = ["orginal", "resize"， "rotate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size, self.imSize, self.imSize, 3], dtype = np.float32)
         InputLabel = np.zeros([self.batch_size, 7], dtype = np.float32)
@@ -94,94 +95,102 @@ class faceOrientPred(object):
                 # print "imgName: ", imgName
             img = cv2.imread(imgName)
 
-            if img != None:
+            if img != None:                    
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
                 (w, h, _) = img.shape
                 x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
-                # newImg, newX, newY = img, x, y            
-                tag = random.choice(generateFunc)
+                # newImg, newX, newY = img, x, y    
 
-                if tag == "rotate":
-                    newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
-                elif tag == "resize":
-                    newImg, newX, newY = ut.scale(img, x, y, self.imSize, random = True)
-                    # newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+                for method in generateFunc:
+                    # tag = random.choice(generateFunc)
+                    if method == "resize":
+                        newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+                    elif method == "rotate":
+                        newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+                    elif tag == "mirror":
+                        newImg, newX, newY = ut.mirror(img, x, y, w = w, h = h)
+                    elif tag == "translate":
+                        newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
+                    elif tag == "brightnessAndContrast":
+                        newImg, newX, newY = ut.contrastBrightess(img, x, y, w = w, h = h)
+                    elif tag = "original":
+                        newImg, newX, newY = img, x, y
+                    else:
+                        raise "not existing function"
+
+                    if self.debug:
+                        plotOriginal = ut.plotLandmarks(img, x, y, self.imSize, ifReturn = True)
+                        plotNew = ut.plotLandmarks(newImg, newX, newY, self.imSize, ifReturn = True)
+
+                        cv2.imwrite(self.outputDir + 'testOriginal' + str(count) + '.jpg', img)
+                        cv2.imwrite(self.outputDir + 'testNew' + str(count) + '.jpg', newImg)        
+                        cv2.imwrite(self.outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
+                        cv2.imwrite(self.outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
+
+                    # print "before normalize: ", newX
+                    
+                    # normX = ut.normalize(newX)
+                    # normY = ut.normalize(newY)
+                    
+                    # print "after normalize: ", newX
+                    # print "after denormalize again: ", ut.deNormalize(newX)
+
+
+                    # normXMin = min(normX)
+                    # normYMin = min(normY)
+                    # normXMax = max(normX)
+                    # normYMax = max(normY)
+                    # normXMean = (normXMax + normXMin)/2.0
+                    # normYMean = (normYMax + normYMin)/2.0
+                    # normEdge = max(normYMax - normYMin, normXMax - normXMin)
+
+                    newXMin = min(newX)
+                    newYMin = min(newY)
+                    newXMax = max(newX)
+                    newYMax = max(newY)
+                    newXMean = (newXMax + newXMin)/2.0
+                    newYMean = (newYMax + newYMin)/2.0
+                    newEdge = max(newYMax - newYMin, newXMax - newXMin)
+                                
+                    # print "newXMin: ", newXMin
+                    # print "newYMin: ", newYMin
+                    # print "newXMax: ", newXMax
+                    # print "newYMax: ", newYMax
+                    # print "newXMean: ", newXMean
+                    # print "newYMean: ", newYMean
+                    # print "newEdge: ", newEdge
+
+
+                    normX = ut.normalize(newX, self.imSize)
+                    normY = ut.normalize(newY, self.imSize)
+                    normPTS = np.asarray(ut.packLandmarks(normX, normY))
+                    normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
+                    # print "newPTS: ", newPTS.shape
+
+                    # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
+                    # print "ut.deNormalize(normYMin): ", ut.deNormalize(normYMin)
+                    # print "ut.deNormalize(normXMax): ", ut.deNormalize(normXMax)
+                    # print "ut.deNormalize(normYMax): ", ut.deNormalize(normYMax)
+                    # print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
+                    # print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
+                    # print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
+
+
+                    # print "len(InputData): ", len(InputData)
+                    InputData[count,...] = newImg
+                    labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
+                        normPTS[8][1], normXMean, normYMean, normEdge])
+                    # print "input labels: ", labels
+                    InputLabel[count,...] = labels
+                    InputNames.append(imgName)
+
+                    # print "count: ", count
+                    count += 1
+
                 else:
-                    raise "not existing function"
-
-                if self.debug:
-                    plotOriginal = ut.plotLandmarks(img, x, y, self.imSize, ifReturn = True)
-                    plotNew = ut.plotLandmarks(newImg, newX, newY, self.imSize, ifReturn = True)
-
-                    cv2.imwrite(self.outputDir + 'testOriginal' + str(count) + '.jpg', img)
-                    cv2.imwrite(self.outputDir + 'testNew' + str(count) + '.jpg', newImg)        
-                    cv2.imwrite(self.outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
-                    cv2.imwrite(self.outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
-
-                # print "before normalize: ", newX
-                
-                # normX = ut.normalize(newX)
-                # normY = ut.normalize(newY)
-                
-                # print "after normalize: ", newX
-                # print "after denormalize again: ", ut.deNormalize(newX)
-
-
-                # normXMin = min(normX)
-                # normYMin = min(normY)
-                # normXMax = max(normX)
-                # normYMax = max(normY)
-                # normXMean = (normXMax + normXMin)/2.0
-                # normYMean = (normYMax + normYMin)/2.0
-                # normEdge = max(normYMax - normYMin, normXMax - normXMin)
-
-                newXMin = min(newX)
-                newYMin = min(newY)
-                newXMax = max(newX)
-                newYMax = max(newY)
-                newXMean = (newXMax + newXMin)/2.0
-                newYMean = (newYMax + newYMin)/2.0
-                newEdge = max(newYMax - newYMin, newXMax - newXMin)
-                            
-                # print "newXMin: ", newXMin
-                # print "newYMin: ", newYMin
-                # print "newXMax: ", newXMax
-                # print "newYMax: ", newYMax
-                # print "newXMean: ", newXMean
-                # print "newYMean: ", newYMean
-                # print "newEdge: ", newEdge
-
-
-                normX = ut.normalize(newX, self.imSize)
-                normY = ut.normalize(newY, self.imSize)
-                normPTS = np.asarray(ut.packLandmarks(normX, normY))
-                normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
-                # print "newPTS: ", newPTS.shape
-
-                # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
-                # print "ut.deNormalize(normYMin): ", ut.deNormalize(normYMin)
-                # print "ut.deNormalize(normXMax): ", ut.deNormalize(normXMax)
-                # print "ut.deNormalize(normYMax): ", ut.deNormalize(normYMax)
-                # print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
-                # print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
-                # print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
-
-
-                # print "len(InputData): ", len(InputData)
-                InputData[count,...] = newImg
-                labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
-                    normPTS[8][1], normXMean, normYMean, normEdge])
-                # print "input labels: ", labels
-                InputLabel[count,...] = labels
-                InputNames.append(imgName)
-
-                # print "count: ", count
-                count += 1
-
-            else:
-                print "cannot find: ", imgName
+                    print "cannot find: ", imgName
 
 
 
@@ -290,6 +299,11 @@ class faceOrientPred(object):
     def run(self):
 
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3))
+        
+        sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
+        self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
+        self.model.summary()
+        self.train_on_batch(1, MaxIters = 20000)
 
         sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
@@ -306,6 +320,10 @@ class faceOrientPred(object):
         self.model.summary()
         self.train_on_batch(1, MaxIters = 20000)
 
+        sgd = optimizers.SGD(lr=0.0000001, decay=1e-6, momentum=0.9)
+        self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
+        self.model.summary()
+        self.train_on_batch(1, MaxIters = 20000)
     
     def main(self):
         self.run()
