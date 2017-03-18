@@ -87,14 +87,16 @@ class faceOrientPred(object):
             strLine = DataStrs[i]
             strCells = strLine.rstrip(' \n').split(' ')
             imgName = strCells[0]
+
             labels = np.array(strCells[1:]).astype(np.float)
             labelsPTS=labels[:136].reshape([68,2])
 
-            # if self.debug:
-                # print "imgName: ", imgName
+            if self.debug:
+                print "imgName: ", imgName
             img = cv2.imread(imgName)
 
-            if img != None:                    
+            if img != None:   
+                print "find image: ", imgName                
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
                 (w, h, _) = img.shape
@@ -189,7 +191,7 @@ class faceOrientPred(object):
                     count += 1
 
                 else:
-                    print "cannot find: ", imgName
+                    print "cannot : ", imgName
 
 
 
