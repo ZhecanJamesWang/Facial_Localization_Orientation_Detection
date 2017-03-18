@@ -18,7 +18,7 @@ import shutil
 # import model as m
 import vgg16Modified as m
 import os
-
+import math
 
 class faceOrientPred(object):
     """face orientation detection"""
@@ -203,9 +203,24 @@ class faceOrientPred(object):
         return InputData, InputLabel, np.asarray(InputNames)
 
 
+    def reset_model(self, model):
+        for layer in model.layers:
+            if hasattr(layer, 'init'):
+                init = getattr(layer, 'init')
+                new_weights = init(layer.get_weights()[0].shape).get_value()
+                bias = shared_zeros(layer.get_weights()[1].shape).get_value()
+                layer.set_weights([new_weights, bias])
 
-
-
+    def reset_weights(self, model):
+        session = K.get_session()
+        for layer in model.layers:
+            if isinstance(layer, Dense):
+                old = layer.get_weights()
+                layer.W.initializer.run(session=session)
+                layer.b.initializer.run(session=session)
+                print(np.array_equal(old, layer.get_weights())," after initializer run")
+            else:
+                print(layer, "not reinitialized")
 
     def train_on_batch(self, nb_epoch, MaxIters):
         if os.path.exists(self.modelDir)==False:
@@ -238,9 +253,10 @@ class faceOrientPred(object):
                 if trainCount >= 20:
                     trainCount = 0
 
-
-                if loss in [None, float("inf")]:
+                if loss in [None, float("inf"), math.inf] or "nan" in str(loss):
                     print "--------------------model reset weights------------------------"
+                    self.reset_weights(self.model)
+                    self.reset_model(self.model)
                     self.model.reset_states()
 
 
@@ -279,9 +295,10 @@ class faceOrientPred(object):
                     if testCount >= 20:
                         testCount = 0
 
-                    if loss in [None, float("inf")]:
-                        print "--------------------model reset weights------------------------"
-                        self.model.reset_states()
+                    # if loss in [None, float("inf"), math.inf] or "nan" in str(loss):
+                    #     print "--------------------model reset weights------------------------"
+                    #     self.reset_weights(self.model)
+                    #     self.model.reset_states()
 
                     # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
                     labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0], self.imSize), self.imSize)
