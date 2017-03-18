@@ -238,8 +238,11 @@ class faceOrientPred(object):
                 if trainCount >= 20:
                     trainCount = 0
 
-                if str(loss) == 'nan':
+
+                if loss in [None, float("inf")]:
+                    print "--------------------model reset weights------------------------"
                     self.model.reset_states()
+
 
                 # print "****************************************************************************"
                 print "loss, train: ", loss
