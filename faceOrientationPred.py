@@ -73,7 +73,7 @@ class faceOrientPred(object):
 
     def DataGenBB(self, DataStrs, train_start,train_end):
         generateFunc = ["original", "resize", "rotate", "brightnessAndContrast" ]
-        # generateFunc = ["orginal", "resize"， "rotate", "mirror", "translate", "brightnessAndContrast" ]
+        # generateFunc = ["orginal", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size, self.imSize, self.imSize, 3], dtype = np.float32)
         InputLabel = np.zeros([self.batch_size, 7], dtype = np.float32)
