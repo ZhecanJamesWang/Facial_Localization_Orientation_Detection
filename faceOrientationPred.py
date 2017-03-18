@@ -238,6 +238,9 @@ class faceOrientPred(object):
                 if trainCount >= 20:
                     trainCount = 0
 
+                if str(loss) == 'nan':
+                    self.model.reset_states()
+
                 # print "****************************************************************************"
                 print "loss, train: ", loss
                 # print "loss.shape: ", loss.shape
@@ -273,6 +276,9 @@ class faceOrientPred(object):
                     if testCount >= 20:
                         testCount = 0
 
+                    if str(loss) == 'nan':
+                        self.model.reset_states()
+                        
                     # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
                     labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0], self.imSize), self.imSize)
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
@@ -280,8 +286,7 @@ class faceOrientPred(object):
                     testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
                     logInfo += testInfo
                     print testInfo
-                    if str(loss) == 'nan':
-                        self.model.reset_states()
+
                     # print "loss.shape: ", loss.shape
                     # print "pred, return on test: ", type(pred)
                     # print "pred.shape: ", pred.shape
