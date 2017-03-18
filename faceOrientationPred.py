@@ -280,7 +280,8 @@ class faceOrientPred(object):
                     testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
                     logInfo += testInfo
                     print testInfo
-
+                    if str(loss) == 'nan':
+                        self.model.reset_states()
                     # print "loss.shape: ", loss.shape
                     # print "pred, return on test: ", type(pred)
                     # print "pred.shape: ", pred.shape
