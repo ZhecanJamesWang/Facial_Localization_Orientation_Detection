@@ -113,7 +113,7 @@ class faceOrientPred(object):
                     elif method == "translate":
                         newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
                     elif method == "brightnessAndContrast":
-                        newImg, newX, newY = ut.contrastBrightess(img, x, y, w = w, h = h)
+                        newImg, newX, newY = ut.contrastBrightess(img, x, y)
                     elif method == "original":
                         newImg, newX, newY = img, x, y
                     else:
