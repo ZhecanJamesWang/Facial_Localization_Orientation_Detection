@@ -11,6 +11,7 @@ from PIL import Image
 from keras import optimizers
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from keras.callbacks import ModelCheckpoint
+from keras import backend as K
 import utility as ut
 import random
 from keras import callbacks
