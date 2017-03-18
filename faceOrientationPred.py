@@ -9,7 +9,7 @@ from PIL import Image
 #from Lib3D.Util2D import *
 #from Lib3D.Util3D import *
 from keras import optimizers
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
 from keras.layers import Dense
@@ -28,8 +28,8 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = True
-        self.outputDir = "./03182017_01_output/"
-        self.modelDir = "./03182017_01_model/"
+        self.outputDir = "./03182017_02_add_layers_output/"
+        self.modelDir = "./03182017_02_add_layers_model/"
         self.imSize = 128
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
