@@ -205,13 +205,13 @@ class faceOrientPred(object):
         return InputData, InputLabel, np.asarray(InputNames)
 
 
-    def reset_model(self, model):
-        for layer in model.layers:
-            if hasattr(layer, 'init'):
-                init = getattr(layer, 'init')
-                new_weights = init(layer.get_weights()[0].shape).get_value()
-                bias = shared_zeros(layer.get_weights()[1].shape).get_value()
-                layer.set_weights([new_weights, bias])
+    # def reset_model(self, model):
+    #     for layer in model.layers:
+    #         if hasattr(layer, 'init'):
+    #             init = getattr(layer, 'init')
+    #             new_weights = init(layer.get_weights()[0].shape).get_value()
+    #             bias = shared_zeros(layer.get_weights()[1].shape).get_value()
+    #             layer.set_weights([new_weights, bias])
 
     def reset_weights(self, model):
         session = K.get_session()
@@ -258,7 +258,7 @@ class faceOrientPred(object):
                 if loss in [None, float("inf"), float("-inf"), Decimal('Infinity')] or "nan" in str(loss):
                     print "--------------------model reset weights------------------------"
                     self.reset_weights(self.model)
-                    self.reset_model(self.model)
+                    # self.reset_model(self.model)
                     self.model.reset_states()
 
 
