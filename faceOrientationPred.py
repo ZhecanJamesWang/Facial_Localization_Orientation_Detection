@@ -28,9 +28,9 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = True
-        self.outputDir = "./03182017_02_add_layers_output/"
-        self.modelDir = "./03182017_02_add_layers_model/"
-        self.imSize = 128
+        self.outputDir = "./03192017_01_add_layers_output/"
+        self.modelDir = "./03192017_01_add_layers_model/"
+        self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
         TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
@@ -74,8 +74,8 @@ class faceOrientPred(object):
 
 
     def DataGenBB(self, DataStrs, train_start,train_end):
-        generateFunc = ["original", "resize", "rotate", "brightnessAndContrast" ]
-        # generateFunc = ["orginal", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
+        # generateFunc = ["original", "resize", "rotate", "brightnessAndContrast" ]
+        generateFunc = ["orginal", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
         InputLabel = np.zeros([self.batch_size * len(generateFunc), 7], dtype = np.float32)
@@ -106,7 +106,8 @@ class faceOrientPred(object):
 
                 # newImg, newX, newY = img, x, y    
 
-                for method in generateFunc:
+                for index in range(len(generateFunc)):
+                    method = generateFunc[index]
                     # tag = random.choice(generateFunc)
                     if method == "resize":
                         newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
