@@ -9,7 +9,7 @@ from PIL import Image
 #from Lib3D.Util2D import *
 #from Lib3D.Util3D import *
 from keras import optimizers
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
 from keras.layers import Dense
@@ -341,10 +341,10 @@ class faceOrientPred(object):
 
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3))
         
-        # sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
-        # self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
-        # self.model.summary()
-        # self.train_on_batch(1, MaxIters = 20000)
+        sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
+        self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
+        self.model.summary()
+        self.train_on_batch(1, MaxIters = 20000)
 
         sgd = optimizers.SGD(lr=0.0001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
