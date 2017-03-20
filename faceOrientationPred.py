@@ -84,7 +84,8 @@ class faceOrientPred(object):
         # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
-        InputLabel = np.zeros([self.batch_size * len(generateFunc), 7], dtype = np.float32)
+        # InputLabel = np.zeros([self.batch_size * len(generateFunc), 7], dtype = np.float32)
+        InputLabel = np.zeros([self.batch_size * len(generateFunc), 3], dtype = np.float32)
 
         # print "InputData.shape: ", InputData.shape
         # print "InputLabel.shape: ", InputLabel.shape
