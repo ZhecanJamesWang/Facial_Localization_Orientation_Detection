@@ -46,7 +46,7 @@ class faceOrientPred(object):
         # self.DataTe = self.DataTr
 
         FTe = open(TestPath,'r')
-        DataTe = FTe.readlines()
+        self.DataTe = FTe.readlines()
         TeNum = len(self.DataTe)
 
         print "len(self.DataTr): ", len(self.DataTr)
