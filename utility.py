@@ -93,8 +93,12 @@ def resize(image, X, Y, xMaxBound = None, yMaxBound = None, random = False):
     offset_y = (size[0] - image_size[1]) / 2 
     offset_x = (size[1] - image_size[0]) / 2
 
+    # if offset_x <= 0:
     newX = [x + offset_x for x in newX]
     newY = [y + offset_y for y in newY]
+    # else:
+    #     newX = [x - offset_x for x in newX]
+    #     newY = [y - offset_y for y in newY]        
     
     thumb = ImageChops.offset(thumb, offset_x, offset_y)
 
