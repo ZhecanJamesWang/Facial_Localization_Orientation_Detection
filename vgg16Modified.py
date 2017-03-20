@@ -138,7 +138,7 @@ def model(input_shape = None, weights_path = None):
     x = Dropout(0.2,name='fc1_drop')(x)
     x = Dense(256, activation='relu', name='fc2')(x)
     x = Dropout(0.2,name='fc2_drop')(x)
-    x = Dense(7, activation = 'linear', name='predLabel')(x)
+    x = Dense(3, activation = 'linear', name='predLabel')(x)
 
     model = Model(img_input, x, name='customizedModel')
     
