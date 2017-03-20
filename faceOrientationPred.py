@@ -93,6 +93,9 @@ class faceOrientPred(object):
         for i in range(train_start,train_end):
             strLine = DataStrs[i]
             strCells = strLine.rstrip(' \n').split(' ')
+            print "strCells: ", strCells
+            print "len(strCells): ", len(strCells)
+            rasie "debug"
             imgName = strCells[0]
 
             labels = np.array(strCells[1:]).astype(np.float)
