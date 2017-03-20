@@ -41,8 +41,9 @@ class faceOrientPred(object):
         self.DataTr = FTr.readlines()
         TrNum = len(self.DataTr)
 
-        self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
-        self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
+        # self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
+        # self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
+        self.DataTe = self.DataTr
         print "len(self.DataTr): ", len(self.DataTr)
         print "len(self.DataTe): ", len(self.DataTe)
 
