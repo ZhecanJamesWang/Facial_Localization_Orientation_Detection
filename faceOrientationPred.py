@@ -28,8 +28,8 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = True
-        self.outputDir = "./03202017_01_square_output/"
-        self.modelDir = "./03202017_01_square_model/"
+        self.outputDir = "./03202017_02_square_add_layers_output/"
+        self.modelDir = "./03202017_02_square_add_layers_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
