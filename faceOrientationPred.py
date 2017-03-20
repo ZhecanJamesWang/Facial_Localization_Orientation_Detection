@@ -178,7 +178,7 @@ class faceOrientPred(object):
 
                     normX = ut.normalize(newX, self.imSize)
                     normY = ut.normalize(newY, self.imSize)
-                    normPTS = np.asarray(ut.packLandmarks(normX, normY))
+                    # normPTS = np.asarray(ut.packLandmarks(normX, normY))
                     normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
                     # print "newPTS: ", newPTS.shape
 
@@ -193,9 +193,9 @@ class faceOrientPred(object):
 
                     # print "len(InputData): ", len(InputData)
                     InputData[count,...] = newImg
-                    labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
-                        normPTS[8][1], normXMean, normYMean, normEdge])
-                    # print "input labels: ", labels
+                    # labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
+                    #     normPTS[8][1], normXMean, normYMean, normEdge])
+                    labels = np.array([normXMean, normYMean, normEdge])
                     InputLabel[count,...] = labels
                     InputNames.append(imgName)
 
