@@ -62,6 +62,8 @@ class faceOrientPred(object):
 
         print "train data length:", TrNum
         print "test data length:", TeNum
+        print "self.MaxIters: ", self.MaxIters
+        print "self.MaxTestIters: ", self.MaxTestIters
 
 
 
