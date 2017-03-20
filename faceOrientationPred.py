@@ -41,18 +41,20 @@ class faceOrientPred(object):
         self.DataTr = FTr.readlines()
         TrNum = len(self.DataTr)
 
+        self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
+        self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
+        print "len(self.DataTr): ", len(self.DataTr)
+        print "len(self.DataTe): ", len(self.DataTe)
+
+
         # FTe = open(TestPath,'r')
         # DataTe = FTe.readlines()
-        # TeNum = len(self.DataTe)
+        TeNum = len(self.DataTe)
 
         shuffle(self.DataTr)
 
         # print "type(DataTr): ", type(self.DataTr)
         # print "len(DataTr): ", len(self.DataTr)
-        self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
-        self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
-        print "len(self.DataTr): ", len(self.DataTr)
-        print "len(self.DataTe): ", len(self.DataTe)
 
         self.batch_size = 32
         self.MaxIters = TrNum/self.batch_size
