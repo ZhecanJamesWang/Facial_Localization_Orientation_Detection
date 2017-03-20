@@ -237,20 +237,25 @@ def normalize(array, imSize):
         return (array/float(imSize)) - 0.5
 
 
-def plotTarget(image, labels, imSize):
+def plotTarget(image, labels, imSize, ifSquareOnly = False):
     img = np.copy(image)
     # assert len(labels) == 7   
 
     # try:
     (w, h, _) = (imSize, imSize, 0)  
-    for i in range(0, 6, 2):      
-        # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
-        #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
-        cv2.circle(img,(int(labels[i]), int(labels[i + 1])), 2, (0,0,255), -1)
+    if ifSquareOnly:
+        xMean = labels[0]
+        yMean = labels[1]        
+        edge = labels[2]
+    else:
+        for i in range(0, 6, 2):      
+            # if int(labels[i]) <= 128 and int(labels[i + 1]) <= 128
+            #     if int(labels[i]) >= 0 and int(labels[i + 1]) >= 0
+            cv2.circle(img,(int(labels[i]), int(labels[i + 1])), 2, (0,0,255), -1)
+        xMean = labels[4]
+        yMean = labels[5]
+        edge = labels[6]
 
-    edge = labels[6]
-    xMean = labels[4]
-    yMean = labels[5]
     cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
         int(yMean + edge/2.0)),(0, 255, 0), 3)
     # except Exception as e:
