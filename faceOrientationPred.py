@@ -28,31 +28,31 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = True
-        self.outputDir = "./03192017_01_add_layers_output/"
-        self.modelDir = "./03192017_01_add_layers_model/"
+        self.outputDir = "./03202017_01_square_output/"
+        self.modelDir = "./03202017_01_square_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
-        TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
-        # TestPath = '/home/shengtao/Data/2D_Images/300W/300WP5CropTest.txt'
+        # TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
+        # TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
+        TrainPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
 
         FTr = open(TrainPath,'r')
         self.DataTr = FTr.readlines()
-        print "type(DataTr): ", type(self.DataTr)
-        print "len(DataTr): ", len(self.DataTr)
-
-        shuffle(self.DataTr)
-        self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
-        self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
-        print "len(self.DataTr): ", len(self.DataTr)
-        print "len(self.DataTe): ", len(self.DataTe)
-
         TrNum = len(self.DataTr)
 
         # FTe = open(TestPath,'r')
         # DataTe = FTe.readlines()
-        TeNum = len(self.DataTe)
+        # TeNum = len(self.DataTe)
 
+        shuffle(self.DataTr)
+
+        # print "type(DataTr): ", type(self.DataTr)
+        # print "len(DataTr): ", len(self.DataTr)
+        self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
+        self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
+        print "len(self.DataTr): ", len(self.DataTr)
+        print "len(self.DataTe): ", len(self.DataTe)
 
         self.batch_size = 32
         self.MaxIters = TrNum/self.batch_size
