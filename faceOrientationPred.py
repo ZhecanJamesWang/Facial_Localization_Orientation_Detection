@@ -33,9 +33,9 @@ class faceOrientPred(object):
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
-        # TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
-        # TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
-        TrainPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
+        TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'
+        TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
+        # TrainPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
 
         FTr = open(TrainPath,'r')
         self.DataTr = FTr.readlines()
@@ -43,7 +43,7 @@ class faceOrientPred(object):
 
         # self.DataTe = self.DataTr[:int(len(self.DataTr)*0.1)]
         # self.DataTr = self.DataTr[int(len(self.DataTr)*0.1):]
-        self.DataTe = self.DataTr
+        # self.DataTe = self.DataTr
         print "len(self.DataTr): ", len(self.DataTr)
         print "len(self.DataTe): ", len(self.DataTe)
 
@@ -93,9 +93,9 @@ class faceOrientPred(object):
         for i in range(train_start,train_end):
             strLine = DataStrs[i]
             strCells = strLine.rstrip(' \n').split(' ')
-            print "strCells: ", strCells
-            print "len(strCells): ", len(strCells)
-            raise "debug"
+            # print "strCells: ", strCells
+            # print "len(strCells): ", len(strCells)
+            # raise "debug"
             imgName = strCells[0]
 
             labels = np.array(strCells[1:]).astype(np.float)
