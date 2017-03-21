@@ -2,6 +2,7 @@
 from keras import optimizers
 import utility as ut
 
+import selfModel as m
 
 class ModelPredict(object):
     def __init__(self):
