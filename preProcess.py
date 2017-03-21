@@ -26,7 +26,7 @@ class PreProcess(object):
 				print "type(pts): ", type(pts)
 				print "pts.shape: ", pts.shape
 				x, y = self.unpackLandmarks(pts)
-				img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True)
+				img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				cv2.imwrite('test.jpg', img)
 				raise "debug"
 				

@@ -270,7 +270,7 @@ def plotTarget(image, labels, imSize, ifSquareOnly = False, ifGreen = False):
     #     print "plotTarget labels: ", labels
     return img
 
-def plotLandmarks(image, X, Y, imSize = None, name = None, ifRescale = False, ifReturn = False):
+def plotLandmarks(image, X, Y, imSize = None, name = None, ifRescale = False, ifReturn = False, circleSize = 2):
     # plot landmarks on original image
     img = np.copy(image)
     assert len(X) == len(Y)   
@@ -280,9 +280,9 @@ def plotLandmarks(image, X, Y, imSize = None, name = None, ifRescale = False, if
         if ifRescale:
             (w, h, _) = img.shape
             # (w, h, _) = (128, 128, 0)            
-            cv2.circle(img,(int((X[index] + 0.5) * imSize), int((Y[index] + 0.5) * imSize)), 2, (0,0,255), -1)
+            cv2.circle(img,(int((X[index] + 0.5) * imSize), int((Y[index] + 0.5) * imSize)), circleSize, (0,0,255), -1)
         else:
-            cv2.circle(img,(int(X[index]), int(Y[index])), 1, (0,0,255), -1)
+            cv2.circle(img,(int(X[index]), int(Y[index])), circleSize, (0,0,255), -1)
     if ifReturn:
         return img
     else:
