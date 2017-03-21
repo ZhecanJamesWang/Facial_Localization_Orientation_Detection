@@ -14,7 +14,7 @@ class ModelPredict(object):
         self.imSize = 256
         self.evaluationOutputDir = "./03212017_01_evaluation_output/"
 
-        self.weightPath = "./03202017_02_square_model/model39000.h5"
+        self.weightPath = "./03202017_01_square_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
         sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
@@ -115,7 +115,7 @@ class ModelPredict(object):
             test_end = (iter + 1) * self.batch_size
             if iter == self.MaxTestIters - 1:
                 test_end = len(self.DataTe)
-                
+
             X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
             # loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
             print "X_batch_T.shape: ", X_batch_T.shape
