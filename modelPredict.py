@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from keras import optimizers
 import utility as ut
-import selfModel.py as m
 
 
 class ModelPredict(object):
