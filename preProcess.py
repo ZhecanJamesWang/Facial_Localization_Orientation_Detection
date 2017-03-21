@@ -16,11 +16,11 @@ class PreProcess(object):
 	def getDataByFiles(self):
 	    counter = 0
 	    files = os.listdir(self.rawDataDir)
-
+	    print "len(files): ", len(files)
 	    for file in files:
-	        if file != ".DS_Store" in file:
-	        	if ".pts39" in file:
-	        		print "file name: ", file
+	        # if file != ".DS_Store" in file:
+        	if ".pts39" in file:
+        		print "file name: ", file
 	        	# P39=np.loadtxt(pts39)
 	         #    # imgs, landmarks = self.extract(path + "/", file)
 	         #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
