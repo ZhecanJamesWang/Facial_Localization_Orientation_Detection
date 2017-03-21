@@ -32,4 +32,10 @@ class PreProcess(object):
 	         #        print counter
 	         #        # print path
 
+	def run(self):
+		self.getDataByFiles()
 
+
+		
+if __name__ == '__main__':
+	PreProcess().run()
