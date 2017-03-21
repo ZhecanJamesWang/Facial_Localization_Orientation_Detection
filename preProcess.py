@@ -50,18 +50,20 @@ class PreProcess(object):
 		yMean = (yMax + yMin)/2.0
 		edge = max(yMax - yMin, xMax - xMin)
 		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
-		newXMean = xMean * self.getDisturbance()
-		newYMean = yMean * self.getDisturbance()
-		newEdge = edge * self.getDisturbance()
+		newXMean = xMean * self.getDisturbance(0.1)
+		newYMean = yMean * self.getDisturbance(0.1)
+		newEdge = edge * 1.5 * self.getDisturbance(0.2)
 
 		labels = [xMean, yMean, edge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True)
 		labels = [newXMean, newYMean, newEdge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		cv2.imwrite('testRectangle.jpg', img)
+		# crop_img = img[newXMean:400, 100:300] 
+		# return 
 
-	def getDisturbance(self):
-		return 1 + random.uniform(-0.1, 0.1)
+	def getDisturbance(self, value):
+		return 1 + random.uniform(-value, value)
 		
 
 
