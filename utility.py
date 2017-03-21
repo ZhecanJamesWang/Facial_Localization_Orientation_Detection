@@ -270,7 +270,7 @@ def plotTarget(image, labels, imSize, ifSquareOnly = False, ifGreen = False):
     #     print "plotTarget labels: ", labels
     return img
 
-def plotLandmarks(image, X, Y, imSize, name = None, ifRescale = False, ifReturn = False):
+def plotLandmarks(image, X, Y, imSize = None, name = None, ifRescale = False, ifReturn = False):
     # plot landmarks on original image
     img = np.copy(image)
     assert len(X) == len(Y)   
