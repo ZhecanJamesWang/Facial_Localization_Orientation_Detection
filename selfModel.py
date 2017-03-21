@@ -130,7 +130,7 @@ def model(input_shape = None, weights_path = None):
     x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block5_conv1')(x)
     # x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block5_conv2')(x)
     # x = Convolution2D(64, 3, 3, activation='relu', border_mode='same', name='block5_conv3')(x)  
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block45pool')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block5pool')(x)
 
     x = Flatten(name='flatten')(x)
     # x = Dense(256, activation='relu', name='fc1')(x)
