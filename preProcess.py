@@ -59,8 +59,12 @@ class PreProcess(object):
 		labels = [newXMean, newYMean, newEdge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		cv2.imwrite('testRectangle.jpg', img)
-		cropImg = img[int(newYMean - newEdge) : int(newYMean + newEdge), int(newXMean - newEdge) : int(newXMean + newEdge)]
-		cv2.imwrite('testCroppedRectangle.jpg', cropImg)
+		cropImg1 = img[int(newYMean - newEdge) : int(newYMean + newEdge), int(newXMean - newEdge) : int(newXMean + newEdge)]
+		cropImg2 = img[ 0 : 100, 0: 50]
+		# im[y1:y2, x1:x2]
+
+		cv2.imwrite('testCroppedRectangle1.jpg', cropImg1)
+		cv2.imwrite('testCroppedRectangle2.jpg', cropImg2)
 
 		# return 
 
