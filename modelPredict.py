@@ -31,7 +31,6 @@ class ModelPredict(object):
         print "len(self.DataTe): ", len(self.DataTe)
 
         self.MaxTestIters = TeNum/self.batch_size
-        print "train data length:", TrNum
         print "test data length:", TeNum
         print "self.MaxTestIters: ", self.MaxTestIters
 
