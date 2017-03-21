@@ -55,7 +55,7 @@ class ModelPredict(object):
             labelsPTS=labels[:136].reshape([68,2])
             img = cv2.imread(imgName)
 
-            if img:   
+            if img != None:   
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 (w, h, _) = img.shape
                 x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
