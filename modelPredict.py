@@ -17,6 +17,10 @@ class ModelPredict(object):
         loaded_model.evaluate(X, Y, verbose=0)
 
 
+    def final_pred(self, y_true, y_pred):
+        # y_cont=np.concatenate(y_pred,axis=1)
+        return y_pred
+
 
     def loadData(self):
         TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
