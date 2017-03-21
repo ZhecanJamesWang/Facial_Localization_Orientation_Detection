@@ -126,9 +126,9 @@ class ModelPredict(object):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
 
-                labelImg = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True)
-                cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(iter * self.batch_size + i) + '.jpg', img)
-                labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
+                labelImg = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
+                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(iter * self.batch_size + i) + '.jpg', labelImg)
+                labelImg = ut.plotTarget(labelImg, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
                 print 'save predTestLabelImg' + str(iter * self.batch_size + i) + '.jpg to: ' + self.evaluationOutputDir
                 cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(iter * self.batch_size + i) + '.jpg', labelImg)
 

@@ -241,7 +241,7 @@ def normalize(array, imSize):
         return (array/float(imSize)) - 0.5
 
 
-def plotTarget(image, labels, imSize, ifSquareOnly = False):
+def plotTarget(image, labels, imSize, ifSquareOnly = False, ifGreen = False):
     img = np.copy(image)
     # assert len(labels) == 7   
 
@@ -259,9 +259,12 @@ def plotTarget(image, labels, imSize, ifSquareOnly = False):
         xMean = labels[4]
         yMean = labels[5]
         edge = labels[6]
-
-    cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
-        int(yMean + edge/2.0)),(0, 255, 0), 3)
+    if ifGreen:
+        cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
+            int(yMean + edge/2.0)),(0, 255, 0), 3)
+    else:
+        cv2.rectangle(img,(int(xMean - edge/2.0), int(yMean - edge/2.0)),(int(xMean + edge/2.0), 
+            int(yMean + edge/2.0)),(255, 0, 0), 3)
     # except Exception as e:
     #     print e
     #     print "plotTarget labels: ", labels
