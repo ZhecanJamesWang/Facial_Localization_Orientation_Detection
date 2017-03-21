@@ -13,34 +13,34 @@ class PreProcess(object):
 		self.rawDataDir = "/home/james/Menpo39_Valid/"
 
 	def getDataByFiles(self):
-	    counter = 0
-	    files = os.listdir(self.rawDataDir)
-	    print "len(files): ", len(files)
-	    for file in files:
-	        # if file != ".DS_Store" in file:
-        	if ".pts39" in file:
-        		fileHeader = file.split(".")[0]
-        		img = cv2.imread(self.rawDataDir + fileHeader + ".jpg")
-        		print "file name: ", file
-	        	pts = np.loadtxt(self.rawDataDir + file)
-	        	print "type(pts): ", type(pts)
-	        	print "pts.shape: ", pts.shape
-	        	x, y = self.unpackLandmarks(pts)
+		counter = 0
+		files = os.listdir(self.rawDataDir)
+		print "len(files): ", len(files)
+		for file in files:
+			# if file != ".DS_Store" in file:
+			if ".pts39" in file:
+				fileHeader = file.split(".")[0]
+				img = cv2.imread(self.rawDataDir + fileHeader + ".jpg")
+				print "file name: ", file
+				pts = np.loadtxt(self.rawDataDir + file)
+				print "type(pts): ", type(pts)
+				print "pts.shape: ", pts.shape
+				x, y = self.unpackLandmarks(pts)
 				img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True)
-                cv2.imwrite('test.jpg', img)
-                raise "debug"
+				cv2.imwrite('test.jpg', img)
+				raise "debug"
 				
 
-	        	
-	         #    # imgs, landmarks = self.extract(path + "/", file)
-	         #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
-	         #    if not self.debug:                 
-	         #        self.saveImg(imgs, landmarks, file)
-	         #    counter += 1
+				
+			 #    # imgs, landmarks = self.extract(path + "/", file)
+			 #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
+			 #    if not self.debug:                 
+			 #        self.saveImg(imgs, landmarks, file)
+			 #    counter += 1
 
-	         #    if counter % 100 == 0:
-	         #        print counter
-	         #        # print path
+			 #    if counter % 100 == 0:
+			 #        print counter
+			 #        # print path
 
 
 
@@ -48,12 +48,12 @@ class PreProcess(object):
 		self.getDataByFiles()
 
 	def unpackLandmarks(self, array):
-	    x = []
-	    y = []
-	    for i in range(0, len(array)):
-	        x.append(array[i][0])
-	        y.append(array[i][1])
-	    return x, y
+		x = []
+		y = []
+		for i in range(0, len(array)):
+			x.append(array[i][0])
+			y.append(array[i][1])
+		return x, y
 
 
 
