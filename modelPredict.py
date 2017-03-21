@@ -113,8 +113,8 @@ class ModelPredict(object):
         for iter in range (self.MaxTestIters):
             test_start = iter * self.batch_size
             test_end = (iter + 1) * self.batch_size
-            if iter == self.MaxTestIters - 1:
-                test_end = len(self.DataTe)
+            # if iter == self.MaxTestIters - 1:
+            #     test_end = len(self.DataTe)
 
             X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
             # loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
