@@ -55,7 +55,7 @@ class ModelPredict(object):
             labelsPTS=labels[:136].reshape([68,2])
             img = cv2.imread(imgName)
 
-            if img != None:   
+            if img:   
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 (w, h, _) = img.shape
                 x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
@@ -110,7 +110,7 @@ class ModelPredict(object):
             test_start = iter * self.batch_size
             test_end = (iter + 1) * self.batch_size
             X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
-            # loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
+            loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
 
             # for i in range(self.batch_size):
             #     labels = label_BB_T[i]
