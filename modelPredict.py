@@ -1,4 +1,4 @@
-import selfModifiedModel.py as m
+import selfModel.py as m
 from keras import optimizers
 import utility as ut
 
