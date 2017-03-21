@@ -9,10 +9,6 @@ from PIL import Image
 #from Lib3D.Util2D import *
 #from Lib3D.Util3D import *
 from keras import optimizers
-<<<<<<< HEAD
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
-=======
->>>>>>> 5b21b0c88a6023bef117a3b48f32667f076abd6c
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
 from keras.layers import Dense
