@@ -54,12 +54,12 @@ class PreProcess(object):
 		newYMean = yMean * self.getDisturbance(0.1)
 		newEdge = edge * 1.5 * self.getDisturbance(0.2)
 
-		labels = [xMean, yMean, edge]
-		img = ut.plotTarget(img, labels, ifSquareOnly = True)
-		labels = [newXMean, newYMean, newEdge]
-		img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
-		cv2.imwrite('testRectangle.jpg', img)
-		cropImg1 = img[int(newYMean - newEdge) : int(newYMean + newEdge), int(newXMean - newEdge) : int(newXMean + newEdge)]
+		# labels = [xMean, yMean, edge]
+		# img = ut.plotTarget(img, labels, ifSquareOnly = True)
+		# labels = [newXMean, newYMean, newEdge]
+		# img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
+		# cv2.imwrite('testRectangle.jpg', img)
+		cropImg1 = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		cropImg2 = img[ 0 : 100, 0: 50]
 		# im[y1:y2, x1:x2]
 
