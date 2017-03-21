@@ -1,9 +1,10 @@
-import selfModel.py as m
+# -*- coding: utf-8 -*-
 from keras import optimizers
 import utility as ut
+import selfModel.py as m
 
 
-class modelPredict(object):
+class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
@@ -124,6 +125,6 @@ class modelPredict(object):
         self.predcit()
 
 if __name__ == '__main__':
-    modelPredict().run()
+    ModelPredict().run()
 
 

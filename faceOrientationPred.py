@@ -17,7 +17,7 @@ import random
 from keras import callbacks
 import shutil
 # import model as m
-import selfModifiedModel as m
+import selfModel as m
 import os
 from decimal import Decimal
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
