@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import utility as ut
 import numpy as np
-# import selfModel as m
 import cv2
 import os
+import random
 # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 # os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
@@ -49,11 +49,19 @@ class PreProcess(object):
 		xMean = (xMax + xMin)/2.0
 		yMean = (yMax + yMin)/2.0
 		edge = max(yMax - yMin, xMax - xMin)
+		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
+		newXMean = xMean * self.getDisturbance()
+		newYMean = yMean * self.getDisturbance()
+		newEdge = edge * self.getDisturbance()
+
 		labels = [xMean, yMean, edge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True)
+		labels = [xMean, yMean, edge]
+		img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		cv2.imwrite('testRectangle.jpg', img)
-		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
 
+	def getDisturbance(self):
+		return 1 + random.uniform(-0.1, 0.1)
 		
 
 
