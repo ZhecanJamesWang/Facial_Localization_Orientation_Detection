@@ -18,7 +18,7 @@ class PreProcess(object):
 	    files = os.listdir(self.rawDataDir)
 
 	    for file in files:
-	        if file != ".DS_Store" and self.format in file:
+	        if file != ".DS_Store" in file:
 	        	if ".pts39" in file:
 	        		print "file name: ", file
 	        	# P39=np.loadtxt(pts39)
@@ -36,6 +36,6 @@ class PreProcess(object):
 		self.getDataByFiles()
 
 
-		
+
 if __name__ == '__main__':
 	PreProcess().run()
