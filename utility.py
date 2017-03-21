@@ -241,7 +241,7 @@ def normalize(array, imSize):
         return (array/float(imSize)) - 0.5
 
 
-def plotTarget(image, labels, imSize, ifSquareOnly = False, ifGreen = False):
+def plotTarget(image, labels, imSize = None, ifSquareOnly = False, ifGreen = False):
     img = np.copy(image)
     # assert len(labels) == 7   
 

@@ -11,6 +11,8 @@ import os
 class PreProcess(object):
 	def __init__(self):
 		self.rawDataDir = "/home/james/Menpo39_Valid/"
+		self.filterDataDir = "./Menpo39Preprocessed/"
+		self.debug = False
 
 	def getDataByFiles(self):
 		counter = 0
@@ -26,12 +28,10 @@ class PreProcess(object):
 				print "type(pts): ", type(pts)
 				print "pts.shape: ", pts.shape
 				x, y = self.unpackLandmarks(pts)
-				img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-				cv2.imwrite('test.jpg', img)
-				raise "debug"
-				
-
-				
+				if self.debug:
+					img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+					cv2.imwrite('test.jpg', img)
+				self.process(img, x, y)
 			 #    # imgs, landmarks = self.extract(path + "/", file)
 			 #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
 			 #    if not self.debug:                 
@@ -41,6 +41,21 @@ class PreProcess(object):
 			 #    if counter % 100 == 0:
 			 #        print counter
 			 #        # print path
+	def process(self, img, x, y):
+
+        xMin = min(x)
+        yMin = min(y)
+        xMax = max(x)
+        yMax = max(y)
+        xMean = (xMax + xMin)/2.0
+        yMean = (yMax + yMin)/2.0
+        edge = max(yMax - yMin, xMax - xMin)
+        labels = [xMean, yMean, edge]
+		img = ut.plotTarget(img, labels, ifSquareOnly = True)
+		cv2.imwrite('test.jpg', img)
+		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
+
+		
 
 
 
