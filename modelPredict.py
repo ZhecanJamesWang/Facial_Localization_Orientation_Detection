@@ -113,9 +113,12 @@ class ModelPredict(object):
             # loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
             print "X_batch_T.shape: ", X_batch_T.shape
             print "label_BB_T.shape: ", label_BB_T.shape
-            
-            pred = self.model.predict(X_batch_T,label_BB_T)
 
+            pred = self.model.predict(X_batch_T,label_BB_T, batch_size = 32, verbose=1)
+            print "type(pred): ", type(pred)
+            print "pred.shape: ", pred.shape
+
+            
             for i in range(self.batch_size):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
