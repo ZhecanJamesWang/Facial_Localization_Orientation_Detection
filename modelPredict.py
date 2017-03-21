@@ -3,6 +3,7 @@ from keras import optimizers
 import utility as ut
 import numpy as np
 import selfModel as m
+import cv2
 
 class ModelPredict(object):
     def __init__(self):

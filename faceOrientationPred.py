@@ -2,23 +2,21 @@ import cv2
 import numpy as np
 import os
 from random import shuffle
-from PIL import Image
+# from PIL import Image
 # from BK.MeshNetLayer import *
 #from Lib3D.MeshModel import *
 #from Lib3D.Rasterization import  *
 #from Lib3D.Util2D import *
 #from Lib3D.Util3D import *
 from keras import optimizers
-from keras.callbacks import ModelCheckpoint
+# from keras.callbacks import ModelCheckpoint
 from keras import backend as K
-from keras.layers import Dense
 import utility as ut
 import random
-from keras import callbacks
+# from keras import callbacks
 import shutil
 # import model as m
 import selfModel as m
-import os
 from decimal import Decimal
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
