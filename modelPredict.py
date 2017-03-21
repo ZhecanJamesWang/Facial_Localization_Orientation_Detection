@@ -126,7 +126,7 @@ class ModelPredict(object):
 
     def run(self):
         pass
-        # self.loadData()
+        self.loadData()
         self.predcit()
 
 if __name__ == '__main__':
