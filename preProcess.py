@@ -10,7 +10,7 @@ import os
 
 class PreProcess(object):
 	def __init__(self):
-		self.rawDataDir = "/home/james/Menpo39_Valid"
+		self.rawDataDir = "/home/james/Menpo39_Valid/"
 
 	def getDataByFiles(self):
 	    counter = 0
@@ -20,7 +20,7 @@ class PreProcess(object):
 	        # if file != ".DS_Store" in file:
         	if ".pts39" in file:
         		print "file name: ", file
-	        	pts = np.loadtxt(file)
+	        	pts = np.loadtxt(self.rawDataDir + file)
 	        	print "type(pts): ", type(pts)
 	        	print "pts.shape: ", pts.shape
 
