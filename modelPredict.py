@@ -12,9 +12,9 @@ class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
-        self.evaluationOutputDir = "./03212017_02_evaluation_output/"
+        self.evaluationOutputDir = "./03212017_01_evaluation_output/"
 
-        self.weightPath = "./03202017_02_square_add_layers_model/model39000.h5"
+        self.weightPath = "./03202017_02_square_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
         sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
@@ -40,7 +40,7 @@ class ModelPredict(object):
 
 
     def DataGenBB(self, DataStrs, train_start,train_end):
-        generateFunc = ["original", "resize", "rotate", "brightnessAndContrast" ]
+        generateFunc = ["original"]
         # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
@@ -109,15 +109,19 @@ class ModelPredict(object):
         return InputData, InputLabel, np.asarray(InputNames)
 
     def predcit(self):
+        saveCount = 0
         for iter in range (self.MaxTestIters):
             test_start = iter * self.batch_size
             test_end = (iter + 1) * self.batch_size
+            if iter == self.MaxTestIters - 1:
+                test_end = len(self.DataTe)
+                
             X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
             # loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
             print "X_batch_T.shape: ", X_batch_T.shape
             print "label_BB_T.shape: ", label_BB_T.shape
 
-            pred = self.model.predict(X_batch_T, batch_size = 32, verbose=1)
+            pred = self.model.predict(X_batch_T, verbose=1)
             print "type(pred): ", type(pred)
             print "pred.shape: ", pred.shape
 
@@ -126,11 +130,13 @@ class ModelPredict(object):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
 
-                # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
-                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(iter * self.batch_size + i) + '.jpg', img)
+                img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
+                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
                 labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
-                print 'save predTestLabelImg' + str(iter * self.batch_size + i) + '.jpg to: ' + self.evaluationOutputDir
-                cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(iter * self.batch_size + i) + '.jpg', labelImg)
+                print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
+                cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
+                saveCount += 1
+
 
 
     def run(self):
