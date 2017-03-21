@@ -111,6 +111,9 @@ class ModelPredict(object):
             test_end = (iter + 1) * self.batch_size
             X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
             # loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
+            print "X_batch_T.shape: ", X_batch_T.shape
+            print "label_BB_T.shape: ", label_BB_T.shape
+            
             pred = self.model.predict(X_batch_T,label_BB_T)
 
             for i in range(self.batch_size):
