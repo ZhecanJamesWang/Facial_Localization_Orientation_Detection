@@ -106,25 +106,27 @@ class ModelPredict(object):
         return InputData, InputLabel, np.asarray(InputNames)
 
     def predcit(self):
-        for iter in range (self.MaxTestIters):
-            test_start = iter * self.batch_size
-            test_end = (iter + 1) * self.batch_size
-            X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
-            loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
+        pass
+        # for iter in range (self.MaxTestIters):
+        #     test_start = iter * self.batch_size
+        #     test_end = (iter + 1) * self.batch_size
+        #     X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
+        #     loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
 
-            for i in range(self.batch_size):
-                labels = label_BB_T[i]
-                img = X_batch_T[i]
+        #     for i in range(self.batch_size):
+        #         labels = label_BB_T[i]
+        #         img = X_batch_T[i]
 
-                labelImg = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True)
-                cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(iter * self.batch_size + i) + '.jpg', img)
-                labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
-                print 'save predTestLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
-                cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(iter * self.batch_size + i) + '.jpg', labelImg)
+        #         labelImg = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True)
+        #         cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(iter * self.batch_size + i) + '.jpg', img)
+        #         labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
+        #         print 'save predTestLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
+        #         cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(iter * self.batch_size + i) + '.jpg', labelImg)
 
 
     def run(self):
-        self.loadData()
+        pass
+        # self.loadData()
         self.predcit()
 
 if __name__ == '__main__':
