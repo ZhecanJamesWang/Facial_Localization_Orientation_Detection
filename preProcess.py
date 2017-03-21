@@ -59,7 +59,9 @@ class PreProcess(object):
 		labels = [newXMean, newYMean, newEdge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		cv2.imwrite('testRectangle.jpg', img)
-		# crop_img = img[newXMean:400, 100:300] 
+		cropImg = img[newXMean - newEdge : newXMean + newEdge, newYMean - newEdge: newYMean + newEdge]
+		cv2.imwrite('testCroppedRectangle.jpg', cropImg)
+
 		# return 
 
 	def getDisturbance(self, value):
