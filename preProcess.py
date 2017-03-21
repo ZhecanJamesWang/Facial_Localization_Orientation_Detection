@@ -21,12 +21,17 @@ class PreProcess(object):
         	if ".pts39" in file:
         		fileHeader = file.split(".")[0]
         		img = cv2.imread(self.rawDataDir + fileHeader + ".jpg")
-        		print "img.shape: ", img.shape
-
         		print "file name: ", file
 	        	pts = np.loadtxt(self.rawDataDir + file)
 	        	print "type(pts): ", type(pts)
 	        	print "pts.shape: ", pts.shape
+	        	x, y = self.unpackLandmarks(pts)
+
+				img = ut.plotLandmarks(image, x, y, ifRescale = False, ifReturn = True)
+                cv2.imwrite('test.jpg', img)
+                raise "debug"
+				
+
 	        	
 	         #    # imgs, landmarks = self.extract(path + "/", file)
 	         #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
@@ -39,7 +44,6 @@ class PreProcess(object):
 	         #        # print path
 
 
-# def plotLandmarks(image, X, Y, imSize, name = None, ifRescale = False, ifReturn = False):
 
 	def run(self):
 		self.getDataByFiles()
