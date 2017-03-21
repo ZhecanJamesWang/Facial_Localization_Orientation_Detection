@@ -9,7 +9,6 @@ from PIL import Image
 #from Lib3D.Util2D import *
 #from Lib3D.Util3D import *
 from keras import optimizers
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
 from keras.layers import Dense
@@ -18,16 +17,22 @@ import random
 from keras import callbacks
 import shutil
 # import model as m
-import vgg16Modified as m
+import selfModifiedModel as m
 import os
 from decimal import Decimal
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
+
+
+
+
+
 
 class faceOrientPred(object):
     """face orientation detection"""
     def __init__(self):
 
         self.init = True
-        self.debug = True
+        self.debug = False
         self.outputDir = "./03202017_02_square_add_layers_output/"
         self.modelDir = "./03202017_02_square_add_layers_model/"
         self.imSize = 256
@@ -87,17 +92,11 @@ class faceOrientPred(object):
         # InputLabel = np.zeros([self.batch_size * len(generateFunc), 7], dtype = np.float32)
         InputLabel = np.zeros([self.batch_size * len(generateFunc), 3], dtype = np.float32)
 
-        # print "InputData.shape: ", InputData.shape
-        # print "InputLabel.shape: ", InputLabel.shape
-
         InputNames = []
         count = 0
         for i in range(train_start,train_end):
             strLine = DataStrs[i]
             strCells = strLine.rstrip(' \n').split(' ')
-            # print "strCells: ", strCells
-            # print "len(strCells): ", len(strCells)
-            # raise "debug"
             imgName = strCells[0]
 
             labels = np.array(strCells[1:]).astype(np.float)
@@ -134,14 +133,14 @@ class faceOrientPred(object):
                     else:
                         raise "not existing function"
 
-                    if self.debug:
-                        plotOriginal = ut.plotLandmarks(img, x, y, self.imSize, ifReturn = True)
-                        plotNew = ut.plotLandmarks(newImg, newX, newY, self.imSize, ifReturn = True)
+                    # if self.debug:
+                    #     plotOriginal = ut.plotLandmarks(img, x, y, self.imSize, ifReturn = True)
+                    #     plotNew = ut.plotLandmarks(newImg, newX, newY, self.imSize, ifReturn = True)
 
-                        cv2.imwrite(self.outputDir + 'testOriginal' + str(count) + '.jpg', img)
-                        cv2.imwrite(self.outputDir + 'testNew' + str(count) + '.jpg', newImg)        
-                        cv2.imwrite(self.outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
-                        cv2.imwrite(self.outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
+                    #     cv2.imwrite(self.outputDir + 'testOriginal' + str(count) + '.jpg', img)
+                    #     cv2.imwrite(self.outputDir + 'testNew' + str(count) + '.jpg', newImg)        
+                    #     cv2.imwrite(self.outputDir + 'plotOriginal' + str(count) + '.jpg', plotOriginal)
+                    #     cv2.imwrite(self.outputDir + 'plotNew' + str(count) + '.jpg', plotNew)
 
                     # print "before normalize: ", newX
                     
@@ -207,12 +206,6 @@ class faceOrientPred(object):
                 print "cannot : ", imgName
 
 
-
-
-            # PtsB = np.concatenate([PTSRot,InputLabel[count,...].reshape(2,2)],axis=0)
-            # imgDraw=drawPTS(imgRot,PtsB,imgW=128)
-            # imgDraw.save('./tmp.jpg')
-
         return InputData, InputLabel, np.asarray(InputNames)
 
 
@@ -241,24 +234,19 @@ class faceOrientPred(object):
         testCount = 0
         trainCount = 0
         for e in range(nb_epoch):
-            # if e>0:
+
             shuffle(self.DataTr)
             iterTest=0
             for iter in range (self.MaxIters):
                 train_start=iter*self.batch_size
                 train_end = (iter+1)*self.batch_size
-                # print "train_start: ", train_start
-                # print "train_end: ", train_end
                 X_batch, label_BB, Z_Names = self.DataGenBB(self.DataTr, train_start=train_start, train_end=train_end)
 
-                # print "X_batch.shape: ", X_batch.shape
-                for i in range(self.batch_size):
-                    labels = label_BB[i]
-                    img = X_batch[i]
-                    # print "input ut.deNormalize(labels): ", ut.deNormalize(labels)
-                    # labelImg = ut.plotTarget(img, labels)
-                    labelImg = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True)
-                    cv2.imwrite(self.outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
+                # for i in range(self.batch_size):
+                #     labels = label_BB[i]
+                #     img = X_batch[i]
+                    # labelImg = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True)
+                    # cv2.imwrite(self.outputDir + 'inputTrainlabelImg' + str(trainCount) + '.jpg', labelImg)
 
                 loss, tras, pred = self.model.train_on_batch(X_batch,label_BB)
                 trainCount += 1
@@ -266,23 +254,18 @@ class faceOrientPred(object):
                 if trainCount >= 20:
                     trainCount = 0
 
-                if loss in [None, float("inf"), float("-inf"), Decimal('Infinity')] or "nan" in str(loss):
-                    print "--------------------model reset weights------------------------"
-                    self.reset_weights(self.model)
-                    self.reset_model(self.model)
-                    self.model.reset_states()
+                # if loss in [None, float("inf"), float("-inf"), Decimal('Infinity')] or "nan" in str(loss):
+                #     print "--------------------model reset weights------------------------"
+                #     self.reset_weights(self.model)
+                #     self.reset_model(self.model)
+                #     self.model.reset_states()
 
 
                 # print "****************************************************************************"
                 print "loss, train: ", loss
-                # print "loss.shape: ", loss.shape
-                # print "pred, return on train: ", type(pred)
-                # print "pred.shape: ", pred.shape
-                # # print "pred #######: ", pred
-                # print "tras, return on train: ", type(tras), tras
-                # print "tras.shape: ", tras.shape 
 
-                if iter%100 == 0:
+
+                if iter%1000 == 0:
                     logInfo = ""
                     if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
                         f = open(self.outputDir + 'log.txt', 'a')
@@ -295,13 +278,15 @@ class faceOrientPred(object):
                     print iterationInfo
 
                     # labelImg = ut.plotTarget(X_batch[0], pred[0])
-                    labelImg = ut.plotTarget(X_batch[0], ut.deNormalize(pred[0], self.imSize), self.imSize, ifSquareOnly = True)
-                    cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(trainCount) + '.jpg', labelImg)
+                    index = random.randint(0, len(X_batch) - 1)
+                    labelImg = ut.plotTarget(X_batch[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
+                    print 'save predTrainLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
+                    cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(testCount) + '.jpg', labelImg)
 
 
                     test_start = iterTest * self.batch_size
                     test_end = (iterTest + 1) * self.batch_size
-                    X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTr, train_start=test_start, train_end=test_end)
+                    X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
                     loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
                     testCount += 1
 
@@ -313,20 +298,15 @@ class faceOrientPred(object):
                     #     self.reset_weights(self.model)
                     #     self.model.reset_states()
 
-                    # labelImg = ut.plotTarget(X_batch_T[0], pred[0])
-                    labelImg = ut.plotTarget(X_batch_T[0], ut.deNormalize(pred[0], self.imSize), self.imSize, ifSquareOnly = True)
+                    index = random.randint(0, len(X_batch) - 1)
+                    labelImg = ut.plotTarget(X_batch_T[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
+                    print 'save predTestLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                     testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
                     logInfo += testInfo
                     print testInfo
 
-                    # print "loss.shape: ", loss.shape
-                    # print "pred, return on test: ", type(pred)
-                    # print "pred.shape: ", pred.shape
-                    # print "pred #######: ", pred
-                    # print "tras, return on test: ", type(tras), tras
-                    # print "tras.shape: ", tras.shape 
 
                     iterTest += self.batch_size
                     iterTest %= self.MaxTestIters
