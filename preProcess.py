@@ -56,7 +56,7 @@ class PreProcess(object):
 
 		labels = [xMean, yMean, edge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True)
-		labels = [xMean, yMean, edge]
+		labels = [newXMean, newYMean, newEdge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		cv2.imwrite('testRectangle.jpg', img)
 
