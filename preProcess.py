@@ -51,7 +51,7 @@ class PreProcess(object):
 		edge = max(yMax - yMin, xMax - xMin)
 		labels = [xMean, yMean, edge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True)
-		cv2.imwrite('test.jpg', img)
+		cv2.imwrite('testRectangle.jpg', img)
 		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
 
 		
