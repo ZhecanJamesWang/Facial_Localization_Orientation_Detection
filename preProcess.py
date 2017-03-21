@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-from keras import optimizers
 import utility as ut
 import numpy as np
-import selfModel as m
+# import selfModel as m
 import cv2
-import os
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
+# import os
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+# os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 
 class PreProcess(object):
@@ -21,7 +20,10 @@ class PreProcess(object):
 	        # if file != ".DS_Store" in file:
         	if ".pts39" in file:
         		print "file name: ", file
-	        	# P39=np.loadtxt(pts39)
+	        	pts = np.loadtxt(file)
+	        	print "type(pts): ", type(pts)
+	        	print "pts.shape: ", pts.shape
+
 	         #    # imgs, landmarks = self.extract(path + "/", file)
 	         #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
 	         #    if not self.debug:                 
