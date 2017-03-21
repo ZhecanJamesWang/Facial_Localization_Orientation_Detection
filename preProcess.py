@@ -42,15 +42,14 @@ class PreProcess(object):
 			 #        print counter
 			 #        # print path
 	def process(self, img, x, y):
-
-        xMin = min(x)
-        yMin = min(y)
-        xMax = max(x)
-        yMax = max(y)
-        xMean = (xMax + xMin)/2.0
-        yMean = (yMax + yMin)/2.0
-        edge = max(yMax - yMin, xMax - xMin)
-        labels = [xMean, yMean, edge]
+		xMin = min(x)
+		yMin = min(y)
+		xMax = max(x)
+		yMax = max(y)
+		xMean = (xMax + xMin)/2.0
+		yMean = (yMax + yMin)/2.0
+		edge = max(yMax - yMin, xMax - xMin)
+		labels = [xMean, yMean, edge]
 		img = ut.plotTarget(img, labels, ifSquareOnly = True)
 		cv2.imwrite('test.jpg', img)
 		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
