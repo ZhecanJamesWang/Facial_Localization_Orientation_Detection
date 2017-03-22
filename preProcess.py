@@ -31,7 +31,10 @@ class PreProcess(object):
 				if self.debug:
 					img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 					cv2.imwrite('test.jpg', img)
-				cropImg = self.process(img, x, y)
+				cropImg, x, y = self.process(img, x, y)
+				pts = np.asarray(ut.packLandmarks(x, y))
+				print "pts.shape: ", pts.shape
+				np.savetxt(self.filterDataDir + 'pts' + str(counter) + '.txt', pts)
 				cv2.imwrite(self.filterDataDir + 'image' + str(counter) + '.jpg', cropImg)
 				counter += 1
 
@@ -70,12 +73,11 @@ class PreProcess(object):
 		y = np.asarray(y)
 		x = x - int(newXMean - newEdge/2.0)
 		y = y - int(newYMean - newEdge/2.0)
-		# if self.debug:
-		img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-		cv2.imwrite('testCropImgLandmarks.jpg', img)		
-		# return cropImg
+		if self.debug:
+			img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+			cv2.imwrite('testCropImgLandmarks.jpg', img)		
+		return cropImg, x, y
 
-		# return 
 
 	def getDisturbance(self, value):
 		return 1 + random.uniform(-value, value)
