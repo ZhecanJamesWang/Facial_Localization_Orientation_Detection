@@ -72,7 +72,7 @@ class PreProcess(object):
 		y = y - int(newYMean - newEdge/2.0)
 		# if self.debug:
 		img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-		cv2.imwrite('testCropImgLandmarks.jpg', cropImg)		
+		cv2.imwrite('testCropImgLandmarks.jpg', img)		
 		# return cropImg
 
 		# return 
