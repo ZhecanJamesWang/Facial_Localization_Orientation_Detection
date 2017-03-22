@@ -33,17 +33,17 @@ class PreProcessMenpo39(object):
 				print "pts.shape: ", pts.shape
 				x, y = self.unpackLandmarks(pts)
 				# if self.debug:
-				img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-				cv2.imwrite(self.filterImgDir + 'orginalImage' + str(counter) + '.jpg', img)
+				# img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+				# cv2.imwrite(self.filterImgDir + 'orginalImage' + str(counter) + '.jpg', img)
 				cropImg, x, y, testImg = self.process(img, x, y)
-				cv2.imwrite('testRectangle' + str(counter)  + '.jpg', testImg)
-				print "cropImg.shape: ", cropImg.shape
-				print "pts.shape: ", pts.shape
-				print "str(counter): ", str(counter)
-				cv2.imwrite(self.filterImgDir + 'CroppedImage' + str(counter) + '.jpg', cropImg)
+				# cv2.imwrite('testRectangle' + str(counter)  + '.jpg', testImg)
+				# print "cropImg.shape: ", cropImg.shape
+				# print "pts.shape: ", pts.shape
+				# print "str(counter): ", str(counter)
+				# cv2.imwrite(self.filterImgDir + 'CroppedImage' + str(counter) + '.jpg', cropImg)
 				# if self.debug:
-				img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-				cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
+				# img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+				# cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
 
 				w, h, _ = img.shape
 				x = x / w
@@ -52,28 +52,19 @@ class PreProcessMenpo39(object):
 				y = y * 256
 				resizeImg = cv2.resize(img,(self.imSize, self.imSize))
 				# resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
-				cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', resizeImg)
+				# cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', resizeImg)
 
-				img = ut.plotLandmarks(resizeImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-				cv2.imwrite(self.filterImgDir + 'testResizeImgLandmarks' + str(counter) + '.jpg', img)
-
-
-				# pts = np.asarray(ut.packLandmarks(x, y))
+				# img = ut.plotLandmarks(resizeImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+				# cv2.imwrite(self.filterImgDir + 'testResizeImgLandmarks' + str(counter) + '.jpg', img)
 
 
-				# np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
-				# cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
+				pts = np.asarray(ut.packLandmarks(x, y))
+
+
+				np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
+				cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
 				counter += 1
 
-			 #    # imgs, landmarks = self.extract(path + "/", file)
-			 #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
-			 #    if not self.debug:                 
-			 #        self.saveImg(imgs, landmarks, file)
-			 #    counter += 1
-
-			 #    if counter % 100 == 0:
-			 #        print counter
-			 #        # print path
 
 	def process(self, img, x, y):
 		w, h, _ = img.shape
@@ -95,9 +86,9 @@ class PreProcessMenpo39(object):
 
 		# if self.debug:
 		# labels = [xMean, yMean, edge]
-		# img = ut.plotTarget(img, labels, ifSquareOnly = True)
+		img = ut.plotTarget(img, labels, ifSquareOnly = True)
 		labels = [newXMean, newYMean, newEdge]
-		testImg = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
+		# testImg = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		# cv2.imwrite('testRectangle.jpg', img)
 		edgeList = [newEdge]
 		if int(newXMean - newEdge/2.0)  < 0:
@@ -134,6 +125,7 @@ class PreProcessMenpo39(object):
 		print int(newYMean - newEdge/2.0) 
 		print int(newXMean + newEdge/2.0)
 		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
+		print "cropImg.shape: ", cropImg.shape
 		
 		x = np.asarray(x)
 		y = np.asarray(y)
