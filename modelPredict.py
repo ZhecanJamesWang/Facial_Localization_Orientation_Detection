@@ -44,7 +44,7 @@ class ModelPredict(object):
         print "self.MaxTestIters: ", self.MaxTestIters
 
 
-    def DataGenBB(self, DataStrs = None, train_start,train_end):
+    def DataGenBB(self, train_start,train_end, DataStrs = None):
         generateFunc = ["original"]
         # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
@@ -129,9 +129,9 @@ class ModelPredict(object):
             # if iter == self.MaxTestIters - 1:
             #     test_end = len(self.DataTe)
             if ifMenpo39DataSet:
-                X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start=test_start, train_end=test_end)
+                X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start = est_start, train_end = test_end)
             else:
-                X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
+                X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(DataStrs = self.DataTe, train_start = test_start, train_end = test_end)
             print "X_batch_T.shape: ", X_batch_T.shape
             print "label_BB_T.shape: ", label_BB_T.shape
 
