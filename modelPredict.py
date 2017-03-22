@@ -18,7 +18,7 @@ class ModelPredict(object):
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
         sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
-        self.ifMenpo39DataSet = False
+        self.ifMenpo39DataSet = True
 
 
     def final_pred(self, y_true, y_pred):
