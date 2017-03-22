@@ -48,9 +48,9 @@ class PreProcessMenpo39(object):
 				y /= h
 				x *= 256
 				y *= 256
-				img = cv2.resize(img,(self.imSize, self.imSize))
+				resizeImg = cv2.resize(img,(self.imSize, self.imSize))
 				# resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
-				cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', cropImg)
+				cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', resizeImg)
 
 				img = ut.plotLandmarks(resizeImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				cv2.imwrite(self.filterImgDir + 'testResizeImgLandmarks' + str(counter) + '.jpg', img)
