@@ -71,6 +71,7 @@ class faceOrientPred(object):
         print "self.MaxTestIters: ", self.MaxTestIters
 
 
+        self.ifMenpo39DataSet = True
 
 
 
@@ -79,13 +80,13 @@ class faceOrientPred(object):
         # y_cont=np.concatenate(y_pred,axis=1)
         return y_pred
 
-    def readMenpo39Preprocessed(self):
-        ImgDir = "./Menpo39Preprocessed/img/"
-        PTSDir = "./Menpo39Preprocessed/pts/"
-        pts = os.listdir(ImgDir)
-        imgs = os.listdir(PTSDir)
-        print "len(pts): ", len(pts)
-        print "len(imgs): ", len(imgs)
+    def readMenpo39DataSet(self):
+        self.ImgDir = "./Menpo39Preprocessed/img/"
+        self.PTSDir = "./Menpo39Preprocessed/pts/"
+        self.imgs = os.listdir(PTSDir)
+        # self.pts = os.listdir(ImgDir)
+        # assert len(pts) == len(imgs)
+
 
 
     def DataGenBB(self, DataStrs, train_start,train_end):
@@ -99,12 +100,20 @@ class faceOrientPred(object):
         InputNames = []
         count = 0
         for i in range(train_start,train_end):
-            strLine = DataStrs[i]
-            strCells = strLine.rstrip(' \n').split(' ')
-            imgName = strCells[0]
+            if self.ifMenpo39DataSet:
+                imgName =self.imgs[i]
+                imgNameHeader = imgName.split('.')[0]
+                index = imgNameHeader[imgNameHeader.find('e') + 1:]
+                pts = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
+                print "pts.shape: ", pts.shape
+                raise "debug"
+            else:
+                strLine = DataStrs[i]
+                strCells = strLine.rstrip(' \n').split(' ')
+                imgName = strCells[0]
 
-            labels = np.array(strCells[1:]).astype(np.float)
-            labelsPTS=labels[:136].reshape([68,2])
+                labels = np.array(strCells[1:]).astype(np.float)
+                labelsPTS=labels[:136].reshape([68,2])
 
             # if self.debug:
             #     print "imgName: ", imgName
@@ -352,8 +361,7 @@ class faceOrientPred(object):
         self.train_on_batch(1, MaxIters = 20000)
     
     def main(self):
-        # self.run()
-        self.readMenpo39Preprocessed()
+        self.run()
 
 if __name__ == '__main__':
     faceOrientPred().main()
