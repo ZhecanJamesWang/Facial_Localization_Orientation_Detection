@@ -84,12 +84,12 @@ class PreProcessMenpo39(object):
 		yMean = (yMax + yMin)/2.0
 		edge = max(yMax - yMin, xMax - xMin)
 		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
-		# newXMean = xMean * self.getDisturbance(0.1)
-		# newYMean = yMean * self.getDisturbance(0.1)
-		# newEdge = edge * 1.5 * self.getDisturbance(0.2)
-		newXMean = xMean 
-		newYMean = yMean 
-		newEdge = edge
+		newXMean = xMean * self.getDisturbance(0.1)
+		newYMean = yMean * self.getDisturbance(0.1)
+		newEdge = edge * 2 * self.getDisturbance(0.2)
+		# newXMean = xMean 
+		# newYMean = yMean 
+		# newEdge = edge
 
 
 		# if self.debug:
