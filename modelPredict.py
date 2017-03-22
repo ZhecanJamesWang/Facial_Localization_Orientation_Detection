@@ -12,7 +12,7 @@ class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
-        # self.evaluationOutputDir = "./03222017_01_Menpo39_evaluation_output/"
+        self.evaluationOutputDir = "./03222017_02_Menpo39_evaluation_output/"
 
         self.weightPath = "./03202017_01_square_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
@@ -160,10 +160,10 @@ class ModelPredict(object):
                 img = X_batch_T[i]
 
                 img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
-                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
-                # labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
-                # print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
-                # cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
+                cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
+                labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
+                print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
+                cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
                 saveCount += 1
 
 
