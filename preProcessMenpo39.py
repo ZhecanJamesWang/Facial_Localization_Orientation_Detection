@@ -116,7 +116,7 @@ class PreProcessMenpo39(object):
 			newYMax = YMax 
 			newEdge = min(2 * (YMax - newYMean), newEdge)  
 		else:
-			newYMax = int(newYMean + newYdge/2.0)
+			newYMax = int(newYMean + newEdge/2.0)
 		
 		cropImg = img[ newYMin: int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		# cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
