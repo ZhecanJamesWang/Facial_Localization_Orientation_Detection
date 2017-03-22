@@ -113,7 +113,7 @@ class PreProcessMenpo39(object):
 			newYMin = int(newYMean - newEdge/2.0) 
 		
 		if int(newYMean + newEdge/2.0) > yMax:
-			newYMax = YMax 
+			newYMax = yMax 
 			newEdge = min(2 * (YMax - newYMean), newEdge)  
 		else:
 			newYMax = int(newYMean + newEdge/2.0)
