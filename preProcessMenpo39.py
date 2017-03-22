@@ -45,7 +45,7 @@ class PreProcessMenpo39(object):
 				# img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				# cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
 
-				# w, h, _ = img.shape
+				w, h, _ = cropImg.shape
 				# x = x / w
 				# y = y / h
 				# x = x * 256
@@ -57,7 +57,7 @@ class PreProcessMenpo39(object):
 				labels[1] = labels[1] * 256
 				labels[3] = labels[3] * 256
 
-				resizeImg = cv2.resize(img,(self.imSize, self.imSize))
+				resizeImg = cv2.resize(cropImg,(self.imSize, self.imSize))
 				# resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
 				# cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', resizeImg)
 
@@ -70,7 +70,7 @@ class PreProcessMenpo39(object):
 
 				# np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
 				np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', labels)
-				cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
+				cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', resizeImg)
 				counter += 1
 
 
