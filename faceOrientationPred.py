@@ -105,6 +105,7 @@ class faceOrientPred(object):
                 imgName =self.imgs[i]
                 imgNameHeader = imgName.split('.')[0]
                 index = imgNameHeader[imgNameHeader.find('e') + 1:]
+                print "index: ", index
                 pts = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
                 print "pts.shape: ", pts.shape
                 raise "debug"
