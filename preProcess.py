@@ -11,7 +11,8 @@ import random
 class PreProcess(object):
 	def __init__(self):
 		self.rawDataDir = "/home/james/Menpo39_Valid/"
-		self.filterDataDir = "./Menpo39Preprocessed/"
+		self.filterImgDir = "./Menpo39Preprocessed/img"
+		self.filterPTSDir = "./Menpo39Preprocessed/pts"		
 		self.debug = False
 
 	def getDataByFiles(self):
@@ -34,8 +35,8 @@ class PreProcess(object):
 				cropImg, x, y = self.process(img, x, y)
 				pts = np.asarray(ut.packLandmarks(x, y))
 				print "pts.shape: ", pts.shape
-				np.savetxt(self.filterDataDir + 'pts' + str(counter) + '.txt', pts)
-				cv2.imwrite(self.filterDataDir + 'image' + str(counter) + '.jpg', cropImg)
+				np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
+				cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
 				counter += 1
 
 			 #    # imgs, landmarks = self.extract(path + "/", file)
