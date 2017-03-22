@@ -11,8 +11,8 @@ import random
 class PreProcess(object):
 	def __init__(self):
 		self.rawDataDir = "/home/james/Menpo39_Valid/"
-		self.filterImgDir = "./Menpo39Preprocessed/img"
-		self.filterPTSDir = "./Menpo39Preprocessed/pts"		
+		self.filterImgDir = "./Menpo39Preprocessed/img/"
+		self.filterPTSDir = "./Menpo39Preprocessed/pts/"		
 		self.debug = False
 
 	def getDataByFiles(self):
