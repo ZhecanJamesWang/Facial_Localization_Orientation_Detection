@@ -35,7 +35,8 @@ class PreProcessMenpo39(object):
 				# if self.debug:
 				img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				cv2.imwrite(self.filterImgDir + 'orginalImage' + str(counter) + '.jpg', img)
-				cropImg, x, y = self.process(img, x, y)
+				cropImg, x, y, testImg = self.process(img, x, y)
+				cv2.imwrite('testRectangle' + str(counter)  + '.jpg', testImg)
 				print "cropImg.shape: ", cropImg.shape
 				print "pts.shape: ", pts.shape
 				print "str(counter): ", str(counter)
@@ -83,23 +84,27 @@ class PreProcessMenpo39(object):
 		yMean = (yMax + yMin)/2.0
 		edge = max(yMax - yMin, xMax - xMin)
 		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
-		newXMean = xMean * self.getDisturbance(0.1)
-		newYMean = yMean * self.getDisturbance(0.1)
-		newEdge = edge * 1.5 * self.getDisturbance(0.2)
+		# newXMean = xMean * self.getDisturbance(0.1)
+		# newYMean = yMean * self.getDisturbance(0.1)
+		# newEdge = edge * 1.5 * self.getDisturbance(0.2)
+		newXMean = xMean 
+		newYMean = yMean 
+		newEdge = edge
 
 
-		if self.debug:
-			labels = [xMean, yMean, edge]
-			img = ut.plotTarget(img, labels, ifSquareOnly = True)
-			labels = [newXMean, newYMean, newEdge]
-			img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
-			cv2.imwrite('testRectangle.jpg', img)
+		# if self.debug:
+		# labels = [xMean, yMean, edge]
+		# img = ut.plotTarget(img, labels, ifSquareOnly = True)
+		labels = [newXMean, newYMean, newEdge]
+		testImg = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
+		# cv2.imwrite('testRectangle.jpg', img)
 
 		if int(newXMean - newEdge/2.0)  < 0:
 			newXMin = 0  
 			newEdge = min(2 * int(newXMean - 0), newEdge) 
 		else:
 			newXMin = int(newXMean - newEdge/2.0) 
+
 		if int(newXMean + newEdge/2.0) > xMax :
 			newXMax = xMax  
 			newEdge = min(2 * int(xMax - newXMean), newEdge) 
@@ -118,13 +123,13 @@ class PreProcessMenpo39(object):
 		else:
 			newYMax = int(newYMean + newEdge/2.0)
 		
-		cropImg = img[ int(newXMin) : int(newXMax), int(newYMin) : int(newYMax)]
+		cropImg = img[ int(newYMin) : int(newYMax), int(newXMin) : int(newXMax)]
 		# cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		x = np.asarray(x)
 		y = np.asarray(y)
-		x = x - int(newXMean - newEdge/2.0)
-		y = y - int(newYMean - newEdge/2.0)	
-		return cropImg, x, y
+		x = x - int(newXMin)
+		y = y - int(newYMin)	
+		return cropImg, x, y, testImg
 
 
 	def getDisturbance(self, value):
