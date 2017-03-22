@@ -11,7 +11,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = ""
 class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
-        self.imSize = 128
+        self.imSize = 256
         self.evaluationOutputDir = "./03222017_03_big_net_Menpo39_evaluation_output/"
 
         self.weightPath = "./03202017_02_square_add_layers_model/model39000.h5"
