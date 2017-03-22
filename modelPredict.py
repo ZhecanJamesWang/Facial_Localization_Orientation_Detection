@@ -128,7 +128,7 @@ class ModelPredict(object):
             test_end = (iter + 1) * self.batch_size
             # if iter == self.MaxTestIters - 1:
             #     test_end = len(self.DataTe)
-            if ifMenpo39DataSet:
+            if self.ifMenpo39DataSet:
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start = est_start, train_end = test_end)
             else:
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(DataStrs = self.DataTe, train_start = test_start, train_end = test_end)
