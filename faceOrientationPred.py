@@ -103,7 +103,9 @@ class faceOrientPred(object):
         for i in range(train_start,train_end):
             if self.ifMenpo39DataSet:
                 imgName =self.imgs[i]
+                print "imgName: ", imgName
                 imgNameHeader = imgName.split('.')[0]
+                print "imgNameHeader: ", imgNameHeader
                 index = imgNameHeader[imgNameHeader.find('e') + 1:]
                 print "index: ", index
                 pts = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
