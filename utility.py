@@ -62,7 +62,7 @@ def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
     return image, newX, newY
 
 
-def resize(image, X, Y, xMaxBound = None, yMaxBound = None, random = False):
+def resize(image, X, Y, xMaxBound = None, yMaxBound = None, random = False, size = None):
 
     originalImage = image
     # resize imgage to determined size maintaing the original ratio

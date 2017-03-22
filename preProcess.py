@@ -33,12 +33,26 @@ class PreProcess(object):
 					img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 					cv2.imwrite('test.jpg', img)
 				cropImg, x, y = self.process(img, x, y)
-				pts = np.asarray(ut.packLandmarks(x, y))
 				print "cropImg.shape: ", cropImg.shape
 				print "pts.shape: ", pts.shape
-				raise "debug"
-				np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
-				cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
+				cv2.imwrite(self.filterImgDir + 'CroppedImage' + str(counter) + '.jpg', cropImg)
+				# if self.debug:
+				img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+				cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
+
+				resizeImg, x, y = ut.resize(img, x, y, size = (256, 256))
+				cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', cropImg)
+
+				img = ut.plotLandmarks(resizeImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+				cv2.imwrite(self.filterImgDir + 'testResizeImgLandmarks' + str(counter) + '.jpg', img)
+
+				(image, X, Y, xMaxBound = None, yMaxBound = None, random = False, size = None)
+
+				# pts = np.asarray(ut.packLandmarks(x, y))
+
+
+				# np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
+				# cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
 				counter += 1
 
 			 #    # imgs, landmarks = self.extract(path + "/", file)
@@ -75,10 +89,7 @@ class PreProcess(object):
 		x = np.asarray(x)
 		y = np.asarray(y)
 		x = x - int(newXMean - newEdge/2.0)
-		y = y - int(newYMean - newEdge/2.0)
-		if self.debug:
-			img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-			cv2.imwrite('testCropImgLandmarks.jpg', img)		
+		y = y - int(newYMean - newEdge/2.0)	
 		return cropImg, x, y
 
 
