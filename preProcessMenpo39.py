@@ -76,6 +76,7 @@ class PreProcessMenpo39(object):
 			 #        # print path
 
 	def process(self, img, x, y):
+		w, h, _ = img.shape
 		xMin = min(x)
 		yMin = min(y)
 		xMax = max(x)
@@ -84,12 +85,12 @@ class PreProcessMenpo39(object):
 		yMean = (yMax + yMin)/2.0
 		edge = max(yMax - yMin, xMax - xMin)
 		# ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
-		newXMean = xMean * self.getDisturbance(0.1)
-		newYMean = yMean * self.getDisturbance(0.1)
-		newEdge = edge * 2 * self.getDisturbance(0.2)
-		# newXMean = xMean 
-		# newYMean = yMean 
-		# newEdge = edge
+		# newXMean = xMean * self.getDisturbance(0.1)
+		# newYMean = yMean * self.getDisturbance(0.1)
+		# newEdge = edge * 1.5 * self.getDisturbance(0.2)
+		newXMean = xMean 
+		newYMean = yMean 
+		newEdge = edge * 1.5
 
 
 		# if self.debug:
@@ -98,37 +99,37 @@ class PreProcessMenpo39(object):
 		labels = [newXMean, newYMean, newEdge]
 		testImg = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		# cv2.imwrite('testRectangle.jpg', img)
-
+		edgeList = []
 		if int(newXMean - newEdge/2.0)  < 0:
 			# newXMin = 0  
-			newEdge = min(2 * int(newXMean - 0), newEdge) 
+			edgeList.append(2 * int(newXMean - 0))
 		# else:
 			# newXMin = int(newXMean - newEdge/2.0) 
 
-		if int(newXMean + newEdge/2.0) > xMax :
+		if int(newXMean + newEdge/2.0) > w :
 			# newXMax = xMax  
-			newEdge = min(2 * int(xMax - newXMean), newEdge) 
+			edgeList.append(2 * int(w - newXMean)) 
 		# else:
 		# 	newXMax = int(newXMean + newEdge/2.0)
 
 		if int(newYMean - newEdge/2.0)  < 0:
 			# newYMin = 0  
-			newEdge = min(2 * int(newYMean - 0), newEdge) 
+			edgeList.append(2 * int(newYMean - 0)) 
 		# else: 
 		# 	newYMin = int(newYMean - newEdge/2.0) 
 		
-		if int(newYMean + newEdge/2.0) > yMax:
+		if int(newYMean + newEdge/2.0) > h:
 			# newYMax = yMax 
-			newEdge = min(2 * int(yMax - newYMean), newEdge)  
+			edgeList.append(2 * int(h - newYMean))  
 		# else:
 		# 	newYMax = int(newYMean + newEdge/2.0)
-		
+		newEdge = min(edgeList)
 		# cropImg = img[ int(newYMin) : int(newYMax), int(newXMin) : int(newXMax)]
 		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newYMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		
 		x = np.asarray(x)
 		y = np.asarray(y)
-		x = x - int(newYMean - newEdge/2.0)
+		x = x - int(newXMean - newEdge/2.0)
 		y = y - int(newYMean - newEdge/2.0)	
 		return cropImg, x, y, testImg
 
