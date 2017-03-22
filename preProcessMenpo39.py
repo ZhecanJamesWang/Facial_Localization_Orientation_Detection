@@ -35,7 +35,7 @@ class PreProcessMenpo39(object):
 				# if self.debug:
 				# img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				# cv2.imwrite(self.filterImgDir + 'orginalImage' + str(counter) + '.jpg', img)
-				cropImg, x, y, testImg = self.process(img, x, y)
+				cropImg, labels = self.process(img, x, y)
 				# cv2.imwrite('testRectangle' + str(counter)  + '.jpg', testImg)
 				# print "cropImg.shape: ", cropImg.shape
 				# print "pts.shape: ", pts.shape
@@ -45,11 +45,18 @@ class PreProcessMenpo39(object):
 				# img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				# cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
 
-				w, h, _ = img.shape
-				x = x / w
-				y = y / h
-				x = x * 256
-				y = y * 256
+				# w, h, _ = img.shape
+				# x = x / w
+				# y = y / h
+				# x = x * 256
+				# y = y * 256
+				labels[0] = labels[0] / w
+				labels[1] = labels[1] / y
+				labels[3] = labels[3] / w
+				labels[0] = labels[0] * 256
+				labels[1] = labels[1] * 256
+				labels[3] = labels[3] * 256
+
 				resizeImg = cv2.resize(img,(self.imSize, self.imSize))
 				# resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
 				# cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', resizeImg)
@@ -58,10 +65,11 @@ class PreProcessMenpo39(object):
 				# cv2.imwrite(self.filterImgDir + 'testResizeImgLandmarks' + str(counter) + '.jpg', img)
 
 
-				pts = np.asarray(ut.packLandmarks(x, y))
+				# pts = np.asarray(ut.packLandmarks(x, y))
 
 
-				np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
+				# np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
+				np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', labels)
 				cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
 				counter += 1
 
@@ -85,7 +93,7 @@ class PreProcessMenpo39(object):
 
 
 		# if self.debug:
-		# labels = [xMean, yMean, edge]
+		labels = np.array([xMean, yMean, edge])
 		# img = ut.plotTarget(img, labels, ifSquareOnly = True)
 		# labels = [newXMean, newYMean, newEdge]
 		testImg = None
@@ -132,7 +140,7 @@ class PreProcessMenpo39(object):
 		y = np.asarray(y)
 		x = x - int(newXMean - newEdge/2.0)
 		y = y - int(newYMean - newEdge/2.0)	
-		return cropImg, x, y, testImg
+		return cropImg, labels
 
 
 	def getDisturbance(self, value):

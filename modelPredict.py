@@ -107,7 +107,9 @@ class ModelPredict(object):
                         newImg, newX, newY = img, x, y
                     else:
                         raise "not existing function"
-
+                if self.ifMenpo39DataSet:
+                    labels = labelsPTS
+                else:
                     newXMin = min(newX)
                     newYMin = min(newY)
                     newXMax = max(newX)
@@ -120,14 +122,13 @@ class ModelPredict(object):
                     normX = ut.normalize(newX, self.imSize)
                     normY = ut.normalize(newY, self.imSize)
                     normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
-
-
-                    InputData[count,...] = newImg
                     labels = np.array([normXMean, normYMean, normEdge])
-                    InputLabel[count,...] = labels
-                    InputNames.append(imgName)
 
-                    count += 1
+                InputData[count,...] = newImg
+                InputLabel[count,...] = labels
+                InputNames.append(imgName)
+
+                count += 1
 
             else:
                 print "cannot : ", imgName
