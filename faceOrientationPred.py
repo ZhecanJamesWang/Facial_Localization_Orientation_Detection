@@ -84,7 +84,7 @@ class faceOrientPred(object):
     def readMenpo39DataSet(self):
         self.ImgDir = "./Menpo39Preprocessed/img/"
         self.PTSDir = "./Menpo39Preprocessed/pts/"
-        self.imgs = os.listdir(self.PTSDir)
+        self.imgs = os.listdir(self.ImgDir)
         # self.pts = os.listdir(ImgDir)
         # assert len(pts) == len(imgs)
 
