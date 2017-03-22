@@ -51,7 +51,7 @@ class PreProcessMenpo39(object):
 				# x = x * 256
 				# y = y * 256
 				labels[0] = labels[0] / w
-				labels[1] = labels[1] / y
+				labels[1] = labels[1] / h
 				labels[3] = labels[3] / w
 				labels[0] = labels[0] * 256
 				labels[1] = labels[1] * 256
