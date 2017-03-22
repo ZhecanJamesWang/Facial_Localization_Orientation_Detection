@@ -99,7 +99,7 @@ class PreProcessMenpo39(object):
 		labels = [newXMean, newYMean, newEdge]
 		testImg = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		# cv2.imwrite('testRectangle.jpg', img)
-		edgeList = []
+		edgeList = [newEdge]
 		if int(newXMean - newEdge/2.0)  < 0:
 			# newXMin = 0  
 			edgeList.append(2 * int(newXMean - 0))
