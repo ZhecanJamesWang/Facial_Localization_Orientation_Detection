@@ -73,7 +73,8 @@ class faceOrientPred(object):
 
         self.ifMenpo39DataSet = True
 
-
+        if self.ifMenpo39DataSet:
+            self.readMenpo39DataSet()
 
 
     def final_pred(self, y_true, y_pred):
