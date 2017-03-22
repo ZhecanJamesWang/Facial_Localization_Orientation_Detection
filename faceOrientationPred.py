@@ -31,8 +31,8 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = False
-        self.outputDir = "./03212017_01_square_Menpo39DataSet_output/"
-        self.modelDir = "./03212017_01_square_Menpo39DataSet_model/"
+        self.outputDir = "./03222017_01_square_Menpo39DataSet_output/"
+        self.modelDir = "./03222017_01_square_Menpo39DataSet_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
@@ -71,7 +71,7 @@ class faceOrientPred(object):
         print "self.MaxTestIters: ", self.MaxTestIters
 
 
-        self.ifMenpo39DataSet = True
+        self.ifMenpo39DataSet = False
 
         if self.ifMenpo39DataSet:
             self.readMenpo39DataSet()
@@ -103,14 +103,9 @@ class faceOrientPred(object):
         for i in range(train_start,train_end):
             if self.ifMenpo39DataSet:
                 imgName =self.imgs[i]
-                print "imgName: ", imgName
                 imgNameHeader = imgName.split('.')[0]
-                print "imgNameHeader: ", imgNameHeader
                 index = imgNameHeader[imgNameHeader.find('e') + 1:]
-                print "index: ", index
-                pts = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
-                print "pts.shape: ", pts.shape
-                raise "debug"
+                labelsPTS = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
             else:
                 strLine = DataStrs[i]
                 strCells = strLine.rstrip(' \n').split(' ')
@@ -272,13 +267,13 @@ class faceOrientPred(object):
                     trainCount = 0
 
                 # if loss in [None, float("inf"), float("-inf"), Decimal('Infinity')] or "nan" in str(loss):
-                #     print "--------------------model reset weights------------------------"
+                #     print "-----model reset weights-----"
                 #     self.reset_weights(self.model)
                 #     self.reset_model(self.model)
                 #     self.model.reset_states()
 
 
-                # print "****************************************************************************"
+                # print "*****"
                 print "loss, train: ", loss
 
 
@@ -290,7 +285,7 @@ class faceOrientPred(object):
                         f = open(self.outputDir + 'log.txt','w')
                         self.init = False
 
-                    iterationInfo = ("^^^^^^^^^^^^^^^" + "\n" + 'iteration: ' + str(iter))
+                    iterationInfo = ("^^^^^" + "\n" + 'iteration: ' + str(iter))
                     logInfo += iterationInfo
                     print iterationInfo
 
@@ -311,17 +306,12 @@ class faceOrientPred(object):
                     if testCount >= 20:
                         testCount = 0
 
-                    # if loss in [None, float("inf"), math.inf] or "nan" in str(loss):
-                    #     print "--------------------model reset weights------------------------"
-                    #     self.reset_weights(self.model)
-                    #     self.model.reset_states()
-
                     index = random.randint(0, len(X_batch) - 1)
                     labelImg = ut.plotTarget(X_batch_T[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
                     print 'save predTestLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
-                    testInfo = ("===================" + "\n" + "loss, TEST: " + str(loss))
+                    testInfo = ("====" + "\n" + "loss, TEST: " + str(loss))
                     logInfo += testInfo
                     print testInfo
 

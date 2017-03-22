@@ -12,12 +12,18 @@ class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
-        self.evaluationOutputDir = "./03212017_01_evaluation_output/"
+        self.evaluationOutputDir = "./03222017_01_Menpo39_evaluation_output/"
 
         self.weightPath = "./03202017_01_square_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
         sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
+        self.ifMenpo39DataSet = True
+
+
+
+
+    def readMenpo39DataSet(self):
 
 
     def final_pred(self, y_true, y_pred):
@@ -26,20 +32,24 @@ class ModelPredict(object):
 
 
     def loadData(self):
-        TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
-
-        FTe = open(TestPath,'r')
-        self.DataTe = FTe.readlines()
-        TeNum = len(self.DataTe)
-
-        print "len(self.DataTe): ", len(self.DataTe)
+        if ifMenpo39DataSet:
+            self.ImgDir = "./Menpo39Preprocessed/img/"
+            self.PTSDir = "./Menpo39Preprocessed/pts/"
+            self.imgs = os.listdir(self.ImgDir)
+            TeNum = len(self.imgs)
+        else:
+            TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
+            FTe = open(TestPath,'r')
+            self.DataTe = FTe.readlines()
+            TeNum = len(self.DataTe)
+            print "len(self.DataTe): ", len(self.DataTe)
 
         self.MaxTestIters = TeNum/self.batch_size
         print "test data length:", TeNum
         print "self.MaxTestIters: ", self.MaxTestIters
 
 
-    def DataGenBB(self, DataStrs, train_start,train_end):
+    def DataGenBB(self, DataStrs = None, train_start,train_end):
         generateFunc = ["original"]
         # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
@@ -50,12 +60,20 @@ class ModelPredict(object):
         InputNames = []
         count = 0
         for i in range(train_start,train_end):
-            strLine = DataStrs[i]
-            strCells = strLine.rstrip(' \n').split(' ')
-            imgName = strCells[0]
+            if self.ifMenpo39DataSet:
+                imgName =self.imgs[i]
+                imgNameHeader = imgName.split('.')[0]
+                index = imgNameHeader[imgNameHeader.find('e') + 1:]
+                labelsPTS = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
+            else:
+                strLine = DataStrs[i]
+                strCells = strLine.rstrip(' \n').split(' ')
+                imgName = strCells[0]
 
-            labels = np.array(strCells[1:]).astype(np.float)
-            labelsPTS=labels[:136].reshape([68,2])
+                labels = np.array(strCells[1:]).astype(np.float)
+                labelsPTS=labels[:136].reshape([68,2])
+
+
             img = cv2.imread(imgName)
 
             if img != None:   
@@ -115,9 +133,10 @@ class ModelPredict(object):
             test_end = (iter + 1) * self.batch_size
             # if iter == self.MaxTestIters - 1:
             #     test_end = len(self.DataTe)
-
-            X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
-            # loss, tras, pred = self.model.evaluate(X_batch_T,label_BB_T)
+            if ifMenpo39DataSet:
+                X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start=test_start, train_end=test_end)
+            else:
+                X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(self.DataTe, train_start=test_start, train_end=test_end)
             print "X_batch_T.shape: ", X_batch_T.shape
             print "label_BB_T.shape: ", label_BB_T.shape
 
