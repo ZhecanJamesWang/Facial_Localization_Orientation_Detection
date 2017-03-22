@@ -40,7 +40,7 @@ class PreProcess(object):
 				img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
 
-				resizeImg, x, y = ut.resize(img, x, y, size = (256, 256))
+				resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
 				cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', cropImg)
 
 				img = ut.plotLandmarks(resizeImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
