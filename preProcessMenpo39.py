@@ -26,6 +26,7 @@ class PreProcessMenpo39(object):
 				fileHeader = file.split(".")[0]
 				print "fileHeader: ", fileHeader
 				img = cv2.imread(self.rawDataDir + fileHeader + ".jpg")
+				print "img.shape: ", img.shape
 				print "file name: ", file
 				pts = np.loadtxt(self.rawDataDir + file)
 				print "type(pts): ", type(pts)
