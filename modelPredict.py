@@ -60,6 +60,7 @@ class ModelPredict(object):
                 imgNameHeader = imgName.split('.')[0]
                 index = imgNameHeader[imgNameHeader.find('e') + 1:]
                 labelsPTS = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
+                img = cv2.imread(self.ImgDir + imgName)
             else:
                 strLine = DataStrs[i]
                 strCells = strLine.rstrip(' \n').split(' ')
@@ -67,9 +68,9 @@ class ModelPredict(object):
 
                 labels = np.array(strCells[1:]).astype(np.float)
                 labelsPTS=labels[:136].reshape([68,2])
+                img = cv2.imread(imgName)
 
 
-            img = cv2.imread(imgName)
 
             if img != None:   
                 img = cv2.resize(img,(self.imSize, self.imSize))
