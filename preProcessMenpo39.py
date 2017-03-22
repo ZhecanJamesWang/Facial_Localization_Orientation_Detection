@@ -86,8 +86,9 @@ class PreProcessMenpo39(object):
 
 		# if self.debug:
 		# labels = [xMean, yMean, edge]
-		img = ut.plotTarget(img, labels, ifSquareOnly = True)
-		labels = [newXMean, newYMean, newEdge]
+		# img = ut.plotTarget(img, labels, ifSquareOnly = True)
+		# labels = [newXMean, newYMean, newEdge]
+		testImg = None
 		# testImg = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		# cv2.imwrite('testRectangle.jpg', img)
 		edgeList = [newEdge]
@@ -126,7 +127,7 @@ class PreProcessMenpo39(object):
 		print int(newXMean + newEdge/2.0)
 		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		print "cropImg.shape: ", cropImg.shape
-		
+
 		x = np.asarray(x)
 		y = np.asarray(y)
 		x = x - int(newXMean - newEdge/2.0)
