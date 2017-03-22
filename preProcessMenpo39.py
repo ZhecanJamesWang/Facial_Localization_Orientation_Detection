@@ -14,6 +14,7 @@ class PreProcessMenpo39(object):
 		self.filterImgDir = "./Menpo39Preprocessed/img/"
 		self.filterPTSDir = "./Menpo39Preprocessed/pts/"		
 		self.debug = False
+		self.imSize = 256
 
 	def getDataByFiles(self):
 		counter = 0
@@ -42,7 +43,14 @@ class PreProcessMenpo39(object):
 				img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
 
-				resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
+				w, h, _ = img.shape
+				x /= w
+				y /= h
+				x *= 256
+				y *= 256
+                img = cv2.resize(img,(self.imSize, self.imSize))
+
+				# resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
 				cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', cropImg)
 
 				img = ut.plotLandmarks(resizeImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
