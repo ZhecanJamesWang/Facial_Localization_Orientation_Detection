@@ -34,7 +34,7 @@ class PreProcessMenpo39(object):
 				x, y = self.unpackLandmarks(pts)
 				# if self.debug:
 				img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
-				cv2.imwrite(self.filterImgDir + 'orginalImage' + str(counter + '.jpg', img))
+				cv2.imwrite(self.filterImgDir + 'orginalImage' + str(counter) + '.jpg', img)
 				cropImg, x, y = self.process(img, x, y)
 				print "cropImg.shape: ", cropImg.shape
 				print "pts.shape: ", pts.shape
