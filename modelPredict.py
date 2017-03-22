@@ -21,11 +21,6 @@ class ModelPredict(object):
         self.ifMenpo39DataSet = True
 
 
-
-
-    def readMenpo39DataSet(self):
-
-
     def final_pred(self, y_true, y_pred):
         # y_cont=np.concatenate(y_pred,axis=1)
         return y_pred
