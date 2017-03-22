@@ -87,6 +87,7 @@ class PreProcessMenpo39(object):
 		newYMean = yMean * self.getDisturbance(0.1)
 		newEdge = edge * 1.5 * self.getDisturbance(0.2)
 
+
 		if self.debug:
 			labels = [xMean, yMean, edge]
 			img = ut.plotTarget(img, labels, ifSquareOnly = True)
@@ -94,7 +95,31 @@ class PreProcessMenpo39(object):
 			img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 			cv2.imwrite('testRectangle.jpg', img)
 
-		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
+		if int(newXMean - newEdge/2.0)  < 0:
+			newXMin = 0  
+			newEdge = min(2 * (newXMean - 0), newEdge) 
+		else:
+			newXMin = int(newXMean - newEdge/2.0) 
+		if int(newXMean + newEdge/2.0) > xMax :
+			newXMax = xMax  
+			newEdge = min(2 * (xMax - newXMean), newEdge) 
+		else:
+			newXMax = int(newXMean + newEdge/2.0)
+
+		if int(newYMean - newEdge/2.0)  < 0:
+			newYMin = 0  
+			newEdge = min(2 * (newYMean - 0), newEdge) 
+		else: 
+			newYMin = int(newYMean - newYdge/2.0) 
+		
+		if int(newYMean + newEdge/2.0) > yMax:
+			newYMax = YMax 
+			newEdge = min(2 * (YMax - newYMean), newEdge)  
+		else:
+			newYMax = int(newYMean + newYdge/2.0)
+		
+		cropImg = img[ newYMin: int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
+		# cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		x = np.asarray(x)
 		y = np.asarray(y)
 		x = x - int(newXMean - newEdge/2.0)
