@@ -34,7 +34,9 @@ class PreProcess(object):
 					cv2.imwrite('test.jpg', img)
 				cropImg, x, y = self.process(img, x, y)
 				pts = np.asarray(ut.packLandmarks(x, y))
+				print "cropImg.shape: ", cropImg.shape
 				print "pts.shape: ", pts.shape
+				raise "debug"
 				np.savetxt(self.filterPTSDir + 'pts' + str(counter) + '.txt', pts)
 				cv2.imwrite(self.filterImgDir+ 'image' + str(counter) + '.jpg', cropImg)
 				counter += 1

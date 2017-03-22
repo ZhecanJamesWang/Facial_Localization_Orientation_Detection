@@ -43,6 +43,13 @@ class ModelPredict(object):
         print "test data length:", TeNum
         print "self.MaxTestIters: ", self.MaxTestIters
 
+    def unpackLandmarks(self, array):
+        x = []
+        y = []
+        for i in range(0, len(array)):
+            x.append(array[i][0])
+            y.append(array[i][1])
+        return x, y
 
     def DataGenBB(self, train_start,train_end, DataStrs = None):
         generateFunc = ["original"]
@@ -75,7 +82,10 @@ class ModelPredict(object):
             if img != None:   
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 (w, h, _) = img.shape
-                x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
+                if self.ifMenpo39DataSet:
+                    x, y = self.unpackLandmarks(labelsPTS)
+                else:
+                    x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
                 for index in range(len(generateFunc)):
                     method = generateFunc[index]
@@ -133,12 +143,13 @@ class ModelPredict(object):
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start = test_start, train_end = test_end)
             else:
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(DataStrs = self.DataTe, train_start = test_start, train_end = test_end)
+           
             print "X_batch_T.shape: ", X_batch_T.shape
             print "label_BB_T.shape: ", label_BB_T.shape
 
-            pred = self.model.predict(X_batch_T, verbose=1)
-            print "type(pred): ", type(pred)
-            print "pred.shape: ", pred.shape
+            # pred = self.model.predict(X_batch_T, verbose=1)
+            # print "type(pred): ", type(pred)
+            # print "pred.shape: ", pred.shape
 
 
             for i in range(self.batch_size):
@@ -147,9 +158,9 @@ class ModelPredict(object):
 
                 img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
                 cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
-                labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
-                print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
-                cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
+                # labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
+                # print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
+                # cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
                 saveCount += 1
 
 
