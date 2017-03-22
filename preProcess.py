@@ -46,7 +46,6 @@ class PreProcess(object):
 				img = ut.plotLandmarks(resizeImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 				cv2.imwrite(self.filterImgDir + 'testResizeImgLandmarks' + str(counter) + '.jpg', img)
 
-				(image, X, Y, xMaxBound = None, yMaxBound = None, random = False, size = None)
 
 				# pts = np.asarray(ut.packLandmarks(x, y))
 
