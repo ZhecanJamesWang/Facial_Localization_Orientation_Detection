@@ -71,22 +71,22 @@ class faceOrientPred(object):
         print "self.MaxTestIters: ", self.MaxTestIters
 
 
-        self.ifMenpo39DataSet = False
+        # self.ifMenpo39DataSet = False
 
-        if self.ifMenpo39DataSet:
-            self.readMenpo39DataSet()
+        # if self.ifMenpo39DataSet:
+        #     self.readMenpo39DataSet()
 
 
     def final_pred(self, y_true, y_pred):
         # y_cont=np.concatenate(y_pred,axis=1)
         return y_pred
 
-    def readMenpo39DataSet(self):
-        self.ImgDir = "./Menpo39Preprocessed/img/"
-        self.PTSDir = "./Menpo39Preprocessed/pts/"
-        self.imgs = os.listdir(self.ImgDir)
-        # self.pts = os.listdir(ImgDir)
-        # assert len(pts) == len(imgs)
+    # def readMenpo39DataSet(self):
+    #     self.ImgDir = "./Menpo39Preprocessed/img/"
+    #     self.PTSDir = "./Menpo39Preprocessed/pts/"
+    #     self.imgs = os.listdir(self.ImgDir)
+    #     # self.pts = os.listdir(ImgDir)
+    #     # assert len(pts) == len(imgs)
 
 
 
@@ -101,18 +101,12 @@ class faceOrientPred(object):
         InputNames = []
         count = 0
         for i in range(train_start,train_end):
-            if self.ifMenpo39DataSet:
-                imgName =self.imgs[i]
-                imgNameHeader = imgName.split('.')[0]
-                index = imgNameHeader[imgNameHeader.find('e') + 1:]
-                labelsPTS = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
-            else:
-                strLine = DataStrs[i]
-                strCells = strLine.rstrip(' \n').split(' ')
-                imgName = strCells[0]
+            strLine = DataStrs[i]
+            strCells = strLine.rstrip(' \n').split(' ')
+            imgName = strCells[0]
 
-                labels = np.array(strCells[1:]).astype(np.float)
-                labelsPTS=labels[:136].reshape([68,2])
+            labels = np.array(strCells[1:]).astype(np.float)
+            labelsPTS=labels[:136].reshape([68,2])
 
             # if self.debug:
             #     print "imgName: ", imgName

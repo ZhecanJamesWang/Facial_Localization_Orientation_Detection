@@ -12,13 +12,13 @@ class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
-        self.evaluationOutputDir = "./03222017_01_Menpo39_evaluation_output/"
+        # self.evaluationOutputDir = "./03222017_01_Menpo39_evaluation_output/"
 
         self.weightPath = "./03202017_01_square_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
         sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
-        self.ifMenpo39DataSet = True
+        self.ifMenpo39DataSet = False
 
 
     def final_pred(self, y_true, y_pred):
@@ -79,8 +79,11 @@ class ModelPredict(object):
 
 
 
-            if img != None:   
+            if img != None:  
+                print "img.shape: ", img.shape
+
                 img = cv2.resize(img,(self.imSize, self.imSize))
+
                 (w, h, _) = img.shape
                 if self.ifMenpo39DataSet:
                     x, y = self.unpackLandmarks(labelsPTS)
@@ -157,7 +160,7 @@ class ModelPredict(object):
                 img = X_batch_T[i]
 
                 img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
-                cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
+                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
                 # labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
                 # print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
                 # cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
