@@ -118,7 +118,7 @@ class PreProcessMenpo39(object):
 		else:
 			newYMax = int(newYMean + newEdge/2.0)
 		
-		cropImg = img[ newYMin: newYMax, newXMin : newXMax]
+		cropImg = img[ int(newYMin) : int(newYMax), int(newXMin) : int(newXMax)]
 		# cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		x = np.asarray(x)
 		y = np.asarray(y)
