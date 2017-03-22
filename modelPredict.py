@@ -85,8 +85,9 @@ class ModelPredict(object):
                 img = cv2.resize(img,(self.imSize, self.imSize))
 
                 (w, h, _) = img.shape
-                if self.ifMenpo39DataSet:
-                    x, y = self.unpackLandmarks(labelsPTS)
+                if not self.ifMenpo39DataSet:
+                    # x, y = self.unpackLandmarks(labelsPTS)
+                    x, y = None, None
                 else:
                     x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
