@@ -45,10 +45,10 @@ class PreProcessMenpo39(object):
 				cv2.imwrite(self.filterImgDir + 'testCropImgLandmarks' + str(counter) + '.jpg', img)	
 
 				w, h, _ = img.shape
-				x /= w
-				y /= h
-				x *= 256
-				y *= 256
+				x = x / w
+				y = y / h
+				x = x * 256
+				y = y * 256
 				resizeImg = cv2.resize(img,(self.imSize, self.imSize))
 				# resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
 				cv2.imwrite(self.filterImgDir + 'ResizedImage' + str(counter) + '.jpg', resizeImg)
@@ -97,28 +97,28 @@ class PreProcessMenpo39(object):
 
 		if int(newXMean - newEdge/2.0)  < 0:
 			newXMin = 0  
-			newEdge = min(2 * (newXMean - 0), newEdge) 
+			newEdge = min(2 * int(newXMean - 0), newEdge) 
 		else:
 			newXMin = int(newXMean - newEdge/2.0) 
 		if int(newXMean + newEdge/2.0) > xMax :
 			newXMax = xMax  
-			newEdge = min(2 * (xMax - newXMean), newEdge) 
+			newEdge = min(2 * int(xMax - newXMean), newEdge) 
 		else:
 			newXMax = int(newXMean + newEdge/2.0)
 
 		if int(newYMean - newEdge/2.0)  < 0:
 			newYMin = 0  
-			newEdge = min(2 * (newYMean - 0), newEdge) 
+			newEdge = min(2 * int(newYMean - 0), newEdge) 
 		else: 
 			newYMin = int(newYMean - newEdge/2.0) 
 		
 		if int(newYMean + newEdge/2.0) > yMax:
 			newYMax = yMax 
-			newEdge = min(2 * (yMax - newYMean), newEdge)  
+			newEdge = min(2 * int(yMax - newYMean), newEdge)  
 		else:
 			newYMax = int(newYMean + newEdge/2.0)
 		
-		cropImg = img[ newYMin: int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
+		cropImg = img[ newYMin: newYMax, newXMin : newXMax]
 		# cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		x = np.asarray(x)
 		y = np.asarray(y)
@@ -130,8 +130,6 @@ class PreProcessMenpo39(object):
 	def getDisturbance(self, value):
 		return 1 + random.uniform(-value, value)
 		
-
-
 
 	def run(self):
 		self.getDataByFiles()
