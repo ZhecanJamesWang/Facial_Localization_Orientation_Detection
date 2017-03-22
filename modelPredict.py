@@ -27,7 +27,7 @@ class ModelPredict(object):
 
 
     def loadData(self):
-        if ifMenpo39DataSet:
+        if self.ifMenpo39DataSet:
             self.ImgDir = "./Menpo39Preprocessed/img/"
             self.PTSDir = "./Menpo39Preprocessed/pts/"
             self.imgs = os.listdir(self.ImgDir)
