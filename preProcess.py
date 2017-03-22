@@ -31,7 +31,10 @@ class PreProcess(object):
 				if self.debug:
 					img = ut.plotLandmarks(img, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
 					cv2.imwrite('test.jpg', img)
-				self.process(img, x, y)
+				cropImg = self.process(img, x, y)
+				cv2.imwrite(self.filterDataDir + 'image' + str(counter) + '.jpg', cropImg)
+				counter += 1
+
 			 #    # imgs, landmarks = self.extract(path + "/", file)
 			 #    imgs, landmarks = self.extract(self.rawDir + "/", file)   
 			 #    if not self.debug:                 
@@ -41,6 +44,7 @@ class PreProcess(object):
 			 #    if counter % 100 == 0:
 			 #        print counter
 			 #        # print path
+
 	def process(self, img, x, y):
 		xMin = min(x)
 		yMin = min(y)
@@ -54,17 +58,20 @@ class PreProcess(object):
 		newYMean = yMean * self.getDisturbance(0.1)
 		newEdge = edge * 1.5 * self.getDisturbance(0.2)
 
-		# labels = [xMean, yMean, edge]
-		# img = ut.plotTarget(img, labels, ifSquareOnly = True)
-		# labels = [newXMean, newYMean, newEdge]
-		# img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
-		# cv2.imwrite('testRectangle.jpg', img)
-		cropImg1 = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
-		cropImg2 = img[ 0 : 100, 0: 50]
-		# im[y1:y2, x1:x2]
+		if self.debug:
+			labels = [xMean, yMean, edge]
+			img = ut.plotTarget(img, labels, ifSquareOnly = True)
+			labels = [newXMean, newYMean, newEdge]
+			img = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
+			cv2.imwrite('testRectangle.jpg', img)
 
-		cv2.imwrite('testCroppedRectangle1.jpg', cropImg1)
-		cv2.imwrite('testCroppedRectangle2.jpg', cropImg2)
+		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
+		x = x - int(newXMean - newEdge/2.0)
+		y = y - int(newYMean - newEdge/2.0)
+		# if self.debug:
+		img = ut.plotLandmarks(cropImg, x, y, ifRescale = False, ifReturn = True, circleSize = 3)
+		cv2.imwrite('testCropImgLandmarks.jpg', cropImg)		
+		# return cropImg
 
 		# return 
 
