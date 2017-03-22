@@ -66,6 +66,8 @@ class PreProcess(object):
 			cv2.imwrite('testRectangle.jpg', img)
 
 		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
+		x = np.asarray(x)
+		y = np.asarray(y)
 		x = x - int(newXMean - newEdge/2.0)
 		y = y - int(newYMean - newEdge/2.0)
 		# if self.debug:
