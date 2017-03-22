@@ -11,10 +11,10 @@ import random
 class PreProcessMenpo39(object):
 	def __init__(self):
 		self.rawDataDir = "/home/james/Menpo39_Valid/"
-		self.filterImgDir = "./Menpo39Preprocessed/img/"
-		self.filterPTSDir = "./Menpo39Preprocessed/pts/"		
+		self.filterImgDir = "./Menpo39Preprocessed128/img/"
+		self.filterPTSDir = "./Menpo39Preprocessed128/pts/"		
 		self.debug = False
-		self.imSize = 256
+		self.imSize = 128
 
 	def getDataByFiles(self):
 		counter = 0
