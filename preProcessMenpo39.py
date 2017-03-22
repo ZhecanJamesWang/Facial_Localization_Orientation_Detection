@@ -52,10 +52,10 @@ class PreProcessMenpo39(object):
 				# y = y * 256
 				labels[0] = labels[0] / w
 				labels[1] = labels[1] / h
-				labels[3] = labels[3] / w
+				labels[2] = labels[2] / w
 				labels[0] = labels[0] * 256
 				labels[1] = labels[1] * 256
-				labels[3] = labels[3] * 256
+				labels[2] = labels[2] * 256
 
 				resizeImg = cv2.resize(cropImg,(self.imSize, self.imSize))
 				# resizeImg, x, y = ut.resize(cropImg, x, y, size = (256, 256))
