@@ -79,7 +79,13 @@ class faceOrientPred(object):
         # y_cont=np.concatenate(y_pred,axis=1)
         return y_pred
 
-
+    def readMenpo39Preprocessed(self):
+        ImgDir = "./Menpo39Preprocessed/img/"
+        PTSDir = "./Menpo39Preprocessed/pts/"
+        pts = os.listdir(ImgDir)
+        imgs = os.listdir(PTSDir)
+        print "len(pts): ", len(pts)
+        print "len(imgs): ", len(imgs)
 
 
     def DataGenBB(self, DataStrs, train_start,train_end):
@@ -346,7 +352,8 @@ class faceOrientPred(object):
         self.train_on_batch(1, MaxIters = 20000)
     
     def main(self):
-        self.run()
+        # self.run()
+        self.readMenpo39Preprocessed()
 
 if __name__ == '__main__':
     faceOrientPred().main()
