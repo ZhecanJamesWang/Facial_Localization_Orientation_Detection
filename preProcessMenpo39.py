@@ -129,7 +129,11 @@ class PreProcessMenpo39(object):
 		print "newXMean: ", newXMean
 		print "newYMean: ", newYMean
 		print "newEdge: ", newEdge
-		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newYMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
+		print int(newYMean - newEdge/2.0)
+		print int(newYMean + newEdge/2.0)
+		print int(newYMean - newEdge/2.0) 
+		print int(newXMean + newEdge/2.0)
+		cropImg = img[int(newYMean - newEdge/2.0) : int(newYMean + newEdge/2.0), int(newXMean - newEdge/2.0) : int(newXMean + newEdge/2.0)]
 		
 		x = np.asarray(x)
 		y = np.asarray(y)
