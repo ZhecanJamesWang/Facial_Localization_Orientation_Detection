@@ -14,7 +14,7 @@ class ModelPredict(object):
         self.imSize = 256
         self.evaluationOutputDir = "./output/03282017_01_preProcessedSemifrontal_bigNet_output/"
 
-        self.weightPath = "./03202017_02_square_add_layers_model/model39000.h5"
+        self.weightPath = ".transferTmp/03202017_02_square_add_layers_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
         sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
