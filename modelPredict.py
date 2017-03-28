@@ -13,7 +13,9 @@ class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
-        self.evaluationOutputDir = "./output/03282017_01_preProcessedSemifrontal_bigNet_output/"
+        # self.evaluationOutputDir = "./output/03282017_01_preProcessedSemifrontal_bigNet_output/"
+        self.evaluationOutputDir = "./output/03282017_02_preProcessedProfile_bigNet_output/"
+
 
         self.weightPath = "./transferTmp/03202017_02_square_add_layers_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
@@ -35,7 +37,8 @@ class ModelPredict(object):
             self.imgs = os.listdir(self.ImgDir)
             TeNum = len(self.imgs)
         elif self.ifpreProcessedSemifrontal:
-            self.TestPath = 'data/preProcessedSemifrontal/'
+            # self.TestPath = 'data/preProcessedSemifrontal/'
+            self.TestPath = 'data/preProcessedProfile/'
             self.imgs = os.listdir(self.TestPath)
             TeNum = len(self.imgs)
         else:

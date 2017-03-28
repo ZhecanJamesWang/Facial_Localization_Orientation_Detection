@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageChops
 # from pylab import array, uint8 
+import PIL
 
 
 def mirror(image, X, Y, h = None, w = None):
@@ -62,60 +63,97 @@ def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
     return image, newX, newY
 
 
-def resize(image, X, Y, xMaxBound = None, yMaxBound = None, random = False, size = None):
+def resize(originalImage, X, Y, xMaxBound = None, yMaxBound = None, random = False, size = None):
 
-    originalImage = image
+    image = originalImage.copy()
     # resize imgage to determined size maintaing the original ratio
 
     if yMaxBound == None:
         (yMaxBound, xMaxBound, _) = image.shape
-
+    print "(yMaxBound, xMaxBound, _): ", (yMaxBound, xMaxBound, _)
     newX = [x/float(xMaxBound) for x in X]
     newY = [y/float(yMaxBound) for y in Y]
 
 
     if random:
-        ratio = np.random.uniform(0.8, 1)
+        # ratio = np.random.uniform(1.1, 2)
+        ratio = np.random.uniform(0.5, 0.8)
+        print "ratio: ", ratio
         size = (int(xMaxBound*ratio), int(yMaxBound*ratio))
-
+    print "size: ", size
     image = Image.fromarray(np.uint8(image))
-    image.thumbnail(size, Image.ANTIALIAS)
+    # image.thumbnail(size, Image.ANTIALIAS)
+    
+    basewidth = size[0]
+    # img = Image.open('somepic.jpg')
+    wpercent = (basewidth/float(image.size[0]))
+    hsize = int((float(image.size[1])*float(wpercent)))
+    image = image.resize((basewidth,hsize), PIL.Image.ANTIALIAS)
+
     image_size = image.size
 
+    print "image.size: ", image.size
+
+    # if random:
+    #     (newXMaxBound, newYMaxBound) = size 
+    # else:
     (newXMaxBound, newYMaxBound) = image.size
 
     newX = [x*float(newXMaxBound) for x in newX]
     newY = [y*float(newYMaxBound) for y in newY]
 
     thumb = image.crop( (0, 0, size[0], size[1]) )
+    print "type(np.asarray(thumb).shape): ", np.asarray(thumb).shape
     image = np.asarray(thumb)
 
-    offset_y = (size[0] - image_size[1]) / 2 
-    offset_x = (size[1] - image_size[0]) / 2
+    # offset_y = (size[0] - image_size[1]) / 2 
+    # offset_x = (size[1] - image_size[0]) / 2
+    # print "offset_x: ", offset_x
+    # print "offset_y: ", offset_y
 
     # if offset_x <= 0:
-    newX = [x + offset_x for x in newX]
-    newY = [y + offset_y for y in newY]
+    #     newX = [x + offset_x for x in newX]
+    #     newY = [y + offset_y for y in newY]
     # else:
     #     newX = [x - offset_x for x in newX]
     #     newY = [y - offset_y for y in newY]        
     
-    thumb = ImageChops.offset(thumb, offset_x, offset_y)
-
-
-
-    image = np.asarray(thumb)
+    # thumb = ImageChops.offset(thumb, offset_x, offset_y)
+    # image = np.asarray(thumb)
 
     if random:
-        newImg = np.zeros_like(originalImage)
-        
-        offset_y = int((yMaxBound - image_size[1]) / 2)
-        offset_x = int((xMaxBound - image_size[0]) / 2)
-        other_offset_y = -offset_y if image_size[1] % 2 == 0 else -(offset_y + 1)
-        other_offset_x = -offset_x if image_size[0] % 2 == 0 else -(offset_x + 1)
+        # newImg = np.zeros_like(originalImage)
+        print "newXMaxBound, newYMaxBound: ", newXMaxBound, newYMaxBound
+        newImg = np.zeros((newXMaxBound, newYMaxBound, 3))
+        print "yMaxBound: ", yMaxBound
+        print "xMaxBound: ", xMaxBound
+        print "image_size: ", image_size
+        print "int((image_size[1] - yMaxBound) / 2): ", int((image_size[1] - yMaxBound) / 2)
+
+        # print "yMaxBound - image_size[1]: ", yMaxBound - image_size[1]
+        # if ratio <= 1:
+        #     offset_y = int((yMaxBound - hsize) / 2)
+        #     offset_x = int((xMaxBound - basewidth) / 2)
+        #     other_offset_y = -offset_y if image_size[1] % 2 == 0 else -(offset_y + 1)
+        #     other_offset_x = -offset_x if image_size[0] % 2 == 0 else -(offset_x + 1)
+
+        # else:
+        offset_y = int((image_size[1] - hsize) / 2)
+        offset_x = int((image_size[0] - basewidth) / 2)
+
+        other_offset_y = -offset_y if image_size[1] % 2 == 0 else -(offset_y - 1)
+        other_offset_x = -offset_x if image_size[0] % 2 == 0 else -(offset_x - 1)
+        other_offset_x = other_offset_x + image_size[1]
+        other_offset_y = other_offset_y + image_size[0]
 
         newX = [x + offset_x for x in newX]
         newY = [y + offset_y for y in newY]
+
+        print "offset_y:other_offset_y: ", offset_y, other_offset_y
+        print "offset_x:other_offset_x: ", offset_x, other_offset_x
+        print " newImg.shape: ", newImg.shape
+        print "newImg[offset_y:other_offset_y, offset_x:other_offset_x]: ", newImg[offset_y:other_offset_y, offset_x:other_offset_x].shape
+        print "image.shape", image.shape
         newImg[offset_y:other_offset_y, offset_x:other_offset_x] = image
         image = newImg
 

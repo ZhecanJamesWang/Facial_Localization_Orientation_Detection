@@ -13,9 +13,11 @@ def plotTarget(image, labels, ifGreen = False):
     return img
 
 
-# rawDir = "competitionImageDataset/testset/profile/"
-rawDir = "data/competitionImageDataset/testset/semifrontal/"
-outputDir = "data/preProcessedSemifrontal/"
+rawDir = "data/competitionImageDataset/testset/profile/"
+# rawDir = "data/competitionImageDataset/testset/semifrontal/"
+# outputDir = "data/preProcessedSemifrontal/"
+outputDir = "data/preProcessedProfile/"
+
 
 files = os.listdir(rawDir)
 print len(files)

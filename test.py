@@ -51,19 +51,19 @@
 # tag = random.choice(['ass', 'fadf'])
 
 # print tag
-
+# ---------------------------------------------------------------------------------------
 
 import cv2
 import numpy as np
 import utility as ut
 
 
-imgName = "image_100_05.jpg"
+imgName = "testFiles/image_100_05.png"
 img = cv2.imread(imgName)
-
+print img.shape
 (w, h, _) = img.shape
 
-FTr = open("testImg.txt",'r')
+FTr = open("testFiles/testImg.txt",'r')
 DataTr = FTr.readlines()
 TrNum = len(DataTr)
 
@@ -83,19 +83,35 @@ labelsPTS=labels[:136].reshape([68,2])
 
 x, y = ut.unpackLandmarks(labelsPTS, 256)
 
-print imgName
-print labelsPTS.shape
+# img = ut.plotLandmarks(img, x, y, 256, name = None, ifRescale = False, ifReturn = True)
 
-resizeImg = ut.resize(img, xMaxBound = w, yMaxBound = h, random = True)
+# print imgName
+# print labelsPTS.shape
+counter = 0
+while True:
 
-img = ut.plotLandmarks(img, x, y, 256, name = None, ifRescale = False, ifReturn = True)
+	resizeImg, x, y = ut.resize(img, x, y, random = True)
 
+	print type(resizeImg)
+	print resizeImg.shape
+	resizeImg = ut.plotLandmarks(resizeImg, x, y, name = None, ifRescale = False, ifReturn = True)
 
-cv2.imshow("test",img)
-cv2.imshow("resize", resizeImg)
+	cv2.imshow("resize", resizeImg)
 
-cv2.waitKey(0)
+	# cv2.imshow("original",img)
 
+	cv2.waitKey(0)
 
+	cv2.imwrite("resizeExperiment" + str(counter) + ".jpg",resizeImg)
+	counter += 1
 
+# import PIL
+# from PIL import Image
+
+# basewidth = 300
+# # img = Image.open('somepic.jpg')
+# wpercent = (basewidth/float(img.size[0]))
+# hsize = int((float(img.size[1])*float(wpercent)))
+# img = img.resize((basewidth,hsize), PIL.Image.ANTIALIAS)
+# img.save('sompic.jpg') 
 
