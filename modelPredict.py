@@ -12,14 +12,14 @@ class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
-        self.evaluationOutputDir = "./03222017_04_big_net_evaluation_output/"
+        self.evaluationOutputDir = "./output/03282017_01_preProcessedSemifrontal_bigNet_output/"
 
         self.weightPath = "./03202017_02_square_add_layers_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
         sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9)
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
         self.ifMenpo39DataSet = False
-
+        self.ifpreProcessedSemifrontal = True
 
     def final_pred(self, y_true, y_pred):
         # y_cont=np.concatenate(y_pred,axis=1)
@@ -32,8 +32,12 @@ class ModelPredict(object):
             self.PTSDir = "./Menpo39Preprocessed/pts/"
             self.imgs = os.listdir(self.ImgDir)
             TeNum = len(self.imgs)
+        elif self.ifpreProcessedSemifrontal:
+            self.TestPath = 'data/preProcessedSemifrontal/'
+            self.imgs = os.listdir(self.TestPath)
+            TeNum = len(self.imgs)
         else:
-            TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
+            # TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
             FTe = open(TestPath,'r')
             self.DataTe = FTe.readlines()
             TeNum = len(self.DataTe)
@@ -68,6 +72,10 @@ class ModelPredict(object):
                 index = imgNameHeader[imgNameHeader.find('e') + 1:]
                 labelsPTS = np.loadtxt(self.PTSDir + 'pts' + index + ".txt")
                 img = cv2.imread(self.ImgDir + imgName)
+            elif self.ifpreProcessedSemifrontal:
+                imgName =self.imgs[i]
+                imgNameHeader = imgName.split('.')[0]
+                img = cv2.imread(self.TestPath + imgName)
             else:
                 strLine = DataStrs[i]
                 strCells = strLine.rstrip(' \n').split(' ')
@@ -80,59 +88,63 @@ class ModelPredict(object):
 
 
             if img != None:  
-                print "img.shape: ", img.shape
+            #     print "img.shape: ", img.shape
 
                 img = cv2.resize(img,(self.imSize, self.imSize))
 
-                (w, h, _) = img.shape
+            #     (w, h, _) = img.shape
+
                 if self.ifMenpo39DataSet:
                     # x, y = self.unpackLandmarks(labelsPTS)
                     x, y = None, None
-                else:
-                    x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
+                elif self.ifpreProcessedSemifrontal:
+                    labels = [None, None, None]
+                    newImg = img
+            #     else:
+            #         x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
-                for index in range(len(generateFunc)):
-                    method = generateFunc[index]
-                    # tag = random.choice(generateFunc)
-                    if method == "resize":
-                        newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
-                    elif method == "rotate":
-                        newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
-                    elif method == "mirror":
-                        newImg, newX, newY = ut.mirror(img, x, y, w = w, h = h)
-                    elif method == "translate":
-                        newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
-                    elif method == "brightnessAndContrast":
-                        newImg, newX, newY = ut.contrastBrightess(img, x, y)
-                    elif method == "original":
-                        newImg, newX, newY = img, x, y
-                    else:
-                        raise "not existing function"
-                if self.ifMenpo39DataSet:
-                    labels = labelsPTS
-                else:
-                    newXMin = min(newX)
-                    newYMin = min(newY)
-                    newXMax = max(newX)
-                    newYMax = max(newY)
-                    newXMean = (newXMax + newXMin)/2.0
-                    newYMean = (newYMax + newYMin)/2.0
-                    newEdge = max(newYMax - newYMin, newXMax - newXMin)
+            #     for index in range(len(generateFunc)):
+            #         method = generateFunc[index]
+            #         # tag = random.choice(generateFunc)
+            #         if method == "resize":
+            #             newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+            #         elif method == "rotate":
+            #             newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+            #         elif method == "mirror":
+            #             newImg, newX, newY = ut.mirror(img, x, y, w = w, h = h)
+            #         elif method == "translate":
+            #             newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
+            #         elif method == "brightnessAndContrast":
+            #             newImg, newX, newY = ut.contrastBrightess(img, x, y)
+            #         elif method == "original":
+            #             newImg, newX, newY = img, x, y
+            #         else:
+            #             raise "not existing function"
+            #     if self.ifMenpo39DataSet:
+            #         labels = labelsPTS
+            #     else:
+            #         newXMin = min(newX)
+            #         newYMin = min(newY)
+            #         newXMax = max(newX)
+            #         newYMax = max(newY)
+            #         newXMean = (newXMax + newXMin)/2.0
+            #         newYMean = (newYMax + newYMin)/2.0
+            #         newEdge = max(newYMax - newYMin, newXMax - newXMin)
                                 
 
-                    normX = ut.normalize(newX, self.imSize)
-                    normY = ut.normalize(newY, self.imSize)
-                    normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
-                    labels = np.array([normXMean, normYMean, normEdge])
+            #         normX = ut.normalize(newX, self.imSize)
+            #         normY = ut.normalize(newY, self.imSize)
+            #         normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
+            #         labels = np.array([normXMean, normYMean, normEdge])
 
                 InputData[count,...] = newImg
                 InputLabel[count,...] = labels
                 InputNames.append(imgName)
 
-                count += 1
+            #     count += 1
 
-            else:
-                print "cannot : ", imgName
+            # else:
+            #     print "cannot : ", imgName
 
 
         return InputData, InputLabel, np.asarray(InputNames)
@@ -145,6 +157,8 @@ class ModelPredict(object):
             # if iter == self.MaxTestIters - 1:
             #     test_end = len(self.DataTe)
             if self.ifMenpo39DataSet:
+                X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start = test_start, train_end = test_end)
+            elif self.ifpreProcessedSemifrontal:
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start = test_start, train_end = test_end)
             else:
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(DataStrs = self.DataTe, train_start = test_start, train_end = test_end)
@@ -160,9 +174,8 @@ class ModelPredict(object):
             for i in range(self.batch_size):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
-
-                img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
-                cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
+                # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
+                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
                 labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
                 print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
                 cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
