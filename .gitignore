@@ -1,6 +1,6 @@
-*.h5
 *.jpg
 *.npy
 *.pyc
 .DS_Store
 output/
+data/

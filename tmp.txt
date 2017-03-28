@@ -1,7 +1,0 @@
-1. P39=np.loadtxt(pts39)
-2. get ground-truth bounding box from P39
-3.  ground-truth center, W -> (center*disturbance（+-10%）, W*1.5*disturbance（+-20%）)  --》 new center, W
-4). Crop image. --> scale to 256 (pts update based on new scale)
-5) 256 image, pts, boundingbox
-test on the croped image.
-emark: confirm pts is correct after cropping, scaling, etc
