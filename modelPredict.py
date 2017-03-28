@@ -5,9 +5,9 @@ import numpy as np
 import selfModel as m
 import cv2
 import os
-# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-# os.environ["CUDA_VISIBLE_DEVICES"] = ""
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+# os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 class ModelPredict(object):
     def __init__(self):
@@ -21,6 +21,7 @@ class ModelPredict(object):
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
         self.ifMenpo39DataSet = False
         self.ifpreProcessedSemifrontal = True
+        self.debug = False
 
     def final_pred(self, y_true, y_pred):
         # y_cont=np.concatenate(y_pred,axis=1)
@@ -86,7 +87,9 @@ class ModelPredict(object):
                 labelsPTS=labels[:136].reshape([68,2])
                 img = cv2.imread(imgName)
 
-
+            if  self.debug:
+                cv2.imshow("original", img)
+                cv2.waitKey(0)
 
             if img != None:  
             #     print "img.shape: ", img.shape
@@ -99,53 +102,56 @@ class ModelPredict(object):
                     # x, y = self.unpackLandmarks(labelsPTS)
                     x, y = None, None
                 elif self.ifpreProcessedSemifrontal:
+                    x, y = None, None
                     labels = [None, None, None]
                     newImg = img
             #     else:
             #         x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
-            #     for index in range(len(generateFunc)):
-            #         method = generateFunc[index]
-            #         # tag = random.choice(generateFunc)
-            #         if method == "resize":
-            #             newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
-            #         elif method == "rotate":
-            #             newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
-            #         elif method == "mirror":
-            #             newImg, newX, newY = ut.mirror(img, x, y, w = w, h = h)
-            #         elif method == "translate":
-            #             newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
-            #         elif method == "brightnessAndContrast":
-            #             newImg, newX, newY = ut.contrastBrightess(img, x, y)
-            #         elif method == "original":
-            #             newImg, newX, newY = img, x, y
-            #         else:
-            #             raise "not existing function"
-            #     if self.ifMenpo39DataSet:
-            #         labels = labelsPTS
-            #     else:
-            #         newXMin = min(newX)
-            #         newYMin = min(newY)
-            #         newXMax = max(newX)
-            #         newYMax = max(newY)
-            #         newXMean = (newXMax + newXMin)/2.0
-            #         newYMean = (newYMax + newYMin)/2.0
-            #         newEdge = max(newYMax - newYMin, newXMax - newXMin)
+                # for index in range(len(generateFunc)):
+                #     method = generateFunc[index]
+                #     # tag = random.choice(generateFunc)
+                #     if method == "resize":
+                #         newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
+                #     elif method == "rotate":
+                #         newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
+                #     elif method == "mirror":
+                #         newImg, newX, newY = ut.mirror(img, x, y, w = w, h = h)
+                #     elif method == "translate":
+                #         newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
+                #     elif method == "brightnessAndContrast":
+                #         newImg, newX, newY = ut.contrastBrightess(img, x, y)
+                #     elif method == "original":
+                #         newImg, newX, newY = img, x, y
+                #     else:
+                #         raise "not existing function"
+                if self.ifMenpo39DataSet:
+                    labels = labelsPTS
+                elif self.ifpreProcessedSemifrontal:
+                    pass
+                else:
+                    newXMin = min(newX)
+                    newYMin = min(newY)
+                    newXMax = max(newX)
+                    newYMax = max(newY)
+                    newXMean = (newXMax + newXMin)/2.0
+                    newYMean = (newYMax + newYMin)/2.0
+                    newEdge = max(newYMax - newYMin, newXMax - newXMin)
                                 
 
-            #         normX = ut.normalize(newX, self.imSize)
-            #         normY = ut.normalize(newY, self.imSize)
-            #         normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
-            #         labels = np.array([normXMean, normYMean, normEdge])
+                    normX = ut.normalize(newX, self.imSize)
+                    normY = ut.normalize(newY, self.imSize)
+                    normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
+                    labels = np.array([normXMean, normYMean, normEdge])
 
                 InputData[count,...] = newImg
                 InputLabel[count,...] = labels
                 InputNames.append(imgName)
 
-            #     count += 1
+                count += 1
 
-            # else:
-            #     print "cannot : ", imgName
+            else:
+                print "cannot : ", imgName
 
 
         return InputData, InputLabel, np.asarray(InputNames)
@@ -176,7 +182,7 @@ class ModelPredict(object):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
                 # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
-                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
+                cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
                 labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
                 print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
                 cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
