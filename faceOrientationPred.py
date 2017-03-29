@@ -102,7 +102,7 @@ class faceOrientPred(object):
             if img != None:   
                 # print "find image: ", imgName  
                 print "img.shape: ", img.shape
-                
+
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
                 (w, h, _) = img.shape
@@ -126,7 +126,7 @@ class faceOrientPred(object):
                     elif method == "original":
                         newImg, newX, newY = img, x, y
                     elif method == "scale":
-                        pass
+                        newImg, newX, newY = img, x, y
                     else:
                         raise "not existing function"
 
@@ -164,11 +164,11 @@ class faceOrientPred(object):
                     newEdge = max(newYMax - newYMin, newXMax - newXMin)
                     
                     if method == "scale":
-                        newEdge = 1.3  * newEdge
-                        newXMin = int(newXMean - newEdge/2.0)
-                        newXMax = int(newXMean + newEdge/2.0)
-                        newYMin = int(newYMean - newEdge/2.0)
-                        newYMax = int(newYMean + newEdge/2.0)
+                        # newEdge = 1.5  * newEdge
+                        # newXMin = int(newXMean - newEdge/2.0)
+                        # newXMax = int(newXMean + newEdge/2.0)
+                        # newYMin = int(newYMean - newEdge/2.0)
+                        # newYMax = int(newYMean + newEdge/2.0)
                         
                         newXMean = newXMean - newXMin
                         newYMean = newYMean - newYMin
