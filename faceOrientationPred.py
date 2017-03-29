@@ -207,8 +207,10 @@ class faceOrientPred(object):
                     # print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
                     # print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
                     # print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
-                    print "method: ", method
-                    print "newImg.shape: ", newImg.shape
+                    
+                    # print "method: ", method
+                    # print "newImg.shape: ", newImg.shape
+
                     # print "len(InputData): ", len(InputData)
                     InputData[count,...] = newImg
                     # labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
@@ -296,7 +298,7 @@ class faceOrientPred(object):
                     print iterationInfo
 
                     # labelImg = ut.plotTarget(X_batch[0], pred[0])
-                    index = random.randint(0, len(X_batch) - 1)
+                    index = random.randint(0, self.batch_size - 1)
                     labelImg = ut.plotTarget(X_batch[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
                     print 'save predTrainLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
                     cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(testCount) + '.jpg', labelImg)
@@ -312,7 +314,7 @@ class faceOrientPred(object):
                     if testCount >= 20:
                         testCount = 0
 
-                    index = random.randint(0, len(X_batch_T) - 1)
+                    index = random.randint(0, self.batch_size - 1)
                     labelImg = ut.plotTarget(X_batch_T[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
                     print 'save predTestLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
