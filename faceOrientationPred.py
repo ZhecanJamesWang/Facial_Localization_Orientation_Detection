@@ -158,8 +158,21 @@ class faceOrientPred(object):
                     newXMean = (newXMax + newXMin)/2.0
                     newYMean = (newYMax + newYMin)/2.0
                     newEdge = max(newYMax - newYMin, newXMax - newXMin)
+                    
                     if method == "scale":
-                        newEdge = 0.7 * newEdge
+                        newEdge = 1.3  * edge
+                        newXMin = int(newXMean - newEdge/2.0)
+                        newXMax = int(newXMean + newEdge/2.0)
+                        newYMin = int(newYMean - newEdge/2.0)
+                        newYMax = int(newYMean + newEdge/2.0)
+                        
+                        newXMean = newXMean - newXMin
+                        newYMean = newYMean - newYMin
+                        
+                        img = Image.fromarray(img.astype(np.uint8))
+                        cropImg = img.crop((newXMin, newYMin, newXMax, newYMax))
+                        newImg = np.array(cropImg)
+                        
                     # print "newXMin: ", newXMin
                     # print "newYMin: ", newYMin
                     # print "newXMax: ", newXMax
