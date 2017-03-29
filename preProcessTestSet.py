@@ -2,8 +2,9 @@ import os
 import cv2
 import numpy as np
 import utility as ut
-debug = False
 from PIL import Image
+
+debug = False
 
 def plotTarget(image, labels, ifGreen = False):
 	img = np.copy(image)
