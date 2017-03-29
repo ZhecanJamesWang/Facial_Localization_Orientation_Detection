@@ -13,9 +13,8 @@ class ModelPredict(object):
     def __init__(self):
         self.batch_size = 32
         self.imSize = 256
-        # self.evaluationOutputDir = "./output/03282017_01_preProcessedSemifrontal_bigNet_output/"
+        # self.evaluationOutputDir = "./output/03292017_01_preProcessedProfile_bigNet_output/"
         self.evaluationOutputDir = "./output/03292017_01_preProcessedSemifrontal_bigNet_output/"
-
 
         self.weightPath = "./transferTmp/03202017_02_square_add_layers_model/model39000.h5"
         self.model = m.model(input_shape=(self.imSize, self.imSize, 3), weights_path = self.weightPath)
@@ -39,7 +38,7 @@ class ModelPredict(object):
         elif self.ifpreProcessedSemifrontal:
             self.ImgDir= 'data/preProcessedSemifrontal/img/'
             self.labelDir= 'data/preProcessedSemifrontal/label/'
-            # self.TestPath = 'data/preProcessedProfile/'
+            # self.TestPath = 'data/preProcessedProfilse/'
             self.imgs = os.listdir(self.ImgDir)
             TeNum = len(self.imgs)
         else:
@@ -188,10 +187,10 @@ class ModelPredict(object):
             else:
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(DataStrs = self.DataTe, train_start = test_start, train_end = test_end)
            
-            print "X_batch_T.shape: ", X_batch_T.shape
-            print "label_BB_T.shape: ", label_BB_T.shape
+            # print "X_batch_T.shape: ", X_batch_T.shape
+            # print "label_BB_T.shape: ", label_BB_T.shape
 
-            # pred = self.model.predict(X_batch_T, verbose=1)
+            pred = self.model.predict(X_batch_T, verbose=1)
 
 
             # print "type(pred): ", type(pred)
