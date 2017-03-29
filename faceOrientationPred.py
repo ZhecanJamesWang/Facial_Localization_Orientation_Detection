@@ -20,7 +20,7 @@ import selfModel as m
 from decimal import Decimal
 from PIL import Image
 
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 
 
@@ -78,7 +78,7 @@ class faceOrientPred(object):
 
 
     def DataGenBB(self, DataStrs, train_start,train_end):
-        generateFunc = ["original", "scale", "rotate", "brightnessAndContrast" ]
+        generateFunc = ["original", "scale", "rotate", "brightnessAndContrast", "translate"]
         # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
@@ -101,7 +101,7 @@ class faceOrientPred(object):
 
             if img != None:   
                 # print "find image: ", imgName  
-                print "img.shape: ", img.shape
+                # print "img.shape: ", img.shape
 
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
