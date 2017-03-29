@@ -15,7 +15,7 @@ def plotTarget(image, labels, ifGreen = False):
     return img
 
 files = [
-"2430.rec"
+"3600.rec"
 ]
 
 

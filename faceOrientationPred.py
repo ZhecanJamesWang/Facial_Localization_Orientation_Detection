@@ -31,8 +31,8 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = False
-        self.outputDir = "./03222017_01_square_Menpo39DataSet_output/"
-        self.modelDir = "./03222017_01_square_Menpo39DataSet_model/"
+        self.outputDir = "./output/03292017_01_bigNet_Scale_output/"
+        self.modelDir = "./output/03292017_01_bigNet_Scale_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
@@ -70,28 +70,13 @@ class faceOrientPred(object):
         print "self.MaxIters: ", self.MaxIters
         print "self.MaxTestIters: ", self.MaxTestIters
 
-
-        # self.ifMenpo39DataSet = False
-
-        # if self.ifMenpo39DataSet:
-        #     self.readMenpo39DataSet()
-
-
     def final_pred(self, y_true, y_pred):
         # y_cont=np.concatenate(y_pred,axis=1)
         return y_pred
 
-    # def readMenpo39DataSet(self):
-    #     self.ImgDir = "./Menpo39Preprocessed/img/"
-    #     self.PTSDir = "./Menpo39Preprocessed/pts/"
-    #     self.imgs = os.listdir(self.ImgDir)
-    #     # self.pts = os.listdir(ImgDir)
-    #     # assert len(pts) == len(imgs)
-
-
 
     def DataGenBB(self, DataStrs, train_start,train_end):
-        generateFunc = ["original", "resize", "rotate", "brightnessAndContrast" ]
+        generateFunc = ["original", "scale", "rotate", "brightnessAndContrast" ]
         # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
@@ -136,6 +121,8 @@ class faceOrientPred(object):
                         newImg, newX, newY = ut.contrastBrightess(img, x, y)
                     elif method == "original":
                         newImg, newX, newY = img, x, y
+                    elif method == "scale":
+                        pass
                     else:
                         raise "not existing function"
 
@@ -164,7 +151,6 @@ class faceOrientPred(object):
                     # normXMean = (normXMax + normXMin)/2.0
                     # normYMean = (normYMax + normYMin)/2.0
                     # normEdge = max(normYMax - normYMin, normXMax - normXMin)
-
                     newXMin = min(newX)
                     newYMin = min(newY)
                     newXMax = max(newX)
@@ -172,7 +158,8 @@ class faceOrientPred(object):
                     newXMean = (newXMax + newXMin)/2.0
                     newYMean = (newYMax + newYMin)/2.0
                     newEdge = max(newYMax - newYMin, newXMax - newXMin)
-                                
+                    if method == "scale":
+                        newEdge = 0.7 * newEdge
                     # print "newXMin: ", newXMin
                     # print "newYMin: ", newYMin
                     # print "newXMax: ", newXMax
@@ -180,6 +167,9 @@ class faceOrientPred(object):
                     # print "newXMean: ", newXMean
                     # print "newYMean: ", newYMean
                     # print "newEdge: ", newEdge
+
+                    newImg = ut.plotTarget(newImg, [newXMean, newYMean, newEdge], ifSquareOnly = True, ifGreen = True)
+                    cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
@@ -211,6 +201,7 @@ class faceOrientPred(object):
             else:
                 print "cannot : ", imgName
 
+        raise "debug"
 
         return InputData, InputLabel, np.asarray(InputNames)
 

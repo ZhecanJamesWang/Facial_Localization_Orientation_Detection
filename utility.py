@@ -77,7 +77,7 @@ def resize(originalImage, X, Y, xMaxBound = None, yMaxBound = None, random = Fal
 
     if random:
         # ratio = np.random.uniform(1.1, 2)
-        ratio = np.random.uniform(0.5, 0.8)
+        ratio = np.random.uniform(1.4, 1.5)
         print "ratio: ", ratio
         size = (int(xMaxBound*ratio), int(yMaxBound*ratio))
     print "size: ", size
@@ -310,7 +310,8 @@ def plotTarget(image, labels, imSize = None, ifSquareOnly = False, ifGreen = Fal
 
 def plotLandmarks(image, X, Y, imSize = None, name = None, ifRescale = False, ifReturn = False, circleSize = 2):
     # plot landmarks on original image
-    img = np.copy(image)
+    # img = np.copy(image)
+    img = image.copy()
     assert len(X) == len(Y)   
     # print "X: :::::::::::::::",
     # print X[:10]   

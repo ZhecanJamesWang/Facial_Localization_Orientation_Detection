@@ -68,3 +68,17 @@ img = cv2.resize(img,(basewidth,hsize))
 # img = img.resize((basewidth,hsize), PIL.Image.ANTIALIAS)
 cv2.imwrite('sompic.jpg', img) 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

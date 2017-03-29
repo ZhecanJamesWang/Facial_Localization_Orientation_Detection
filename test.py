@@ -57,17 +57,18 @@ import cv2
 import numpy as np
 import utility as ut
 
-
+# imgName = "testFiles/995.jpg"
 imgName = "testFiles/image_100_05.png"
 img = cv2.imread(imgName)
 print img.shape
 (w, h, _) = img.shape
 
+# FTr = open("testFiles/995.txt",'r')
 FTr = open("testFiles/testImg.txt",'r')
 DataTr = FTr.readlines()
+print DataTr
+
 TrNum = len(DataTr)
-
-
 
 strLine = DataTr[0]
 strCells = strLine.rstrip(' \n').split(' ')
@@ -85,25 +86,41 @@ x, y = ut.unpackLandmarks(labelsPTS, 256)
 
 # img = ut.plotLandmarks(img, x, y, 256, name = None, ifRescale = False, ifReturn = True)
 
+# cv2.imshow("resize", img)
+# cv2.waitKey(0)
+# cv2.imwrite("original.jpg",img)
+# raise "debug"
+
 # print imgName
 # print labelsPTS.shape
 counter = 0
 while True:
 
+	# imgName = "testFiles/image_100_05.png"
+	# img = cv2.imread(imgName)
+	# print img.shape
+	# (w, h, _) = img.shape
+	# resizeImg = None
+	x, y = ut.unpackLandmarks(labelsPTS, 256)
+
 	resizeImg, x, y = ut.resize(img, x, y, random = True)
 
 	print type(resizeImg)
 	print resizeImg.shape
+	
 	resizeImg = ut.plotLandmarks(resizeImg, x, y, name = None, ifRescale = False, ifReturn = True)
 
-	cv2.imshow("resize", resizeImg)
+	# cv2.imshow("resize"+ str(counter), resizeImg)
 
 	# cv2.imshow("original",img)
 
-	cv2.waitKey(0)
+	# cv2.waitKey(0)
 
 	cv2.imwrite("resizeExperiment" + str(counter) + ".jpg",resizeImg)
+
 	counter += 1
+	if counter > 5:
+		break
 
 # import PIL
 # from PIL import Image
