@@ -100,7 +100,9 @@ class faceOrientPred(object):
             img = cv2.imread(imgName)
 
             if img != None:   
-                # print "find image: ", imgName                
+                # print "find image: ", imgName  
+                print "img.shape: ", img.shape
+                
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
                 (w, h, _) = img.shape
@@ -161,20 +163,20 @@ class faceOrientPred(object):
                     newYMean = (newYMax + newYMin)/2.0
                     newEdge = max(newYMax - newYMin, newXMax - newXMin)
                     
-                    # if method == "scale":
-                    #     newEdge = 1.3  * newEdge
-                    #     newXMin = int(newXMean - newEdge/2.0)
-                    #     newXMax = int(newXMean + newEdge/2.0)
-                    #     newYMin = int(newYMean - newEdge/2.0)
-                    #     newYMax = int(newYMean + newEdge/2.0)
+                    if method == "scale":
+                        newEdge = 1.3  * newEdge
+                        newXMin = int(newXMean - newEdge/2.0)
+                        newXMax = int(newXMean + newEdge/2.0)
+                        newYMin = int(newYMean - newEdge/2.0)
+                        newYMax = int(newYMean + newEdge/2.0)
                         
-                    #     newXMean = newXMean - newXMin
-                    #     newYMean = newYMean - newYMin
+                        newXMean = newXMean - newXMin
+                        newYMean = newYMean - newYMin
                         
-                    #     img = Image.fromarray(newImg.astype(np.uint8))
-                    #     cropImg = img.crop((newXMin, newYMin, newXMax, newYMax))
-                    #     newImg = np.array(cropImg)
-                    #     newImg = cv2.resize(newImg,(self.imSize, self.imSize))
+                        newImg = Image.fromarray(newImg.astype(np.uint8))
+                        cropImg = newImg.crop((newXMin, newYMin, newXMax, newYMax))
+                        newImg = np.array(cropImg)
+                        newImg = cv2.resize(newImg,(self.imSize, self.imSize))
 
                     # print "newXMin: ", newXMin
                     # print "newYMin: ", newYMin
