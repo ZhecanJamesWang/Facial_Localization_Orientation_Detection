@@ -180,7 +180,7 @@ class faceOrientPred(object):
                         edge = edge*self.imSize/w
                         newXMean = newXMean*self.imSize/w
                         newYMean = newYMean*self.imSize/h
-                        
+
                         newImg = cv2.resize(newImg,(self.imSize, self.imSize))
 
                     # print "newXMin: ", newXMin
@@ -208,8 +208,8 @@ class faceOrientPred(object):
                     # print "ut.deNormalize(normXMean): ",ut.deNormalize(normXMean)
                     # print "ut.deNormalize(normYMean): ",ut.deNormalize(normYMean)
                     # print "ut.deNormalize(normEdge): ", ut.deNormalize(normEdge)
-
-
+                    print "method: ", method
+                    print "newImg.shape: ", newImg.shape
                     # print "len(InputData): ", len(InputData)
                     InputData[count,...] = newImg
                     # labels = np.array([normPTS[27][0], normPTS[27][1], normPTS[8][0], 
