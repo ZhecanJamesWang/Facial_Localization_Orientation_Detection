@@ -7,7 +7,7 @@ import cv2
 import os
 # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 # os.environ["CUDA_VISIBLE_DEVICES"] = ""
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 class ModelPredict(object):
     def __init__(self):
@@ -20,12 +20,13 @@ class ModelPredict(object):
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
         
 
-        self.evaluationOutputDir = "./output/03292017_01_preProcessedSemifrontal_bigNet_output/"
-        self.ImgDir= 'data/preProcessedSemifrontal/img/'
-        self.labelDir= 'data/preProcessedSemifrontal/label/'
-        # self.evaluationOutputDir = "./output/03292017_02_preProcessedProfile_bigNet_output/"
-        # self.ImgDir= 'data/preProcessedProfile/img/'
-        # self.labelDir= 'data/preProcessedProfile/label/'
+        # self.evaluationOutputDir = "./output/03292017_01_preProcessedSemifrontal_bigNet_output/"
+        # self.ImgDir= 'data/preProcessedSemifrontal/img/'
+        # self.labelDir= 'data/preProcessedSemifrontal/label/'
+
+        self.evaluationOutputDir = "./output/03292017_02_preProcessedProfile_bigNet_output/"
+        self.ImgDir= 'data/preProcessedProfile/img/'
+        self.labelDir= 'data/preProcessedProfile/label/'
 
         self.imgs = os.listdir(self.ImgDir)
 
