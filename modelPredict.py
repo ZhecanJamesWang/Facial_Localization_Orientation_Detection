@@ -37,9 +37,10 @@ class ModelPredict(object):
             self.imgs = os.listdir(self.ImgDir)
             TeNum = len(self.imgs)
         elif self.ifpreProcessedSemifrontal:
-            # self.TestPath = 'data/preProcessedSemifrontal/'
-            self.TestPath = 'data/preProcessedProfile/'
-            self.imgs = os.listdir(self.TestPath)
+            self.ImgDir= 'data/preProcessedSemifrontal/img/'
+            self.labelDir= 'data/preProcessedSemifrontal/label/'
+            # self.TestPath = 'data/preProcessedProfile/'
+            self.imgs = os.listdir(self.ImgDir)
             TeNum = len(self.imgs)
         else:
             # TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
@@ -67,10 +68,14 @@ class ModelPredict(object):
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
         # InputLabel = np.zeros([self.batch_size * len(generateFunc), 7], dtype = np.float32)
         InputLabel = np.zeros([self.batch_size * len(generateFunc), 3], dtype = np.float32)
-
         InputNames = []
+        # InputNames = np.zeros([self.batch_size * len(generateFunc), 1], dtype = np.float32)
         count = 0
-        for i in range(train_start,train_end):
+        print "train_start,train_end: ", train_start, train_end
+
+        # for i in range(train_start,train_end):
+        i = train_start
+        while(i < train_end):
             if self.ifMenpo39DataSet:
                 imgName =self.imgs[i]
                 imgNameHeader = imgName.split('.')[0]
@@ -79,9 +84,11 @@ class ModelPredict(object):
                 img = cv2.imread(self.ImgDir + imgName)
             elif self.ifpreProcessedSemifrontal:
                 imgName =self.imgs[i]
+
+                # print "imgName: ", imgName
                 imgNameHeader = imgName.split('.')[0]
-                img = cv2.imread(self.TestPath + imgName)
-                label = np.loadtxt(self.TestPath + imgNameHeader + ".txt")
+                img = cv2.imread(self.ImgDir + imgName)
+                label = np.loadtxt(self.labelDir + imgNameHeader + ".txt")
             else:
                 strLine = DataStrs[i]
                 strCells = strLine.rstrip(' \n').split(' ')
@@ -151,12 +158,17 @@ class ModelPredict(object):
                 InputData[count,...] = newImg
                 InputLabel[count,...] = label
                 InputNames.append(imgName)
+                # InputNames[count,...] = imgName
 
-                count += 1
+                # print "InputNames.shape: ", len(InputNames)
+
 
             else:
                 print "cannot : ", imgName
-
+           
+            print "count: ", count
+            count += 1
+            i += 1
 
         return InputData, InputLabel, np.asarray(InputNames)
 
@@ -167,6 +179,8 @@ class ModelPredict(object):
             test_end = (iter + 1) * self.batch_size
             # if iter == self.MaxTestIters - 1:
             #     test_end = len(self.DataTe)
+            print "test_start, test_end: ", test_start, test_end
+
             if self.ifMenpo39DataSet:
                 X_batch_T, label_BB_T, Z_Names_T= self.DataGenBB(train_start = test_start, train_end = test_end)
             elif self.ifpreProcessedSemifrontal:
@@ -178,9 +192,12 @@ class ModelPredict(object):
             print "label_BB_T.shape: ", label_BB_T.shape
 
             pred = self.model.predict(X_batch_T, verbose=1)
-            print "type(pred): ", type(pred)
-            print "pred.shape: ", pred.shape
-
+            # print "type(pred): ", type(pred)
+            # print "pred.shape: ", pred.shape
+            # print "Z_Names_T.shape: ", Z_Names_T.shape
+            # print "X_batch_T[-1]: ", X_batch_T[-1]
+            # print "label_BB_T[-1]: ", label_BB_T[-1]
+            # raise "debug"
 
             for i in range(self.batch_size):
                 labels = label_BB_T[i]
