@@ -14,7 +14,7 @@ class ModelPredict(object):
         self.batch_size = 32
         self.imSize = 256
         # self.evaluationOutputDir = "./output/03282017_01_preProcessedSemifrontal_bigNet_output/"
-        self.evaluationOutputDir = "./output/03282017_02_preProcessedProfile_bigNet_output/"
+        self.evaluationOutputDir = "./output/03292017_01_preProcessedSemifrontal_bigNet_output/"
 
 
         self.weightPath = "./transferTmp/03202017_02_square_add_layers_model/model39000.h5"
@@ -191,7 +191,9 @@ class ModelPredict(object):
             print "X_batch_T.shape: ", X_batch_T.shape
             print "label_BB_T.shape: ", label_BB_T.shape
 
-            pred = self.model.predict(X_batch_T, verbose=1)
+            # pred = self.model.predict(X_batch_T, verbose=1)
+
+
             # print "type(pred): ", type(pred)
             # print "pred.shape: ", pred.shape
             # print "Z_Names_T.shape: ", Z_Names_T.shape
@@ -207,6 +209,8 @@ class ModelPredict(object):
                 # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
                 labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
+                # cv2.imshow("img", img)
+                # cv2.waitKey(0)
                 print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
                 cv2.imwrite(self.evaluationOutputDir + str(index) + 'Pred' + '.jpg', labelImg)
                 saveCount += 1

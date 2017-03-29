@@ -284,7 +284,7 @@ def plotTarget(image, labels, imSize = None, ifSquareOnly = False, ifGreen = Fal
     # assert len(labels) == 7   
 
     # try:
-    (w, h, _) = (imSize, imSize, 0)  
+    # (w, h, _) = (imSize, imSize, 0)  
     if ifSquareOnly:
         xMean = labels[0]
         yMean = labels[1]        
