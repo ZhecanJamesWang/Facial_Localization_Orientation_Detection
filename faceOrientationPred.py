@@ -161,10 +161,10 @@ class faceOrientPred(object):
                     newYMax = max(newY)
                     newXMean = (newXMax + newXMin)/2.0
                     newYMean = (newYMax + newYMin)/2.0
-                    newEdge = max(newYMax - newYMin, newXMax - newXMin)
+                    edge = max(newYMax - newYMin, newXMax - newXMin)
                     
                     if method == "scale":
-                        newEdge = 1 * newEdge
+                        newEdge = 1 * edge
                         newXMin = int(newXMean - newEdge/2.0)
                         newXMax = int(newXMean + newEdge/2.0)
                         newYMin = int(newYMean - newEdge/2.0)
@@ -176,6 +176,11 @@ class faceOrientPred(object):
                         newImg = Image.fromarray(newImg.astype(np.uint8))
                         cropImg = newImg.crop((newXMin, newYMin, newXMax, newYMax))
                         newImg = np.array(cropImg)
+                        w, h, _ = newImg.shape
+                        edge = edge*self.imSize/w
+                        newXMean = newXMean*self.imSize/w
+                        newYMean = newYMean*self.imSize/h
+                        
                         newImg = cv2.resize(newImg,(self.imSize, self.imSize))
 
                     # print "newXMin: ", newXMin
@@ -186,14 +191,14 @@ class faceOrientPred(object):
                     # print "newYMean: ", newYMean
                     # print "newEdge: ", newEdge
 
-                    newImg = ut.plotTarget(newImg, [newXMean, newYMean, newEdge], ifSquareOnly = True, ifGreen = True)
+                    newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
                     cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
                     normY = ut.normalize(newY, self.imSize)
                     # normPTS = np.asarray(ut.packLandmarks(normX, normY))
-                    normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
+                    normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(edge, self.imSize)
                     # print "newPTS: ", newPTS.shape
 
                     # print "ut.deNormalize(normXMin): ", ut.deNormalize(normXMin)
