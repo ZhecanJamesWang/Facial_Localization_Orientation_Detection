@@ -164,7 +164,7 @@ class faceOrientPred(object):
                     edge = max(newYMax - newYMin, newXMax - newXMin)
                     
                     if method == "scale":
-                        newEdge = 1 * edge
+                        newEdge = 0.7 * edge
                         newXMin = int(newXMean - newEdge/2.0)
                         newXMax = int(newXMean + newEdge/2.0)
                         newYMin = int(newYMean - newEdge/2.0)
