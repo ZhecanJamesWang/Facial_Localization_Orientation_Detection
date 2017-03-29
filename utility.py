@@ -221,6 +221,7 @@ def resize(originalImage, X, Y, xMaxBound = None, yMaxBound = None, random = Fal
 
 
 def translate(image, X, Y, w = None , h = None, counter = 0):
+    X, Y = np.asarray(X), np.asarray(Y)
     if counter > 10:
         return None, None, None
     originalImage = image.copy()
