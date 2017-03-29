@@ -12,7 +12,7 @@ def plotTarget(image, labels, ifGreen = False):
     return img
 
 # rawDir = "competitionImageDataset/testset/profile/"
-rawDir = "competitionImageDataset/testset/semifrontal/"
+rawDir = "data/competitionImageDataset/testset/semifrontal/"
 
 files = os.listdir(rawDir)
 random. shuffle(files)

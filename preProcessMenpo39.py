@@ -100,6 +100,7 @@ class PreProcessMenpo39(object):
 		# testImg = ut.plotTarget(img, labels, ifSquareOnly = True, ifGreen = True)
 		# cv2.imwrite('testRectangle.jpg', img)
 		edgeList = [newEdge]
+///////////////////////////////////////////////////////////////
 		if int(newXMean - newEdge/2.0)  < 0:
 			# newXMin = 0  
 			edgeList.append(2 * int(newXMean - 0))
@@ -123,6 +124,8 @@ class PreProcessMenpo39(object):
 			edgeList.append(2 * int(h - newYMean))  
 		# else:
 		# 	newYMax = int(newYMean + newEdge/2.0)
+///////////////////////////////////////////////////////////////
+
 		newEdge = min(edgeList)
 		# cropImg = img[ int(newYMin) : int(newYMax), int(newXMin) : int(newXMax)]
 		print "img.shape: ", img.shape

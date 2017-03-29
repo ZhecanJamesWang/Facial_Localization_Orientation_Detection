@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import utility as ut
 debug = False
+from PIL import Image
 
 def plotTarget(image, labels, ifGreen = False):
 	img = np.copy(image)
@@ -13,10 +14,10 @@ def plotTarget(image, labels, ifGreen = False):
 	return img
 
 
-rawDir = "data/competitionImageDataset/testset/profile/"
 # rawDir = "data/competitionImageDataset/testset/semifrontal/"
 # imgOutputDir = "data/preProcessedSemifrontal/img/"
 # labelOutputDir = "data/preProcessedSemifrontal/label/"
+rawDir = "data/competitionImageDataset/testset/profile/"
 imgOutputDir = "data/preProcessedProfile/img/"
 labelOutputDir = "data/preProcessedProfile/label/"
 
@@ -27,6 +28,9 @@ counter = 0
 for fileName in files:
 	if ".rec" in fileName:
 		fileHeader = fileName.split(".")[0]		
+	
+		# if fileHeader == "3433":
+			# print "get the file"
 		fr = open(rawDir + fileName, 'r')
 		lines = fr.readlines()
 		imgName = fileHeader + ".jpg"
@@ -40,6 +44,7 @@ for fileName in files:
 		if debug:
 			plotImg = plotTarget(img, [xMin, yMin, xMax, yMax])
 			cv2.imshow("img", plotImg)
+			cv2.waitKey(0) 
 
 		xMean = (xMax + xMin)/2.0
 		yMean = (yMax + yMin)/2.0
@@ -48,39 +53,37 @@ for fileName in files:
 		edge = max(xEdge, yEdge)
 
 		newEdge = 1.3 * edge
-		newXMin = xMean - newEdge/2.0
-		newXMax = xMean + newEdge/2.0
-		newYMin = yMean - newEdge/2.0
-		newYMax = yMean + newEdge/2.0
+		newXMin = int(xMean - newEdge/2.0)
+		newXMax = int(xMean + newEdge/2.0)
+		newYMin = int(yMean - newEdge/2.0)
+		newYMax = int(yMean + newEdge/2.0)
 
-
-
-		if newXMin < 0:
-			newXMin = 0
-		if newYMin < 0:
-			newYMin = 0
-		if newXMax > w:
-			newXMax = w
-		if newYMax > h:
-			newYMax = h
 		if debug:	
 			cv2.circle(img,(int(xMean), int(yMean)), 2, (255, 0, 0), -1)
 		
 		xMean = xMean - newXMin
 		yMean = yMean - newYMin
+		
+		img = Image.fromarray(img.astype(np.uint8))
+		
+		cropImg = img.crop((newXMin, newYMin, newXMax, newYMax))
 
-		cropImg = img[newYMin : newYMax, newXMin:newXMax]
+		cropImg = np.array(cropImg)
 		
 		if debug:	
 			cv2.circle(cropImg,(int(xMean), int(yMean)), 2, (0,0,255), -1)
 
 		label = np.asarray([xMean, yMean, edge])
 
-		# NOTE: its img[y: y + h, x: x + w] and *not* img[x: x + w, y: y + h]
+		# # NOTE: its img[y: y + h, x: x + w] and *not* img[x: x + w, y: y + h]
 		if debug:
-			img = ut.plotTarget(img, label, ifSquareOnly = True, ifGreen = True)
-			img = plotTarget(cropImg, [xMean - xEdge/2.0, yMean - yEdge/2.0, xMean + xEdge/2.0, yMean + yEdge/2.0], ifGreen = True)
+			img = plotTarget(img, [newXMin, newYMin, newXMax, newYMax])
+			img = ut.plotTarget(img, [xMean, yMean, newEdge], ifSquareOnly = True)
+			# img = ut.plotTarget(img, label, ifSquareOnly = True, ifGreen = True)
+			# img = plotTarget(cropImg, [xMean - xEdge/2.0, yMean - yEdge/2.0, xMean + xEdge/2.0, yMean + yEdge/2.0], ifGreen = True)
 			img = ut.plotTarget(cropImg, label, ifSquareOnly = True, ifGreen = True)
+			img = ut.plotTarget(img, label, ifSquareOnly = True, ifGreen = True)
+
 			cv2.imshow("img", img)
 			cv2.imshow("cropped", cropImg)
 			cv2.waitKey(0) 
@@ -93,6 +96,3 @@ for fileName in files:
 		if counter % 100 == 0:
 			print "counter: ", counter
 
-		# print "index: ", index
-		# if index > 0:
-			# index = index - 12

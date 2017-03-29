@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import random
 
-rawDir = "competitionImageDataset/testset/semifrontal/"
+rawDir = "data/competitionImageDataset/testset/semifrontal/"
 
 
 def plotTarget(image, labels, ifGreen = False):
@@ -15,8 +15,10 @@ def plotTarget(image, labels, ifGreen = False):
     return img
 
 files = [
-"12944.rec"
+"2430.rec"
 ]
+
+
 for fileName in files:
 	fileHeader = fileName.split(".")[0]		
 	imgName = fileHeader + ".jpg"
