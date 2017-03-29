@@ -163,25 +163,25 @@ class faceOrientPred(object):
                     newYMean = (newYMax + newYMin)/2.0
                     edge = max(newYMax - newYMin, newXMax - newXMin)
                     
-                    if method == "scale":
-                        newEdge = 1 * edge
-                        newXMin = int(newXMean - newEdge/2.0)
-                        newXMax = int(newXMean + newEdge/2.0)
-                        newYMin = int(newYMean - newEdge/2.0)
-                        newYMax = int(newYMean + newEdge/2.0)
+                    # if method == "scale":
+                    #     newEdge = 1 * edge
+                    #     newXMin = int(newXMean - newEdge/2.0)
+                    #     newXMax = int(newXMean + newEdge/2.0)
+                    #     newYMin = int(newYMean - newEdge/2.0)
+                    #     newYMax = int(newYMean + newEdge/2.0)
                         
-                        newXMean = newXMean - newXMin
-                        newYMean = newYMean - newYMin
+                    #     newXMean = newXMean - newXMin
+                    #     newYMean = newYMean - newYMin
                         
-                        newImg = Image.fromarray(newImg.astype(np.uint8))
-                        cropImg = newImg.crop((newXMin, newYMin, newXMax, newYMax))
-                        newImg = np.array(cropImg)
-                        w, h, _ = newImg.shape
-                        edge = edge*self.imSize/w
-                        newXMean = newXMean*self.imSize/w
-                        newYMean = newYMean*self.imSize/h
+                    #     newImg = Image.fromarray(newImg.astype(np.uint8))
+                    #     cropImg = newImg.crop((newXMin, newYMin, newXMax, newYMax))
+                    #     newImg = np.array(cropImg)
+                    #     w, h, _ = newImg.shape
+                    #     edge = edge*self.imSize/w
+                    #     newXMean = newXMean*self.imSize/w
+                    #     newYMean = newYMean*self.imSize/h
 
-                        newImg = cv2.resize(newImg,(self.imSize, self.imSize))
+                    #     newImg = cv2.resize(newImg,(self.imSize, self.imSize))
 
                     # print "newXMin: ", newXMin
                     # print "newYMin: ", newYMin
