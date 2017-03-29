@@ -20,7 +20,7 @@ class ModelPredict(object):
         self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy', self.final_pred])
         
 
-        self.evaluationOutputDir = "./output/03292017_01_preProcessedProfile_bigNet_output/"
+        self.evaluationOutputDir = "./output/03292017_02_preProcessedProfile_bigNet_output/"
         # self.evaluationOutputDir = "./output/03292017_01_preProcessedSemifrontal_bigNet_output/"
         # self.ImgDir= 'data/preProcessedSemifrontal/img/'
         # self.labelDir= 'data/preProcessedSemifrontal/label/'
