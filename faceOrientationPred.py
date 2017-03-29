@@ -191,7 +191,7 @@ class faceOrientPred(object):
                     # print "newEdge: ", newEdge
 
                     newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
-                    cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
+                    # cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
@@ -312,7 +312,7 @@ class faceOrientPred(object):
                     if testCount >= 20:
                         testCount = 0
 
-                    index = random.randint(0, len(X_batch) - 1)
+                    index = random.randint(0, len(X_batch_T) - 1)
                     labelImg = ut.plotTarget(X_batch_T[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
                     print 'save predTestLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
                     cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
