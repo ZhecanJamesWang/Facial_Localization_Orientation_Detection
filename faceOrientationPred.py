@@ -101,7 +101,8 @@ class faceOrientPred(object):
 
             if img != None:   
                 # print "find image: ", imgName   
-                print "img.shape: ", img.shape             
+                # print "img.shape: ", img.shape   
+                          
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
                 (w, h, _) = img.shape
