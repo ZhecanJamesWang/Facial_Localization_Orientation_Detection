@@ -79,8 +79,8 @@ for fileName in files:
 		# NOTE: its img[y: y + h, x: x + w] and *not* img[x: x + w, y: y + h]
 		if debug:
 			img = ut.plotTarget(img, label, ifSquareOnly = True, ifGreen = True)
-			img = ut.plotTarget(cropImg, label, ifSquareOnly = True, ifGreen = True)
 			img = plotTarget(cropImg, [xMean - xEdge/2.0, yMean - yEdge/2.0, xMean + xEdge/2.0, yMean + yEdge/2.0], ifGreen = True)
+			img = ut.plotTarget(cropImg, label, ifSquareOnly = True, ifGreen = True)
 			cv2.imshow("img", img)
 			cv2.imshow("cropped", cropImg)
 			cv2.waitKey(0) 

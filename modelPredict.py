@@ -86,7 +86,9 @@ class ModelPredict(object):
 
                 # print "imgName: ", imgName
                 imgNameHeader = imgName.split('.')[0]
+                print "self.ImgDir + imgName: ", self.ImgDir + imgName
                 img = cv2.imread(self.ImgDir + imgName)
+                print "self.labelDir + imgNameHeader + .txt: ", self.labelDir + imgNameHeader + ".txt"
                 label = np.loadtxt(self.labelDir + imgNameHeader + ".txt")
             else:
                 strLine = DataStrs[i]
@@ -207,11 +209,12 @@ class ModelPredict(object):
                 img = ut.plotTarget(img, labels, self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
-                labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
-                # cv2.imshow("img", img)
-                # cv2.waitKey(0)
-                print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
-                cv2.imwrite(self.evaluationOutputDir + str(index) + 'Pred' + '.jpg', labelImg)
+                # labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
+                cv2.imshow("img", img)
+                cv2.waitKey(0)
+                # print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
+                cv2.imwrite(self.evaluationOutputDir + str(index) + 'Input' + '.jpg', img)
+                # cv2.imwrite(self.evaluationOutputDir + str(index) + 'Pred' + '.jpg', labelImg)
                 saveCount += 1
 
 
