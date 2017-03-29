@@ -13,10 +13,10 @@ def plotTarget(image, labels, ifGreen = False):
     return img
 
 
-rawDir = "data/competitionImageDataset/testset/profile/"
-# rawDir = "data/competitionImageDataset/testset/semifrontal/"
-# outputDir = "data/preProcessedSemifrontal/"
-outputDir = "data/preProcessedProfile/"
+# rawDir = "data/competitionImageDataset/testset/profile/"
+rawDir = "data/competitionImageDataset/testset/semifrontal/"
+outputDir = "data/preProcessedSemifrontal/"
+# outputDir = "data/preProcessedProfile/"
 
 
 files = os.listdir(rawDir)
@@ -42,27 +42,36 @@ for fileName in files:
 		xMean = (xMax + xMin)/2.0
 		yMean = (yMax + yMin)/2.0
 		edge = max(xMax - xMin, yMax - yMin)
-		edge = 1.3 * edge
-		xMin = xMean - edge/2.0
-		xMax = xMean + edge/2.0
-		yMin = yMean - edge/2.0
-		yMax = yMean + edge/2.0
+		newEdge = 1.3 * edge
+		newXMin = xMean - newEdge/2.0
+		newXMax = xMean + newEdge/2.0
+		newYMin = yMean - newEdge/2.0
+		newYMax = yMean + newEdge/2.0
 
-		if xMin < 0:
-			xMin = 0
-		if yMin < 0:
-			yMin = 0
-		if xMax > w:
-			xMax = w
-		if yMax > h:
-			yMax = h
-		cropImg = img[yMin : yMax, xMin:xMax]
+		# xMin = xMin - edge/2.0
+		# yMin = yMin - edge/2.0
+		# xMax = xMax - edge/2.0
+		# yMax = yMax - edge/2.0
+		# edge = max(xMax - xMin, yMax - yMin)
+
+		if newXMin < 0:
+			newXMin = 0
+		if newYMin < 0:
+			newYMin = 0
+		if newXMax > w:
+			newXMax = w
+		if newYMax > h:
+			newYMax = h
+
+		cropImg = img[newYMin : newYMax, newXMin:newXMax]
+		label = np.asarray([xMean, yMean, edge])
 		# NOTE: its img[y: y + h, x: x + w] and *not* img[x: x + w, y: y + h]
 
 		if debug:
 			cv2.imshow("cropped", cropImg)
 			cv2.waitKey(0) 
 
+		np.savetxt(outputDir + fileHeader + '.txt', label)
 		cv2.imwrite(outputDir + fileHeader + '.jpg', cropImg)
 		counter += 1
 

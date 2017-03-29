@@ -81,6 +81,11 @@ class ModelPredict(object):
                 imgName =self.imgs[i]
                 imgNameHeader = imgName.split('.')[0]
                 img = cv2.imread(self.TestPath + imgName)
+                ptsFile = imgNameHeader + ".rec"
+                fr = open(self.TestPath + ptsFile, 'r')
+                lines = fr.readlines()
+                print lines
+                raise "debug"
             else:
                 strLine = DataStrs[i]
                 strCells = strLine.rstrip(' \n').split(' ')
@@ -184,8 +189,10 @@ class ModelPredict(object):
             for i in range(self.batch_size):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
+                print "Z_Names[i]: ", Z_Names[i]
+                img = ut.plotTarget(img, labels, self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
-                cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
+                # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
                 labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
                 print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
                 cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
