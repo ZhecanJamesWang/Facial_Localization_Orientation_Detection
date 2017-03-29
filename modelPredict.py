@@ -186,7 +186,6 @@ class ModelPredict(object):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
                 index = Z_Names_T[i].split(" ")[0]
-                raise "debug"
                 img = ut.plotTarget(img, labels, self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
