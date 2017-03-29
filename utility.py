@@ -237,7 +237,7 @@ def translate(image, X, Y, w = None , h = None, counter = 0):
     image = newImg
 
     if np.min(newX) < 0 or np.min(newY) < 0 or np.max(newX) > w or np.max(newY) > h:
-        image, newX, newY = translateImage(originalImage, X, Y, counter + 1) 
+        image, newX, newY = translate(originalImage, X, Y, counter + 1) 
 
     newX = np.asarray(newX)
     newY = np.asarray(newY)
