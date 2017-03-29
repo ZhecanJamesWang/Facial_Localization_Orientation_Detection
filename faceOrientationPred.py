@@ -78,7 +78,7 @@ class faceOrientPred(object):
 
 
     def DataGenBB(self, DataStrs, train_start,train_end):
-        generateFunc = ["original", "scale", "rotate", "brightnessAndContrast", "translate"]
+        generateFunc = ["original", "scale", "rotate", "brightnessAndContrast", "translate", "scaleAndTranslate"]
         # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
@@ -119,7 +119,7 @@ class faceOrientPred(object):
                         newImg, newX, newY = ut.rotate(img, x, y, w = w, h = h)
                     elif method == "mirror":
                         newImg, newX, newY = ut.mirror(img, x, y, w = w, h = h)
-                    elif method == "translate":
+                    elif method == "translate" or method = "scaleAndTranslate": 
                         newImg, newX, newY = ut.translate(img, x, y, w = w, h = h)
                     elif method == "brightnessAndContrast":
                         newImg, newX, newY = ut.contrastBrightess(img, x, y)
@@ -163,7 +163,7 @@ class faceOrientPred(object):
                     newYMean = (newYMax + newYMin)/2.0
                     edge = max(newYMax - newYMin, newXMax - newXMin)
                     
-                    if method == "scale":
+                    if method == "scale" or method = "scaleAndTranslate":
                         newEdge = np.random.uniform(0.7, 0.9) * edge
                         newXMin = int(newXMean - newEdge/2.0)
                         newXMax = int(newXMean + newEdge/2.0)
