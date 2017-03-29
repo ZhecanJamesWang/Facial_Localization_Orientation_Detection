@@ -105,13 +105,13 @@ class faceOrientPred(object):
 
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
-                (w, h, _) = img.shape
                 x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
                 # newImg, newX, newY = img, x, y    
 
                 for index in range(len(generateFunc)):
                     method = generateFunc[index]
+                    (w, h, _) = img.shape
                     # tag = random.choice(generateFunc)
                     if method == "resize":
                         newImg, newX, newY = ut.resize(img, x, y, xMaxBound = w, yMaxBound = h, random = True)
