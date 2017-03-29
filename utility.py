@@ -222,8 +222,8 @@ def resize(originalImage, X, Y, xMaxBound = None, yMaxBound = None, random = Fal
 
 def translate(image, X, Y, w = None , h = None, counter = 0):
     X, Y = np.asarray(X), np.asarray(Y)
-    if counter > 10:
-        return None, None, None
+    # if counter > 10:
+    #     return None, None, None
     originalImage = image.copy()
     (h, w, _) = image.shape
     xTransRange, yTransRange = np.random.randint(0, w/5), np.random.randint(0, h/5)
@@ -236,8 +236,8 @@ def translate(image, X, Y, w = None , h = None, counter = 0):
 
     image = newImg
 
-    if np.min(newX) < 0 or np.min(newY) < 0 or np.max(newX) > w or np.max(newY) > h:
-        image, newX, newY = translate(originalImage, X, Y, counter + 1) 
+    # if np.min(newX) < 0 or np.min(newY) < 0 or np.max(newX) > w or np.max(newY) > h:
+    #     image, newX, newY = translate(originalImage, X, Y, counter + 1) 
 
     newX = np.asarray(newX)
     newY = np.asarray(newY)
