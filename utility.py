@@ -42,7 +42,7 @@ def rotate(image, X, Y, h = None, w = None, counter = 0, random = None):
     if h == None:
         (h, w, _) = image.shape
     
-    degree = np.random.uniform(-15, 15)
+    degree = np.random.uniform(-30, 30)
 
     M = cv2.getRotationMatrix2D((w/2, h/2),degree,1)
     

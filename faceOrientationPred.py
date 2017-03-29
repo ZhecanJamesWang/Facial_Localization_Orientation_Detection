@@ -164,7 +164,7 @@ class faceOrientPred(object):
                     edge = max(newYMax - newYMin, newXMax - newXMin)
                     
                     if method == "scale":
-                        newEdge = 0.7 * edge
+                        newEdge = np.random.uniform(0.7, 0.9) * edge
                         newXMin = int(newXMean - newEdge/2.0)
                         newXMax = int(newXMean + newEdge/2.0)
                         newYMin = int(newYMean - newEdge/2.0)
@@ -223,7 +223,6 @@ class faceOrientPred(object):
             else:
                 print "cannot : ", imgName
 
-        raise "debug"
 
         return InputData, InputLabel, np.asarray(InputNames)
 
