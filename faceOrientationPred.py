@@ -191,7 +191,7 @@ class faceOrientPred(object):
                     # print "newEdge: ", newEdge
 
                     newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
-                    cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
+                    # cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
