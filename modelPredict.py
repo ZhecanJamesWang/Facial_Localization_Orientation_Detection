@@ -5,9 +5,9 @@ import numpy as np
 import selfModel as m
 import cv2
 import os
-# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-# os.environ["CUDA_VISIBLE_DEVICES"] = ""
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+# os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 class ModelPredict(object):
     def __init__(self):
@@ -81,17 +81,13 @@ class ModelPredict(object):
                 imgName =self.imgs[i]
                 imgNameHeader = imgName.split('.')[0]
                 img = cv2.imread(self.TestPath + imgName)
-                ptsFile = imgNameHeader + ".rec"
-                fr = open(self.TestPath + ptsFile, 'r')
-                lines = fr.readlines()
-                print lines
-                raise "debug"
+                label = np.loadtxt(self.TestPath + imgNameHeader + ".txt")
             else:
                 strLine = DataStrs[i]
                 strCells = strLine.rstrip(' \n').split(' ')
                 imgName = strCells[0]
 
-                labels = np.array(strCells[1:]).astype(np.float)
+                label = np.array(strCells[1:]).astype(np.float)
                 labelsPTS=labels[:136].reshape([68,2])
                 img = cv2.imread(imgName)
 
@@ -110,8 +106,8 @@ class ModelPredict(object):
                     # x, y = self.unpackLandmarks(labelsPTS)
                     x, y = None, None
                 elif self.ifpreProcessedSemifrontal:
-                    x, y = None, None
-                    labels = [None, None, None]
+                    # x, y = None, None
+                    # labels = [None, None, None]
                     newImg = img
             #     else:
             #         x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
@@ -134,7 +130,7 @@ class ModelPredict(object):
                 #     else:
                 #         raise "not existing function"
                 if self.ifMenpo39DataSet:
-                    labels = labelsPTS
+                    label = labelsPTS
                 elif self.ifpreProcessedSemifrontal:
                     pass
                 else:
@@ -150,10 +146,10 @@ class ModelPredict(object):
                     normX = ut.normalize(newX, self.imSize)
                     normY = ut.normalize(newY, self.imSize)
                     normXMean, normYMean, normEdge = ut.normalize(newXMean, self.imSize), ut.normalize(newYMean, self.imSize), ut.normalize(newEdge, self.imSize)
-                    labels = np.array([normXMean, normYMean, normEdge])
+                    label = np.array([normXMean, normYMean, normEdge])
 
                 InputData[count,...] = newImg
-                InputLabel[count,...] = labels
+                InputLabel[count,...] = label
                 InputNames.append(imgName)
 
                 count += 1
@@ -189,13 +185,14 @@ class ModelPredict(object):
             for i in range(self.batch_size):
                 labels = label_BB_T[i]
                 img = X_batch_T[i]
-                print "Z_Names[i]: ", Z_Names[i]
+                index = Z_Names_T[i].split(" ")[0]
+                raise "debug"
                 img = ut.plotTarget(img, labels, self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # img = ut.plotTarget(img, ut.deNormalize(labels, self.imSize), self.imSize, ifSquareOnly = True,  ifGreen = True)
                 # cv2.imwrite(self.evaluationOutputDir + 'inputTestImg' + str(saveCount) + '.jpg', img)
                 labelImg = ut.plotTarget(img, ut.deNormalize(pred[i], self.imSize), self.imSize, ifSquareOnly = True)
                 print 'save predTestLabelImg' + str(saveCount) + '.jpg to: ' + self.evaluationOutputDir
-                cv2.imwrite(self.evaluationOutputDir + 'predTestLabelImg' + str(saveCount) + '.jpg', labelImg)
+                cv2.imwrite(self.evaluationOutputDir + str(index) + 'Pred' + '.jpg', labelImg)
                 saveCount += 1
 
 
