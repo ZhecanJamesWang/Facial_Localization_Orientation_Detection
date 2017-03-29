@@ -100,7 +100,8 @@ class faceOrientPred(object):
             img = cv2.imread(imgName)
 
             if img != None:   
-                # print "find image: ", imgName                
+                # print "find image: ", imgName   
+                print "img.shape: ", img.shape             
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
                 (w, h, _) = img.shape
@@ -174,6 +175,7 @@ class faceOrientPred(object):
                         img = Image.fromarray(newImg.astype(np.uint8))
                         cropImg = img.crop((newXMin, newYMin, newXMax, newYMax))
                         newImg = np.array(cropImg)
+                        newImg = cv2.resize(newImg,(self.imSize, self.imSize))
 
                     # print "newXMin: ", newXMin
                     # print "newYMin: ", newYMin
