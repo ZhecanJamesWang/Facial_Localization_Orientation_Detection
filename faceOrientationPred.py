@@ -169,7 +169,7 @@ class faceOrientPred(object):
                         newXMean = newXMean - newXMin
                         newYMean = newYMean - newYMin
                         
-                        img = Image.fromarray(img.astype(np.uint8))
+                        img = Image.fromarray(newImg.astype(np.uint8))
                         cropImg = img.crop((newXMin, newYMin, newXMax, newYMax))
                         newImg = np.array(cropImg)
 
