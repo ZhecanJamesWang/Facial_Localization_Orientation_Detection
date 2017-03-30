@@ -105,11 +105,11 @@ class faceOrientPred(object):
             labels = np.array(strCells[1:]).astype(np.float)
 
             if len(labels) == 78:
-                print "not menpo39"
+                print "switch to menpo39"
                 labelsPTS=labels[:136].reshape([39,2])
                 self.ifMenpo39Data = True                
             else:            
-                print "switch to menpo39"
+                print "not menpo39"
                 labelsPTS=labels[:136].reshape([68,2])
                 self.ifMenpo39Data = False
 
@@ -223,8 +223,8 @@ class faceOrientPred(object):
                     #     newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
                     #     cv2.imshow("newImg", newImg)
                     #     cv2.waitKey(0)
-
-                    cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
+                    if not self.ifMenpo39Data:
+                        cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
