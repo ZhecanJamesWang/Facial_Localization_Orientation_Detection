@@ -202,8 +202,8 @@ class faceOrientPred(object):
                         cropImg = newImg.crop((newXMin, newYMin, newXMax, newYMax))
                         newImg = np.array(cropImg)
 
-                        cv2.imshow("processing", newImg)
-                        cv2.waitKey(0)
+                        # cv2.imshow("processing", newImg)
+                        # cv2.waitKey(0)
 
                         w, h, _ = newImg.shape
                         edge = edge*self.imSize/w
@@ -218,12 +218,13 @@ class faceOrientPred(object):
                     # print "newXMean: ", newXMean
                     # print "newYMean: ", newYMean
                     # print "newEdge: ", newEdge
-                    if method == "scale":
-                        newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
-                        cv2.imshow("newImg", newImg)
-                        cv2.waitKey(0)
+                    
+                    # if method == "scale":
+                    #     newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
+                    #     cv2.imshow("newImg", newImg)
+                    #     cv2.waitKey(0)
 
-                    # cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
+                    cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
