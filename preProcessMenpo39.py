@@ -10,8 +10,8 @@ import random
 
 class PreProcessMenpo39(object):
 	def __init__(self):
-		self.rawDataDir = "data/Menpo39_Valid/"
-		self.outputDir = "data/Menpo39/"	
+		self.rawDataDir = "data/Menpo39_Train/"
+		self.outputDir = "data/Menpo39TrainProcessed/"	
 		self.init = True
 		self.debug = False
 		self.imSize = 256

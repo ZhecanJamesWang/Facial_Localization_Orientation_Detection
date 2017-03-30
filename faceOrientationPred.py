@@ -41,9 +41,9 @@ class faceOrientPred(object):
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
         TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'    
-        # TrainPath = "data/Menpo39/menpo39Data.txt"
+        # TrainPath = "data/Menpo39TrainProcessed/menpo39Data.txt"
         TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
-        # TestPath = "data/Menpo39/menpo39Data.txt"
+        # TestPath = "data/Menpo39TrainProcessed/menpo39Data.txt"
 
         FTr = open(TrainPath,'r')
         self.DataTr = FTr.readlines()
