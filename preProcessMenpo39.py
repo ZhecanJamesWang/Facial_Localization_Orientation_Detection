@@ -43,7 +43,7 @@ class PreProcessMenpo39(object):
 
 				print "after resize img.shape: ", img.shape
 				# if self.debug:
-				img = ut.plotLandmarks(img, x, y, imSize = self.imSize, ifReturn = True, circleSize = 2)
+				# img = ut.plotLandmarks(img, x, y, imSize = self.imSize, ifReturn = True, circleSize = 2)
 
 				if self.debug:
 					cv2.imshow("resizedImg", img)

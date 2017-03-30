@@ -73,14 +73,23 @@ class faceOrientPred(object):
         print "self.MaxIters: ", self.MaxIters
         print "self.MaxTestIters: ", self.MaxTestIters
 
+        self.ifMenpo39Data = False
+
     def final_pred(self, y_true, y_pred):
         # y_cont=np.concatenate(y_pred,axis=1)
         return y_pred
 
+    def unpackLandmarks(self, array):
+        x = []
+        y = []
+        for i in range(0, len(array)):
+            x.append(array[i][0])
+            y.append(array[i][1])
+        return x, y
 
     def DataGenBB(self, DataStrs, train_start,train_end):
-        generateFunc = ["original", "scale", "rotate", "translate", "scaleAndTranslate", "brightnessAndContrast"]
-        # generateFunc = ["original", "resize", "rotate", "mirror", "translate", "brightnessAndContrast" ]
+        # generateFunc = ["original", "scale", "rotate", "translate", "scaleAndTranslate", "brightnessAndContrast"]
+        generateFunc = ["original", "scale", "rotate", "translate", "scaleAndTranslate"]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
         # InputLabel = np.zeros([self.batch_size * len(generateFunc), 7], dtype = np.float32)
@@ -94,8 +103,13 @@ class faceOrientPred(object):
             imgName = strCells[0]
 
             labels = np.array(strCells[1:]).astype(np.float)
-            # labelsPTS=labels[:136].reshape([68,2])
-            labelsPTS=labels[:136].reshape([39,2])
+
+            if len(labels) == 78:
+                labelsPTS=labels[:136].reshape([39,2])
+                self.ifMenpo39Data = True                
+            else:            
+                labelsPTS=labels[:136].reshape([68,2])
+                self.ifMenpo39Data = False
 
             # if self.debug:
             #     print "imgName: ", imgName
@@ -107,7 +121,10 @@ class faceOrientPred(object):
 
                 img = cv2.resize(img,(self.imSize, self.imSize))
                 # print "img.shape: ", img.shape
-                x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
+                if self.ifMenpo39Data:
+                    x, y = self.unpackLandmarks(labelsPTS)
+                else:
+                    x, y = ut.unpackLandmarks(labelsPTS, self.imSize)
 
                 # newImg, newX, newY = img, x, y    
 
@@ -165,6 +182,10 @@ class faceOrientPred(object):
                     newYMean = (newYMax + newYMin)/2.0
                     edge = max(newYMax - newYMin, newXMax - newXMin)
                     
+                    # if method == "scale":
+                    #     cv2.imshow("originalImg", newImg)
+                    #     cv2.waitKey(0)
+
                     if method == "scale" or method == "scaleAndTranslate":
                         newEdge = np.random.uniform(0.7, 0.9) * edge
                         newXMin = int(newXMean - newEdge/2.0)
@@ -174,10 +195,14 @@ class faceOrientPred(object):
                         
                         newXMean = newXMean - newXMin
                         newYMean = newYMean - newYMin
-                        
+                        print "newXMin, newYMin, newXMax, newYMax: ", newXMin, newYMin, newXMax, newYMax
                         newImg = Image.fromarray(newImg.astype(np.uint8))
                         cropImg = newImg.crop((newXMin, newYMin, newXMax, newYMax))
                         newImg = np.array(cropImg)
+
+                        cv2.imshow("processing", newImg)
+                        cv2.waitKey(0)
+
                         w, h, _ = newImg.shape
                         edge = edge*self.imSize/w
                         newXMean = newXMean*self.imSize/w
@@ -191,10 +216,12 @@ class faceOrientPred(object):
                     # print "newXMean: ", newXMean
                     # print "newYMean: ", newYMean
                     # print "newEdge: ", newEdge
+                    if method == "scale":
+                        newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
+                        cv2.imshow("newImg", newImg)
+                        cv2.waitKey(0)
 
-                    newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
-                    
-                    cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
+                    # cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
