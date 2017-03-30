@@ -1,17 +1,37 @@
+from random import shuffle
 
 
-f2 = open("/home/james/Facial_Localization_Orientation_Detection/data/KBKC4_train.txt", 'r')
-lines = f2.readlines()
-print "f2: ", len(lines)
+
 
 f1 = open("/home/james/Facial_Localization_Orientation_Detection/data/Menpo39TrainProcessed/menpo39Data.txt", 'r')
-f2 = open("/home/james/Facial_Localization_Orientation_Detection/data/KBKC4_train.txt", 'a')
-lines = f1.readlines()
-for line in lines:
-	f2.write(line)
-f2.close()
-f1.close()
+lines1 = f2.readlines()
+print "f1: ", len(lines1)
+
 
 f2 = open("/home/james/Facial_Localization_Orientation_Detection/data/KBKC4_train.txt", 'r')
-lines = f2.readlines()
-print "f2: ", len(lines)
+lines2 = f2.readlines()
+print "f2: ", len(lines2)
+
+shuffle(lines1)
+shuffle(lines2)
+
+
+lines2 = lines2[:int(len(lines2)* 0.2)]
+print "after cut f2: ", len(lines2)
+
+f3 = open("/home/james/Facial_Localization_Orientation_Detection/data/combineData.txt", 'w')
+
+for line in lines1:
+	f3.write(line)
+
+for line in lines2:
+	f3.write(line)
+
+f1.close()
+f2.close()
+f3.close()
+
+f3 = open("/home/james/Facial_Localization_Orientation_Detection/data/combineData.txt", 'r')
+lines3 = f3.readlines()
+print "f3: ", len(lines3)
+f3.close()
