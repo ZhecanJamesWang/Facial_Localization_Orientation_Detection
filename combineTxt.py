@@ -1,6 +1,6 @@
 
 
-f2 = open("/home/james/Facial_Localization_Orientation_Detection/dataKBKC4_train.txt", 'a')
+f2 = open("/home/james/Facial_Localization_Orientation_Detection/dataKBKC4_train.txt", 'r')
 lines = f2.readlines()
 print "f2: ", len(lines)
 
@@ -13,6 +13,6 @@ for line in lines:
 f2.close()
 f1.close()
 
-f2 = open("/home/james/Facial_Localization_Orientation_Detection/dataKBKC4_train.txt", 'a')
+f2 = open("/home/james/Facial_Localization_Orientation_Detection/dataKBKC4_train.txt", 'r')
 lines = f2.readlines()
 print "f2: ", len(lines)
