@@ -223,7 +223,7 @@ class faceOrientPred(object):
                     #     newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
                     #     cv2.imshow("newImg", newImg)
                     #     cv2.waitKey(0)
-                    if not self.ifMenpo39Data:
+                    if self.ifMenpo39Data == False:
                         cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
