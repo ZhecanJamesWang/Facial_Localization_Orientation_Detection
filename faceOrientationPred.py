@@ -33,15 +33,17 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = False
-        self.outputDir = "./output/03302017_01_bigNet_Scale_Menpo39_output/"
-        self.modelDir = "./output/03302017_01_bigNet_Scale_Menpo39_model/"
+        self.outputDir = "./output/03302017_02_smallNet_Scale_output/"
+        self.modelDir = "./output/03302017_02_smallNet_Scale_model/"
+        # self.outputDir = "./output/03302017_01_bigNet_Scale_Menpo39_output/"
+        # self.modelDir = "./output/03302017_01_bigNet_Scale_Menpo39_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
-        # TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'    
-        TrainPath = "data/Menpo39/menpo39Data.txt"
-        # TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
-        TestPath = "data/Menpo39/menpo39Data.txt"
+        TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'    
+        # TrainPath = "data/Menpo39/menpo39Data.txt"
+        TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
+        # TestPath = "data/Menpo39/menpo39Data.txt"
 
         FTr = open(TrainPath,'r')
         self.DataTr = FTr.readlines()
@@ -88,8 +90,8 @@ class faceOrientPred(object):
         return x, y
 
     def DataGenBB(self, DataStrs, train_start,train_end):
-        # generateFunc = ["original", "scale", "rotate", "translate", "scaleAndTranslate", "brightnessAndContrast"]
-        generateFunc = ["original", "scale", "rotate", "translate", "scaleAndTranslate"]
+        generateFunc = ["original", "scale", "rotate", "translate", "scaleAndTranslate", "brightnessAndContrast"]
+        # generateFunc = ["original", "scale", "rotate", "translate", "scaleAndTranslate"]
 
         InputData = np.zeros([self.batch_size * len(generateFunc), self.imSize, self.imSize, 3], dtype = np.float32)
         # InputLabel = np.zeros([self.batch_size * len(generateFunc), 7], dtype = np.float32)
@@ -197,7 +199,9 @@ class faceOrientPred(object):
                         
                         newXMean = newXMean - newXMin
                         newYMean = newYMean - newYMin
-                        print "newXMin, newYMin, newXMax, newYMax: ", newXMin, newYMin, newXMax, newYMax
+                        
+                        # print "newXMin, newYMin, newXMax, newYMax: ", newXMin, newYMin, newXMax, newYMax
+                        
                         newImg = Image.fromarray(newImg.astype(np.uint8))
                         cropImg = newImg.crop((newXMin, newYMin, newXMax, newYMax))
                         newImg = np.array(cropImg)
@@ -223,8 +227,9 @@ class faceOrientPred(object):
                     #     newImg = ut.plotTarget(newImg, [newXMean, newYMean, edge], ifSquareOnly = True, ifGreen = True)
                     #     cv2.imshow("newImg", newImg)
                     #     cv2.waitKey(0)
-                    if self.ifMenpo39Data == False:
-                        cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
+
+                    # if self.ifMenpo39Data == False:
+                    #     cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
