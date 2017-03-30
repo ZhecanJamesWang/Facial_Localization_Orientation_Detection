@@ -33,15 +33,13 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = False
-        self.outputDir = "./output/03302017_02_smallNet_Scale_output/"
-        self.modelDir = "./output/03302017_02_smallNet_Scale_model/"
-        # self.outputDir = "./output/03302017_01_bigNet_Scale_Menpo39_output/"
-        # self.modelDir = "./output/03302017_01_bigNet_Scale_Menpo39_model/"
+        self.outputDir = "./output/03302017_03_smallNet_Scale_Menpo39_output/"
+        self.modelDir = "./output/03302017_03_smallNet_Scale_Menpo39_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
-        TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'    
-        # TrainPath = "data/Menpo39TrainProcessed/menpo39Data.txt"
+        # TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'    
+        TrainPath = "/home/james/Facial_Localization_Orientation_Detection/data/combineData.txt"
         TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
         # TestPath = "data/Menpo39TrainProcessed/menpo39Data.txt"
 
