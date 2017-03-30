@@ -107,11 +107,11 @@ class faceOrientPred(object):
             labels = np.array(strCells[1:]).astype(np.float)
 
             if len(labels) == 78:
-                print "switch to menpo39"
+                # print "switch to menpo39"
                 labelsPTS=labels[:136].reshape([39,2])
                 self.ifMenpo39Data = True                
             else:            
-                print "not menpo39"
+                # print "not menpo39"
                 labelsPTS=labels[:136].reshape([68,2])
                 self.ifMenpo39Data = False
 
