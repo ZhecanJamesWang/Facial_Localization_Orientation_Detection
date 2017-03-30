@@ -4,7 +4,7 @@ from random import shuffle
 
 
 f1 = open("/home/james/Facial_Localization_Orientation_Detection/data/Menpo39TrainProcessed/menpo39Data.txt", 'r')
-lines1 = f2.readlines()
+lines1 = f1.readlines()
 print "f1: ", len(lines1)
 
 
