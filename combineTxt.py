@@ -5,4 +5,5 @@ lines = f1.readlines()
 for line in lines:
 	print line
 	f2.write(line)
-f.close()
+f2.close()
+f1.close()
