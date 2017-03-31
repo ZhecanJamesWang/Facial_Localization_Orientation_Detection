@@ -25,16 +25,14 @@ os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 
 
-
-
 class faceOrientPred(object):
     """face orientation detection"""
     def __init__(self):
 
         self.init = True
         self.debug = False
-        self.outputDir = "./output/03302017_03_smallNet_Scale_Menpo39_output/"
-        self.modelDir = "./output/03302017_03_smallNet_Scale_Menpo39_model/"
+        self.outputDir = "./output/03312017_01_bigNet_Scale_Menpo39_output/"
+        self.modelDir = "./output/03312017_01_bigNet_Scale_Menpo39_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
