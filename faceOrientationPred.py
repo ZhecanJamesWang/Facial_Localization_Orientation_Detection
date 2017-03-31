@@ -20,7 +20,7 @@ import selfModel as m
 from decimal import Decimal
 from PIL import Image
 
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 
 
