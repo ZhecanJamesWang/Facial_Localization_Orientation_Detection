@@ -16,10 +16,10 @@ shuffle(lines1)
 shuffle(lines2)
 
 
-lines2 = lines2[:int(len(lines2)* 0.2)]
+lines2 = lines2[:int(len(lines2)* 1)]
 print "after cut f2: ", len(lines2)
 
-f3 = open("/home/james/Facial_Localization_Orientation_Detection/data/combineData.txt", 'w')
+f3 = open("/home/james/Facial_Localization_Orientation_Detection/data/combineDataFull.txt", 'w')
 
 for line in lines1:
 	f3.write(line)
@@ -31,7 +31,7 @@ f1.close()
 f2.close()
 f3.close()
 
-f3 = open("/home/james/Facial_Localization_Orientation_Detection/data/combineData.txt", 'r')
+f3 = open("/home/james/Facial_Localization_Orientation_Detection/data/combineDataFull.txt", 'r')
 lines3 = f3.readlines()
 print "f3: ", len(lines3)
 f3.close()

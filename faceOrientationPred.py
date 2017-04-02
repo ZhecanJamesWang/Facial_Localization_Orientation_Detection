@@ -36,7 +36,7 @@ class faceOrientPred(object):
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
         # TrainPath = '/home/shengtao/Data/2D_Images/Croped256/Script/KBKC4_train.txt'    
-        TrainPath = "/home/james/Facial_Localization_Orientation_Detection/data/combineData.txt"
+        TrainPath = "/home/james/Facial_Localization_Orientation_Detection/data/combineDataFull.txt"
         TestPath = '/home/james/CropBB15/300WBB15challengeTest.txt'
         # TestPath = "data/Menpo39TrainProcessed/menpo39Data.txt"
 

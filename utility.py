@@ -2,7 +2,7 @@ import math
 import cv2    
 import numpy as np
 from PIL import Image, ImageChops
-from pylab import array, uint8 
+# from pylab import array, uint8 
 import PIL
 
 
