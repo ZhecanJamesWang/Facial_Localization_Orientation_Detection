@@ -319,12 +319,12 @@ class faceOrientPred(object):
 
 
                 if iter%1000 == 0:
-                #     logInfo = ""
-                #     if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
-                #         f = open(self.outputDir + 'log.txt', 'a')
-                #     else:
-                #         f = open(self.outputDir + 'log.txt','w')
-                #         self.init = False
+                    logInfo = ""
+                    if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
+                        f = open(self.outputDir + 'log.txt', 'a')
+                    else:
+                        f = open(self.outputDir + 'log.txt','w')
+                        self.init = False
 
                     iterationInfo = ("^^^^^" + "\n" + 'iteration: ' + str(iter))
                     logInfo += iterationInfo
