@@ -225,8 +225,8 @@ class faceOrientPred(object):
 
                     # if self.ifMenpo39Data == False:
                     print "imgName: ", imgName
-                    print "inputCheck/"  + imgName.split("/")[-1].split(" ")[0].split(".")[0] + str(method) + str(count) + '.jpg'
-                    cv2.imwrite("inputCheck/" + imgName.split("/")[-1].split(" ")[0].split(".")[0] + str(method) + str(count) + '.jpg', newImg)
+                    print "inputCheck/"  + imgName.split(".")[0] + str(method) + str(count) + '.jpg'
+                    cv2.imwrite("inputCheck/" + imgName.split(".")[0] + str(method) + str(count) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
