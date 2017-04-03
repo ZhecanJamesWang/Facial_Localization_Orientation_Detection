@@ -318,7 +318,7 @@ class faceOrientPred(object):
                 print "loss, train: ", loss
 
 
-                # if iter%1000 == 0:
+                if iter%1000 == 0:
                 #     logInfo = ""
                 #     if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
                 #         f = open(self.outputDir + 'log.txt', 'a')
