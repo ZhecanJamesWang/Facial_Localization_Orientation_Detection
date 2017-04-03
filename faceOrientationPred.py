@@ -30,8 +30,8 @@ class faceOrientPred(object):
 
         self.init = True
         self.debug = False
-        self.outputDir = "./output/04022017_01_bigNet_Scale_fulldata_Menpo39_output/"
-        self.modelDir = "./output/04022017_01_bigNet_Scale_fulldata_Menpo39_model/"
+        self.outputDir = "./output/04032017_01_bigNet_Scale_fulldata_Menpo39_output/"
+        self.modelDir = "./output/04032017_01_bigNet_Scale_fulldata_Menpo39_model/"
         self.imSize = 256
 
         # TN = TextNet('./MatBS/shape_0.obj', imgW=256)
@@ -224,7 +224,7 @@ class faceOrientPred(object):
                     #     cv2.waitKey(0)
 
                     # if self.ifMenpo39Data == False:
-                    #     cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
+                    cv2.imwrite(str(count) + str(method) + '.jpg', newImg)
 
 
                     normX = ut.normalize(newX, self.imSize)
@@ -318,13 +318,13 @@ class faceOrientPred(object):
                 print "loss, train: ", loss
 
 
-                if iter%1000 == 0:
-                    logInfo = ""
-                    if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
-                        f = open(self.outputDir + 'log.txt', 'a')
-                    else:
-                        f = open(self.outputDir + 'log.txt','w')
-                        self.init = False
+                # if iter%1000 == 0:
+                #     logInfo = ""
+                #     if os.path.exists(self.outputDir + 'log.txt') and self.init == False:
+                #         f = open(self.outputDir + 'log.txt', 'a')
+                #     else:
+                #         f = open(self.outputDir + 'log.txt','w')
+                #         self.init = False
 
                     iterationInfo = ("^^^^^" + "\n" + 'iteration: ' + str(iter))
                     logInfo += iterationInfo
@@ -334,7 +334,7 @@ class faceOrientPred(object):
                     index = random.randint(0, self.batch_size - 1)
                     labelImg = ut.plotTarget(X_batch[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
                     print 'save predTrainLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
-                    cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(testCount) + '.jpg', labelImg)
+                    # cv2.imwrite(self.outputDir + 'predTrainLabelImg' + str(testCount) + '.jpg', labelImg)
 
 
                     test_start = iterTest * self.batch_size
@@ -350,7 +350,7 @@ class faceOrientPred(object):
                     index = random.randint(0, self.batch_size - 1)
                     labelImg = ut.plotTarget(X_batch_T[index], ut.deNormalize(pred[index], self.imSize), self.imSize, ifSquareOnly = True)
                     print 'save predTestLabelImg' + str(testCount) + '.jpg to: ' + self.outputDir
-                    cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
+                    # cv2.imwrite(self.outputDir + 'predTestLabelImg' + str(testCount) + '.jpg', labelImg)
 
                     testInfo = ("====" + "\n" + "loss, TEST: " + str(loss))
                     logInfo += testInfo
@@ -363,8 +363,8 @@ class faceOrientPred(object):
                     f.write(logInfo)
                     f.close()
 
-                if iter%3000==0:
-                    self.model.save(self.modelDir + '/model%d.h5'%iter)
+                # if iter%3000==0:
+                    # self.model.save(self.modelDir + '/model%d.h5'%iter)
 
     def run(self):
 
