@@ -220,7 +220,7 @@ def translate(image, X, Y, w = None , h = None, counter = 0):
     #     return None, None, None
     originalImage = image.copy()
     (h, w, _) = image.shape
-    xTransRange, yTransRange = np.random.randint(0, w/5), np.random.randint(0, h/5)
+    xTransRange, yTransRange = np.random.randint(0, w/3), np.random.randint(0, h/3)
 
     newImg = np.zeros_like(image)
     newImg[yTransRange:, xTransRange:] = image[:int(h - yTransRange), :int(w - xTransRange)]
